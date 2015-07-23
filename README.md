@@ -152,7 +152,7 @@ Then the definition of procedure "test" should match
 [Then(@"the definition of procedure ""(.*)"" should match")]
 public void ThenTheDefinitionOfProcedureShouldMatch(string procedureName, Table table)
 {
-    ProcedureDefinition definition = new ProcedureDefinition(procedureName, table.CreateSet<ProcedureParameter>());
+    var definition = new ProcedureDefinition(procedureName, table.CreateSet<ProcedureParameter>());
     definition.VerifyEqual(database);
 }
 ```
