@@ -3,7 +3,7 @@ Provides helper functions for setting up and tearing down SQL Server database fa
 
 Available on NuGet at https://www.nuget.org/packages/IntegrationTestingLibraryForSqlServer
 
-Ideal for use with [SQL Server Local DB](http://blogs.msdn.com/b/sqlexpress/archive/2011/07/12/introducing-localdb-a-better-sql-express.aspx) which is deployed as part of Visual Studio but can also be installed on Integration Test servers. Specflow is fully supported and is the preferred method for creating intgration tests, see further down this document for [Specflow integration best practices](#specflow-integration-best-practices).
+Ideal for use with [SQL Server Local DB](http://blogs.msdn.com/b/sqlexpress/archive/2011/07/12/introducing-localdb-a-better-sql-express.aspx) which is deployed as part of Visual Studio but can also be installed on Integration Test servers. Specflow is fully supported and is our preferred method for creating intgration tests, see further down this document for [Specflow integration best practices](#specflow-integration-best-practices).
 ```C#
 using System.Data;
 using IntegrationTestingLibraryForSqlServer;
