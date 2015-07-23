@@ -3,7 +3,7 @@ Provides helper functions for setting up and tearing down SQL Server database fa
 
 Available on NuGet at https://www.nuget.org/packages/IntegrationTestingLibraryForSqlServer
 
-Ideal for use with [SQL Server Local DB](http://blogs.msdn.com/b/sqlexpress/archive/2011/07/12/introducing-localdb-a-better-sql-express.aspx) which is deployed as part of Visual Studio but can also be installed on Integration Test servers. Specflow is fully support and the preferred method for creating intgration tests, see further down this document for [Specflow integration best practices](#Specflow).
+Ideal for use with [SQL Server Local DB](http://blogs.msdn.com/b/sqlexpress/archive/2011/07/12/introducing-localdb-a-better-sql-express.aspx) which is deployed as part of Visual Studio but can also be installed on Integration Test servers. Specflow is fully support and the preferred method for creating intgration tests, see further down this document for [Specflow integration best practices](#specflow-integration-best-practices).
 ```C#
 using System.Data;
 using IntegrationTestingLibraryForSqlServer;
@@ -71,7 +71,7 @@ var column1 = new ColumnDefinition("c1", SqlDbType.Int);
 ProcedureDefinition definition = new ProcedureDefinition(procedureName, new[] { column1 });
 definition.VerifyEqual(database);
 ```
-##Specflow integration best practices [Specflow] ##
+##Specflow integration best practices
 [Specflow](http://www.specflow.org/) provides a behaviour-driven development structure ideally suited to integration/acceptance test as such this library has been designed to work well with it. There are helper extension methods included with Specflow which can be access by using the namespace ```TechTalk.SpecFlow.Assist```.
 ###Table creation
 ```Gherkin
