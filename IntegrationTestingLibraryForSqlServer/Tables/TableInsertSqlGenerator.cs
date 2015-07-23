@@ -42,13 +42,7 @@ namespace IntegrationTestingLibraryForSqlServer
 
         private string BindingMarkers(int columnCount)
         {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < columnCount; i++)
-            {
-                sb.Append("@" + i);
-                if (i != columnCount - 1) sb.Append(",");
-            }
-            return sb.ToString();
+            return string.Join(",", Enumerable.Range(0, columnCount).Select(x => "@" + x));
         }
 
         private const string InsertTableFormat = "INSERT INTO {0}{1} SELECT {2}";
