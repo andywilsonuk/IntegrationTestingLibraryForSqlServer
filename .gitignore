@@ -1,0 +1,25 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/IntegrationTestingLibraryForSqlServer/bin
+/IntegrationTestingLibraryForSqlServer/obj
+/IntegrationTestingLibraryForSqlServer.IntegrationTests/bin
+/IntegrationTestingLibraryForSqlServer.IntegrationTests/obj
+/IntegrationTestingLibraryForSqlServer.Packager/bin
+/IntegrationTestingLibraryForSqlServer.Packager/obj
+/IntegrationTestingLibraryForSqlServer.Packager/IntegrationTestingLibraryForSqlServer.0.9.18.nupkg.bak
+/IntegrationTestingLibraryForSqlServer.Packager/IntegrationTestingLibraryForSqlServer.0.9.18.symbols.nupkg.bak
+/IntegrationTestingLibraryForSqlServer.Packager/IntegrationTestingLibraryForSqlServer.0.9.19.nupkg.bak
+/IntegrationTestingLibraryForSqlServer.Packager/IntegrationTestingLibraryForSqlServer.0.9.19.symbols.nupkg.bak
+/IntegrationTestingLibraryForSqlServer.Packager/IntegrationTestingLibraryForSqlServer.1.0.0.nupkg.bak
+/IntegrationTestingLibraryForSqlServer.Packager/IntegrationTestingLibraryForSqlServer.1.0.0.symbols.nupkg.bak
+/IntegrationTestingLibraryForSqlServer.Packager/IntegrationTestingLibraryForSqlServer.1.0.1.nupkg
+/IntegrationTestingLibraryForSqlServer.Packager/IntegrationTestingLibraryForSqlServer.1.0.1.nupkg.bak
+/IntegrationTestingLibraryForSqlServer.Packager/IntegrationTestingLibraryForSqlServer.1.0.1.symbols.nupkg.bak
+*.user
+/IntegrationTestingLibraryForSqlServer.Tests/bin
+/IntegrationTestingLibraryForSqlServer.Tests/obj
+/packages
+/TestResults
+*.suo

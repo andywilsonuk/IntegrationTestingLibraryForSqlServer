@@ -1,0 +1,5 @@
+﻿Better handle command tokens, sql injection - where?
+Retrieving data from a table
+Allow for comparing TableData objects
+Maximum size and precision, maximum name length etc
+Name validation for invalid characters
