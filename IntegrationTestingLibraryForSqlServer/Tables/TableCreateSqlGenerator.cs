@@ -26,9 +26,10 @@ namespace IntegrationTestingLibraryForSqlServer
         private string GetFormattedColumnLine(ColumnDefinition column)
         {
             return string.Format(
-                "[{0}] {1} {2}",
+                "[{0}] {1}{2}{3}",
                 column.Name,
                 this.GetFormattedDataType(column),
+                this.GetFormattedIdentity(column),
                 this.GetFormattedNullable(column));
         }
 
@@ -49,6 +50,14 @@ namespace IntegrationTestingLibraryForSqlServer
                     return string.Format("{0}({1},{2})", column.DataType, column.Size.Value, column.Precision ?? 0);
             }
             return string.Format("{0}", column.DataType);
+        }
+
+        private string GetFormattedIdentity(ColumnDefinition column)
+        {
+            if (column.IdentitySeed != null)
+                return string.Format(" IDENTITY({0},1) ", column.IdentitySeed);
+
+            return " ";
         }
 
         private string GetFormattedNullable(ColumnDefinition column)

@@ -14,6 +14,7 @@ namespace IntegrationTestingLibraryForSqlServer
         public int? Size { get; set; }
         public byte? Precision { get; set; }
         public bool AllowNulls { get; set; }
+        public decimal? IdentitySeed { get; set; }
 
         public ColumnDefinition()
         {
@@ -36,6 +37,7 @@ namespace IntegrationTestingLibraryForSqlServer
             if (!dataTypeDefaults.IsSizeEqual(this.Size, other.Size)) return false;
             if (!dataTypeDefaults.IsPrecisionEqual(this.Precision, other.Precision)) return false;
             if (this.AllowNulls != other.AllowNulls) return false;
+            if (this.IdentitySeed != other.IdentitySeed) return false;
             return true;
         }
 
@@ -69,7 +71,8 @@ namespace IntegrationTestingLibraryForSqlServer
                 .Append(", Type: " + this.DataType)
                 .Append(", Size: " + this.Size)
                 .Append(", Precision: " + this.Precision)
-                .AppendLine(", Allow Nulls: " + this.AllowNulls)
+                .Append(", Allow Nulls: " + this.AllowNulls)
+                .AppendLine(", Identity Seed: " + this.IdentitySeed)
                 .ToString();
         }
     }

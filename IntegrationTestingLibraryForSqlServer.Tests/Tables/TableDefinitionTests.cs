@@ -131,12 +131,13 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
                 DataType = SqlDbType.Decimal,
                 Size = 10,
                 Precision = 5,
-                AllowNulls = true
+                AllowNulls = true,
+                IdentitySeed = 10
             });
 
             string expected = new StringBuilder()
                 .AppendLine("Name: table1")
-                .AppendLine("Name: c1, Type: Decimal, Size: 10, Precision: 5, Allow Nulls: True")
+                .AppendLine("Name: c1, Type: Decimal, Size: 10, Precision: 5, Allow Nulls: True, Identity Seed: 10")
                 .ToString();
 
             string actual = table.ToString();

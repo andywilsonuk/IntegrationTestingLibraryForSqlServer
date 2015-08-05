@@ -42,7 +42,9 @@ SELECT
     t.name,
     c.max_length,
     c.precision,
-    c.is_nullable
+    c.is_nullable,
+    c.is_identity,
+    IDENT_SEED('{0}')
 FROM sys.columns c
 INNER JOIN sys.types t ON c.user_type_id = t.user_type_id
 WHERE c.object_id = OBJECT_ID('{0}')";

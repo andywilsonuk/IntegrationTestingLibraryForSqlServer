@@ -21,6 +21,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Tables
             mockDataRecord.Setup(x => x.GetInt16(DataRecordToColumnMapper.Columns.Size)).Returns(10);
             mockDataRecord.Setup(x => x.GetByte(DataRecordToColumnMapper.Columns.Precision)).Returns(5);
             mockDataRecord.Setup(x => x.GetBoolean(DataRecordToColumnMapper.Columns.IsNullable)).Returns(false);
+            mockDataRecord.Setup(x => x.GetBoolean(DataRecordToColumnMapper.Columns.IsIdentity)).Returns(false);
 
             expected = new ColumnDefinition
             {
@@ -59,6 +60,19 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Tables
             expected.DataType = SqlDbType.Int;
             expected.Size = null;
             expected.Precision = null;
+
+            ColumnDefinition actual = mapper.ToColumnDefinition(mockDataRecord.Object);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void DataRecordToColumnIdentity()
+        {
+            mockDataRecord.Setup(x => x.GetBoolean(DataRecordToColumnMapper.Columns.IsIdentity)).Returns(true);
+            mockDataRecord.Setup(x => x.GetDecimal(DataRecordToColumnMapper.Columns.IdentitySeed)).Returns(5);
+
+            expected.IdentitySeed = 5;
 
             ColumnDefinition actual = mapper.ToColumnDefinition(mockDataRecord.Object);
 

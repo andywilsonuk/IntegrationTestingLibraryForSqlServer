@@ -106,6 +106,17 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
+        public void ColumnDefinitionNotEqualsIdentity()
+        {
+            definition.IdentitySeed = 5;
+            var other = new ColumnDefinition(ColumnName, SqlDbType.Int);
+
+            bool actual = definition.Equals(other);
+
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
         public void ColumnDefinitionGetHashCode()
         {
             int expected = ColumnName.ToLowerInvariant().GetHashCode();
@@ -170,12 +181,14 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             definition.Size = 10;
             definition.Precision = 5;
             definition.AllowNulls = false;
+            definition.IdentitySeed = 10;
             string expected = new StringBuilder()
                 .Append("Name: " + ColumnName)
                 .Append(", Type: Int")
                 .Append(", Size: 10")
                 .Append(", Precision: 5")
                 .Append(", Allow Nulls: False")
+                .Append(", Identity Seed: 10")
                 .AppendLine()
                 .ToString();
 

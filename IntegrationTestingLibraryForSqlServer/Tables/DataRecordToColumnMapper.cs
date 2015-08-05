@@ -20,6 +20,7 @@ namespace IntegrationTestingLibraryForSqlServer
                 Size = this.GetSize(),
                 Precision = this.GetPrecision(),
                 AllowNulls = this.GetNullable(),
+                IdentitySeed = this.GetIdentitySeed()
             };
         }
 
@@ -64,6 +65,13 @@ namespace IntegrationTestingLibraryForSqlServer
             return this.record.GetBoolean(Columns.IsNullable);
         }
 
+        private decimal? GetIdentitySeed()
+        {
+            if (this.record.GetBoolean(Columns.IsIdentity))
+                return this.record.GetDecimal(Columns.IdentitySeed);
+            return null;
+        }
+
         internal static class Columns
         {
             public const int Name = 0;
@@ -71,6 +79,8 @@ namespace IntegrationTestingLibraryForSqlServer
             public const int Size = 2;
             public const int Precision = 3;
             public const int IsNullable = 4;
+            public const int IsIdentity = 5;
+            public const int IdentitySeed = 6;
         }
     }
 }

@@ -83,5 +83,16 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void CreateTableWithIdentity()
+        {
+            string expected = "CREATE TABLE [t1] ([c1] NVarChar IDENTITY(8,1) NULL)";
+            definition.Columns.Add(new ColumnDefinition { Name = "c1", DataType = SqlDbType.NVarChar, IdentitySeed = 8});
+
+            string actual = generator.Sql(definition);
+
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
