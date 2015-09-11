@@ -65,6 +65,8 @@
     <Compile Include="Procedures\ProcedureDefinition.cs" />
     <Compile Include="Tables\TableCheck.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tables\ViewCreateSqlGenerator.cs" />
+    <Compile Include="Tables\ViewDefinition.cs" />
     <Compile Include="ValidationException.cs" />
     <Compile Include="EquivalenceException.cs" />
   </ItemGroup>

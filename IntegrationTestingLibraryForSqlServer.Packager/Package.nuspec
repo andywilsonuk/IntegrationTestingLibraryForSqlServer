@@ -2,16 +2,18 @@
 <package>
   <metadata>
     <id>IntegrationTestingLibraryForSqlServer</id>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <title>Integration Testing Library for SQL Server</title>
     <authors>Andy Wilson and contributors</authors>
     <owners>Andy Wilson</owners>
     <description>
       Provides helper functions for setting up and tearing down SQL Server database fakes for use in integration testing.
     </description>
-    <releaseNotes>1.1.0
+    <releaseNotes>1.2.0
+      - Views can now be created as a front to a table; this was simpler than duplicating all the create logic for views.
+1.1.0
       - Added support for Identity constraint on columns.
-      1.0.0
+1.0.0
       - Initial version.
     </releaseNotes>
     <language>en-GB</language>

@@ -23,5 +23,10 @@ namespace IntegrationTestingLibraryForSqlServer
             var check = new TableCheck(database.ConnectionString);
             check.VerifyMatch(definition);
         }
+
+        public static void CreateView(this TableDefinition definition, DatabaseActions database, string viewName)
+        {
+            new TableActions(database.ConnectionString).CreateView(definition.Name, viewName);
+        }
     }
 }

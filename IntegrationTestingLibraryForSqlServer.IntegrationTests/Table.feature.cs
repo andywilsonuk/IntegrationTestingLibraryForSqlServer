@@ -164,7 +164,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "true"});
 #line 19
- testRunner.When("the table \"test\" is created", ((string)(null)), table3, "When ");
+ testRunner.And("the table \"test\" is created", ((string)(null)), table3, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
@@ -176,7 +176,7 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "Second"});
 #line 23
- testRunner.And("table \"test\" is populated", ((string)(null)), table4, "And ");
+ testRunner.When("table \"test\" is populated", ((string)(null)), table4, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
@@ -228,7 +228,7 @@ this.ScenarioSetup(scenarioInfo);
                         "true",
                         ""});
 #line 35
- testRunner.When("the table \"test\" is created", ((string)(null)), table6, "When ");
+ testRunner.And("the table \"test\" is created", ((string)(null)), table6, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name"});
@@ -237,7 +237,7 @@ this.ScenarioSetup(scenarioInfo);
             table7.AddRow(new string[] {
                         "Second"});
 #line 39
- testRunner.And("table \"test\" is populated", ((string)(null)), table7, "And ");
+ testRunner.When("table \"test\" is populated", ((string)(null)), table7, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
@@ -250,6 +250,66 @@ this.ScenarioSetup(scenarioInfo);
                         "Second"});
 #line 43
  testRunner.Then("the table \"test\" should be populated with data", ((string)(null)), table8, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create a view based on a table")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Table")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("db")]
+        public virtual void CreateAViewBasedOnATable()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a view based on a table", new string[] {
+                        "db"});
+#line 49
+this.ScenarioSetup(scenarioInfo);
+#line 50
+ testRunner.Given("there is a test database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Data Type",
+                        "Size",
+                        "Precision",
+                        "Allow Nulls"});
+            table9.AddRow(new string[] {
+                        "Id",
+                        "int",
+                        "",
+                        "",
+                        "false"});
+            table9.AddRow(new string[] {
+                        "Name",
+                        "nvarchar",
+                        "50",
+                        "",
+                        "true"});
+#line 51
+ testRunner.And("the table \"test\" is created", ((string)(null)), table9, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Id",
+                        "Name"});
+            table10.AddRow(new string[] {
+                        "1",
+                        "First"});
+            table10.AddRow(new string[] {
+                        "2",
+                        "Second"});
+#line 55
+ testRunner.And("table \"test\" is populated", ((string)(null)), table10, "And ");
+#line 59
+ testRunner.When("a view called \"testview\" of the table \"test\" is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Id",
+                        "Name"});
+            table11.AddRow(new string[] {
+                        "2",
+                        "Second"});
+#line 60
+ testRunner.Then("the view \"testview\" filtered to id 2 should be populated with data", ((string)(null)), table11, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

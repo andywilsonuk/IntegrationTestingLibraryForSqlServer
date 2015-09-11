@@ -12,6 +12,7 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
     {
         private DatabaseActions database = ScenarioContext.Current.Get<DatabaseActions>("Database");
 
+        [Given(@"the table ""(.*)"" is created")]
         [When(@"the table ""(.*)"" is created")]
         public void WhenTheTableIsCreated(string tableName, Table table)
         {
@@ -19,6 +20,7 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
             definition.CreateOrReplace(database);
         }
 
+        [Given(@"table ""(.*)"" is populated")]
         [When(@"table ""(.*)"" is populated")]
         public void WhenTableIsPopulated(string tableName, Table table)
         {
@@ -63,5 +65,39 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
                 }
             }
         }
+
+        [When(@"a view called ""(.*)"" of the table ""(.*)"" is created")]
+        public void WhenAViewCalledOfTheTableIsCreated(string viewName, string tableName)
+        {
+            var tableActions = new TableActions(database.ConnectionString);
+            tableActions.CreateView(tableName, viewName);
+        }
+
+        [Then(@"the view ""(.*)"" filtered to id (.*) should be populated with data")]
+        public void ThenTheViewFilteredToIdShouldBePopulatedWithData(string viewName, int id, Table table)
+        {
+            using (SqlConnection connection = new SqlConnection(database.ConnectionString))
+            {
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = string.Format("SELECT * FROM {0} WHERE Id = {1}", viewName, id);
+                    connection.Open();
+
+                    int index = 0;
+                    using (var reader = command.ExecuteReader())
+                        while (reader.NextResult())
+                        {
+                            index++;
+                            for (int i = 0; i < table.Rows[index].Values.Count; i++)
+                            {
+                                string expected = table.Rows[index].Values.ElementAt(i);
+                                string actual = reader[i].ToString();
+                                Assert.AreEqual(expected, actual);
+                            }
+                        }
+                }
+            }
+        }
+
     }
 }

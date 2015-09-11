@@ -54,6 +54,16 @@ namespace IntegrationTestingLibraryForSqlServer
             }
         }
 
+        public void CreateView(string tableName, string viewName)
+        {
+            var definition = new ViewDefinition(viewName, tableName);
+
+            using (var connection = new SqlConnection(this.connectionString))
+            {
+                connection.Execute(new ViewCreateSqlGenerator().Sql(definition));
+            }
+        }
+
         private const string dropTableCommand = @"if exists (select * from sys.objects where object_id = object_id('{0}') and type = (N'U')) drop table [{0}]";
     }
 }
