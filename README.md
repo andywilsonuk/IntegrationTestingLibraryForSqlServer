@@ -42,6 +42,20 @@ var tableData = new TableData
 };
 tableActions.Insert(tableName, tableData);
 ```
+or, if you have a TableDefinition object:
+```C#
+tableDefintion.Insert(database, tableData);
+```
+###Creating views
+Views can be created as a front to a single table; the single table can model the same structure as the 'real' view.
+```C#
+var tableActions = new TableActions(database.ConnectionString);
+tableActions.CreateView("t1", "v1");
+```
+or, if you have a TableDefinition object:
+```C#
+tableDefintion.CreateView(database, "v1");
+```
 ###Verifying table structures
 Dependency tests can be created that will compare the expected table structure with that of the 'real' table to ensure that it has not changed structure (and therefore invalidating the primary test cases). ```VerifyEqual``` will throw an exception if the two structures don't match.
 ```C#
