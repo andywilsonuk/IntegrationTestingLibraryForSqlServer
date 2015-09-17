@@ -57,12 +57,12 @@ or, if you have a TableDefinition object:
 tableDefintion.CreateView(database, "v1");
 ```
 ###Verifying table structures
-Dependency tests can be created that will compare the expected table structure with that of the 'real' table to ensure that it has not changed structure (and therefore invalidating the primary test cases). ```VerifyEqual``` will throw an exception if the two structures don't match.
+Dependency tests can be created that will compare the expected table structure with that of the 'real' table to ensure that it has not changed structure (and therefore invalidating the primary test cases). ```VerifyMatch``` will throw an exception if the two structures don't match.
 ```C#
 var column1 = new ColumnDefinition("c1", SqlDbType.Int);
 var column2 = new ColumnDefinition("c2", SqlDbType.NVarChar);
 var definition = new TableDefinition(tableName, new[] { column1, column2 });
-definition.VerifyEqual(database);
+definition.VerifyMatch(database);
 ```
 ##Procedures
 ###Creating procedures
@@ -114,7 +114,7 @@ Then the definition of table "test" should match
 public void ThenTheDefinitionOfTableShouldMatch(string tableName, Table table)
 {
     var definition = new TableDefinition(tableName, table.CreateSet<ColumnDefinition>());
-    definition.VerifyEqual(database);
+    definition.VerifyMatch(database);
 }
 ```
 ###Table population
