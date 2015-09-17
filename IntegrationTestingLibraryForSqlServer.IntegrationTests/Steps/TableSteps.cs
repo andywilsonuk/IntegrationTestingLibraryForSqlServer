@@ -37,7 +37,14 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         public void ThenTheDefinitionOfTableShouldMatch(string tableName, Table table)
         {
             var definition = new TableDefinition(tableName, table.CreateSet<ColumnDefinition>());
-            definition.VerifyEqual(database);
+            definition.VerifyMatch(database);
+        }
+
+        [Then(@"the definition of table ""(.*)"" should contain")]
+        public void ThenTheDefinitionOfTableShouldContain(string tableName, Table table)
+        {
+            var definition = new TableDefinition(tableName, table.CreateSet<ColumnDefinition>());
+            definition.VerifyMatchOrSubset(database);
         }
 
         [Then(@"the table ""(.*)"" should be populated with data")]

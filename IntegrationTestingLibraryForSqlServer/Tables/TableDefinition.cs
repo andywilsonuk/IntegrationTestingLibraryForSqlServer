@@ -30,15 +30,30 @@ namespace IntegrationTestingLibraryForSqlServer
                 throw new ValidationException("The definition is invalid " + Environment.NewLine + this.ToString());
         }
 
-        public void VerifyEqual(TableDefinition actual)
+        public void VerifyEqual(TableDefinition other)
         {
-            if (this.Equals(actual)) return;
-            throw new EquivalenceException(this.EquivalenceDetails(actual));
+            if (this.Equals(other)) return;
+            throw new EquivalenceException(this.EquivalenceDetails(other));
+        }
+
+        public void VerifyEqualOrSubsetOf(TableDefinition superset)
+        {
+            if (this.Equals(superset)) return;
+            if (this.IsSubset(superset)) return;
+            throw new EquivalenceException(this.EquivalenceDetails(superset));
+        }
+
+        public bool IsSubset(TableDefinition superset)
+        {
+            if (superset == null) return false;
+            if (!this.IsMatchingHashCodes(superset)) return false;
+            return !this.Columns.Except(superset.Columns).Any();
         }
 
         public bool Equals(TableDefinition other)
         {
-            if (!this.Name.Equals(other.Name, StringComparison.CurrentCultureIgnoreCase)) return false;
+            if (other == null) return false;
+            if (!this.IsMatchingHashCodes(other)) return false;
             return this.Columns.SequenceEqual(other.Columns);
         }
 
@@ -59,6 +74,11 @@ namespace IntegrationTestingLibraryForSqlServer
             foreach(var definition in this.Columns)
                 sb.Append(definition.ToString());
             return sb.ToString();
+        }
+
+        private bool IsMatchingHashCodes(TableDefinition other)
+        {
+            return this.GetHashCode() == other.GetHashCode();
         }
 
         private string EquivalenceDetails(TableDefinition actual)

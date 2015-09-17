@@ -8,20 +8,16 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
     [TestClass]
     public class TableDefinitionTests
     {
+        private const string TableName = "table1";
+        private const string ColumnName = "c1";
         private ColumnDefinition column;
         private TableDefinition table;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            column = new ColumnDefinition("c1", SqlDbType.Int);
-            table = new TableDefinition("table1", new[] { column });
-        }
-
-        [TestMethod]
-        public void TableDefinitionConstructor()
-        {
-            new ColumnDefinition("c1", SqlDbType.Int);
+            column = new ColumnDefinition(ColumnName, SqlDbType.Int);
+            table = new TableDefinition(TableName, new[] { column });
         }
 
         [TestMethod]
@@ -40,7 +36,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [ExpectedException(typeof(ValidationException))]
         public void TableDefinitionEnsureValidThrowException()
         {
-            table = new TableDefinition("table1");
+            table = new TableDefinition(TableName);
 
             table.EnsureValid();
         }
@@ -50,7 +46,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void TableDefinitionEnsureValidInvalidColumnThrowException()
         {
             column.Name = null;
-            table = new TableDefinition("table1", new[] { column} );
+            table = new TableDefinition(TableName, new[] { column });
 
             table.EnsureValid();
         }
@@ -58,7 +54,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void TableDefinitionVerifyEqual()
         {
-            var other = new TableDefinition("table1", new[] { column });
+            var other = new TableDefinition(TableName, new[] { column });
 
             table.VerifyEqual(other);
         }
@@ -76,7 +72,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [ExpectedException(typeof(EquivalenceException))]
         public void TableDefinitionVerifyNotEqualColumn()
         {
-            var other = new TableDefinition("other", new[] { new ColumnDefinition("c1", SqlDbType.NVarChar) });
+            var other = new TableDefinition("other", new[] { new ColumnDefinition(ColumnName, SqlDbType.NVarChar) });
 
             table.VerifyEqual(other);
         }
@@ -84,7 +80,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void TableDefinitionEquals()
         {
-            var other = new TableDefinition("table1", new[] { column });
+            var other = new TableDefinition(TableName, new[] { column });
 
             bool actual = table.Equals(other);
 
@@ -104,9 +100,17 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void TableDefinitionNotEqualsColumn()
         {
-            var other = new TableDefinition("other", new[] { new ColumnDefinition("c1", SqlDbType.NVarChar) });
+            var other = new TableDefinition(TableName, new[] { new ColumnDefinition(column.Name, SqlDbType.NVarChar) });
 
             bool actual = table.Equals(other);
+
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        public void TableDefinitionNotEqualNull()
+        {
+            bool actual = table.Equals(null);
 
             Assert.IsFalse(actual);
         }
@@ -127,7 +131,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             table.Columns.Clear();
             table.Columns.Add(new ColumnDefinition()
             {
-                Name = "c1",
+                Name = ColumnName,
                 DataType = SqlDbType.Decimal,
                 Size = 10,
                 Precision = 5,
@@ -143,6 +147,91 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             string actual = table.ToString();
 
             Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void TableDefinitionIsSubsetEqual()
+        {
+            var other = new TableDefinition(TableName, new[] { column });
+
+            bool actual = table.IsSubset(other);
+
+            Assert.IsTrue(actual);
+        }
+
+        [TestMethod]
+        public void TableDefinitionIsNotSubsetName()
+        {
+            var other = new TableDefinition("other", new[] { column });
+
+            bool actual = table.IsSubset(other);
+
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        public void TableDefinitionIsSubsetAdditionalColumn()
+        {
+            var other = new TableDefinition(TableName, new[] { column, new ColumnDefinition("c2", SqlDbType.NVarChar) });
+
+            bool actual = table.IsSubset(other);
+
+            Assert.IsTrue(actual);
+        }
+
+        [TestMethod]
+        public void TableDefinitionIsNotSubsetMissingColumn()
+        {
+            var other = new TableDefinition(TableName, new[] { column });
+            table.Columns.Add(new ColumnDefinition("c2", SqlDbType.NVarChar));
+
+            bool actual = table.IsSubset(other);
+
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        public void TableDefinitionIsNotSubsetNull()
+        {
+            bool actual = table.IsSubset(null);
+
+            Assert.IsFalse(actual);
+        }
+
+
+        [TestMethod]
+        public void TableDefinitionVerifySubsetOfEquals()
+        {
+            var other = new TableDefinition(TableName, new[] { column });
+
+            table.VerifyEqualOrSubsetOf(other);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(EquivalenceException))]
+        public void TableDefinitionVerifyNotSubsetName()
+        {
+            var other = new TableDefinition("other", new[] { column });
+
+            table.VerifyEqualOrSubsetOf(other);
+        }
+
+        [TestMethod]
+        public void TableDefinitionVerifySubsetAdditionalColumn()
+        {
+            var other = new TableDefinition(TableName, new[] { column, new ColumnDefinition("c2", SqlDbType.NVarChar) });
+
+            table.VerifyEqualOrSubsetOf(other);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(EquivalenceException))]
+        public void TableDefinitionVerifyNotSubsetMissingColumn()
+        {
+            var other = new TableDefinition(TableName, new[] { column });
+            table.Columns.Add(new ColumnDefinition("c2", SqlDbType.NVarChar));
+
+            table.VerifyEqualOrSubsetOf(other);
         }
     }
 }

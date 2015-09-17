@@ -18,10 +18,16 @@ namespace IntegrationTestingLibraryForSqlServer
             new TableActions(database.ConnectionString).Insert(definition.Name, tableData);
         }
 
-        public static void VerifyEqual(this TableDefinition definition, DatabaseActions database)
+        public static void VerifyMatch(this TableDefinition definition, DatabaseActions database)
         {
             var check = new TableCheck(database.ConnectionString);
             check.VerifyMatch(definition);
+        }
+
+        public static void VerifyMatchOrSubset(this TableDefinition definition, DatabaseActions database)
+        {
+            var check = new TableCheck(database.ConnectionString);
+            check.VerifyMatchOrSubset(definition);
         }
 
         public static void CreateView(this TableDefinition definition, DatabaseActions database, string viewName)

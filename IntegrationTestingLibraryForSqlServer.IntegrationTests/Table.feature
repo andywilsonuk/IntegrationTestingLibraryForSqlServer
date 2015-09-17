@@ -14,6 +14,19 @@ Scenario: Table setup and verify
 	| Name | nvarchar  | 50   |           | true        |               |
 
 @db
+Scenario: Table setup and verify subset
+	Given there is a test database
+	When the table "test" is created
+	| Name      | Data Type | Size | Precision | Allow Nulls | Identity Seed |
+	| Id        | int       |      |           | false       | 4             |
+	| Name      | nvarchar  | 50   |           | true        |               |
+	| NewColumn | int       |      |           | true        |               |
+	Then the definition of table "test" should contain
+	| Name | Data Type | Size | Precision | Allow Nulls | Identity Seed |
+	| Id   | int       |      |           | false       | 4             |
+	| Name | nvarchar  | 50   |           | true        |               |
+
+@db
 Scenario: Table populate
 	Given there is a test database
 	And the table "test" is created

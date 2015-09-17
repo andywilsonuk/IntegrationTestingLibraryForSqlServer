@@ -22,6 +22,11 @@ namespace IntegrationTestingLibraryForSqlServer
             expected.VerifyEqual(this.GetDefinition(expected.Name));
         }
 
+        public void VerifyMatchOrSubset(TableDefinition expected)
+        {
+            expected.VerifyEqualOrSubsetOf(this.GetDefinition(expected.Name));
+        }
+
         public TableDefinition GetDefinition(string tableName)
         {
             var mapper = new DataRecordToColumnMapper();
