@@ -71,8 +71,8 @@
     <Compile Include="Tables\TableCreateSqlGeneratorTests.cs" />
     <Compile Include="Tables\TableDefinitionTests.cs" />
     <Compile Include="Tables\TableInsertSqlGeneratorTests.cs" />
-    <Compile Include="Tables\ViewDefinitionTests.cs" />
-    <Compile Include="Tables\ViewCreateSqlGeneratorTests.cs" />
+    <Compile Include="Views\TableBackedViewDefinitionTests.cs" />
+    <Compile Include="Views\TableBackedViewCreateSqlGeneratorTests.cs" />
     <None Include="packages.config" />
     <None Include="Properties\IntegrationTestingLibraryForSqlServer.snk" />
   </ItemGroup>

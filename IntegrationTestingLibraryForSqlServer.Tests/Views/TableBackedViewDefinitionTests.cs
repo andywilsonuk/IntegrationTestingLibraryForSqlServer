@@ -4,28 +4,28 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
     [TestClass]
-    public class ViewDefinitionTests
+    public class TableBackedViewDefinitionTests
     {
-        private ViewDefinition definition;
+        private TableBackedViewDefinition definition;
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ViewDefinitionNullName()
+        public void TableBackedViewDefinitionNullName()
         {
-            this.definition = new ViewDefinition(null, "t1");
+            this.definition = new TableBackedViewDefinition(null, "t1");
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ViewDefinitionNullTableName()
+        public void TableBackedViewDefinitionNullTableName()
         {
-            this.definition = new ViewDefinition("v1", null);
+            this.definition = new TableBackedViewDefinition("v1", null);
         }
 
         [TestMethod]
-        public void ViewDefinitionPropertiesSet()
+        public void TableBackedViewDefinitionPropertiesSet()
         {
-            this.definition = new ViewDefinition("v1", "t1");
+            this.definition = new TableBackedViewDefinition("v1", "t1");
 
             Assert.AreEqual("v1", this.definition.Name);
             Assert.AreEqual("t1", this.definition.BackingTable);

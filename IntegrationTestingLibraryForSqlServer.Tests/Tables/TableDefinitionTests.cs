@@ -116,6 +116,16 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
+        public void TableDefinitionEqualMixedColumnOrder()
+        {
+            var column2 = new ColumnDefinition("c2", SqlDbType.NVarChar);
+            table.Columns.Add(column2);
+            var other = new TableDefinition(TableName, new[] { column2, column });
+
+            Assert.IsTrue(table.Equals(other));
+        }
+
+        [TestMethod]
         public void TableDefinitionGetHashCode()
         {
             int expected = table.Name.ToLowerInvariant().GetHashCode();
@@ -191,13 +201,24 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
+        public void TableDefinitionIsSubsetEqualMixedOrder()
+        {
+            var column2 = new ColumnDefinition("c2", SqlDbType.NVarChar);
+            table.Columns.Add(column2);
+            var other = new TableDefinition(TableName, new[] { column2, column });
+
+            bool actual = table.IsSubset(other);
+
+            Assert.IsTrue(actual);
+        }
+
+        [TestMethod]
         public void TableDefinitionIsNotSubsetNull()
         {
             bool actual = table.IsSubset(null);
 
             Assert.IsFalse(actual);
         }
-
 
         [TestMethod]
         public void TableDefinitionVerifySubsetOfEquals()

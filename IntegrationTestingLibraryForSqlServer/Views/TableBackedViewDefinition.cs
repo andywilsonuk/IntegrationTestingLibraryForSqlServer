@@ -5,9 +5,9 @@ using System.Text;
 
 namespace IntegrationTestingLibraryForSqlServer
 {
-    public class ViewDefinition
+    public class TableBackedViewDefinition
     {
-        public ViewDefinition(string name, string backingTable)
+        public TableBackedViewDefinition(string name, string backingTable)
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException("name");
             if (string.IsNullOrWhiteSpace(backingTable)) throw new ArgumentNullException("backingTable");

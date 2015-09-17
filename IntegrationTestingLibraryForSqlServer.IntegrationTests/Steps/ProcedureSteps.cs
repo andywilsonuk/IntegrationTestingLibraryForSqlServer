@@ -18,7 +18,7 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         public void ThenTheDefinitionOfProcedureShouldMatch(string procedureName, Table table)
         {
             ProcedureDefinition definition = new ProcedureDefinition(procedureName, table.CreateSet<ProcedureParameter>());
-            definition.VerifyEqual(database);
+            definition.VerifyMatch(database);
         }
 
         [Given(@"the procedure ""(.*)"" is created with body ""(.*)""")]

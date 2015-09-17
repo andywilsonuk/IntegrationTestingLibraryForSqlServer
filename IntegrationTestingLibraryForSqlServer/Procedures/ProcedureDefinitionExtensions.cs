@@ -12,7 +12,7 @@ namespace IntegrationTestingLibraryForSqlServer
             new ProcedureActions(database.ConnectionString).CreateOrReplace(definition);
         }
 
-        public static void VerifyEqual(this ProcedureDefinition definition, DatabaseActions database)
+        public static void VerifyMatch(this ProcedureDefinition definition, DatabaseActions database)
         {
             var check = new ProcedureCheck(database.ConnectionString);
             check.VerifyMatch(definition);

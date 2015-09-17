@@ -15,8 +15,10 @@ namespace IntegrationTestingLibraryForSqlServer
         public ColumnDefinition ToColumnDefinition(IDataRecord record)
         {
             this.record = record;
-            return new ColumnDefinition(this.GetName(), this.GetDataType())
+            return new ColumnDefinition
             {
+                Name = this.GetName(),
+                DataType = this.GetDataType(),
                 Size = this.GetSize(),
                 Precision = this.GetPrecision(),
                 AllowNulls = this.GetNullable(),

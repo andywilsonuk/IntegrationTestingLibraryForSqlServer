@@ -57,9 +57,10 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
                     command.CommandText = string.Format("SELECT * FROM {0}", tableName);
                     connection.Open();
 
-                    int index = 0;
+                    int index = -1;
                     using (var reader = command.ExecuteReader())
-                        while (reader.NextResult())
+                    {
+                        while (reader.Read())
                         {
                             index++;
                             for (int i = 0; i < table.Rows[index].Values.Count; i++)
@@ -69,6 +70,9 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
                                 Assert.AreEqual(expected, actual);
                             }
                         }
+                    }
+
+                    Assert.IsTrue(index >= table.Rows.Count - 1);
                 }
             }
         }

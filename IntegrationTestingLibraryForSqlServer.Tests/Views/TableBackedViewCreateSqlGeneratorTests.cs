@@ -5,10 +5,10 @@ using System.Data;
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
     [TestClass]
-    public class ViewCreateSqlGeneratorTests
+    public class TableBackedViewCreateSqlGeneratorTests
     {
-        ViewCreateSqlGenerator generator = new ViewCreateSqlGenerator();
-        ViewDefinition viewDefinition = new ViewDefinition("v1", "t1");
+        TableBackedViewCreateSqlGenerator generator = new TableBackedViewCreateSqlGenerator();
+        TableBackedViewDefinition viewDefinition = new TableBackedViewDefinition("v1", "t1");
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]

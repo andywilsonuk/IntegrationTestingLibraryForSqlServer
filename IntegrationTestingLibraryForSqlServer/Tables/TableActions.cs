@@ -56,11 +56,11 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public void CreateView(string tableName, string viewName)
         {
-            var definition = new ViewDefinition(viewName, tableName);
+            var definition = new TableBackedViewDefinition(viewName, tableName);
 
             using (var connection = new SqlConnection(this.connectionString))
             {
-                connection.Execute(new ViewCreateSqlGenerator().Sql(definition));
+                connection.Execute(new TableBackedViewCreateSqlGenerator().Sql(definition));
             }
         }
 

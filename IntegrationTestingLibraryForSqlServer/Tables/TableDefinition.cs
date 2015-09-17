@@ -54,7 +54,8 @@ namespace IntegrationTestingLibraryForSqlServer
         {
             if (other == null) return false;
             if (!this.IsMatchingHashCodes(other)) return false;
-            return this.Columns.SequenceEqual(other.Columns);
+            if (this.Columns.Count != other.Columns.Count) return false;
+            return !this.Columns.Except(other.Columns).Any();
         }
 
         public override bool Equals(object obj)

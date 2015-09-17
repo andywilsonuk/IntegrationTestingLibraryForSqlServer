@@ -5,9 +5,9 @@ using System.Text;
 
 namespace IntegrationTestingLibraryForSqlServer
 {
-    public class ViewCreateSqlGenerator
+    public class TableBackedViewCreateSqlGenerator
     {
-        public string Sql(ViewDefinition definition)
+        public string Sql(TableBackedViewDefinition definition)
         {
             if (definition == null) throw new ArgumentNullException("defintion");
             return string.Format(CreateViewFormat, definition.Name, definition.BackingTable);
