@@ -25,12 +25,15 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         public void WhenTableIsPopulated(string tableName, Table table)
         {
             var tableActions = new TableActions(database.ConnectionString);
-            var tableData = new TableData
-            {
-                ColumnNames = table.Header,
-                Rows = table.Rows.Select(x => x.Values)
-            };
+            var tableData = new CollectionPopulatedTableData(table.Header, table.Rows.Select(x => x.Values));
             tableActions.Insert(tableName, tableData);
+        }
+
+        [When(@"a view called ""(.*)"" of the table ""(.*)"" is created")]
+        public void WhenAViewCalledOfTheTableIsCreated(string viewName, string tableName)
+        {
+            var tableActions = new TableActions(database.ConnectionString);
+            tableActions.CreateView(tableName, viewName);
         }
 
         [Then(@"the definition of table ""(.*)"" should match")]
@@ -50,62 +53,36 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         [Then(@"the table ""(.*)"" should be populated with data")]
         public void ThenTheTableShouldBePopulatedWithData(string tableName, Table table)
         {
-            using (SqlConnection connection = new SqlConnection(database.ConnectionString))
-            {
-                using (SqlCommand command = connection.CreateCommand())
-                {
-                    command.CommandText = string.Format("SELECT * FROM {0}", tableName);
-                    connection.Open();
+            var expected = new CollectionPopulatedTableData(table.Header, table.Rows.Select(x => x.Values));
 
-                    int index = -1;
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            index++;
-                            for (int i = 0; i < table.Rows[index].Values.Count; i++)
-                            {
-                                string expected = table.Rows[index].Values.ElementAt(i);
-                                string actual = reader[i].ToString();
-                                Assert.AreEqual(expected, actual);
-                            }
-                        }
-                    }
+            var actual = this.LoadTableDataFromSql(string.Format("SELECT * FROM {0}", tableName));
 
-                    Assert.IsTrue(index >= table.Rows.Count - 1);
-                }
-            }
-        }
-
-        [When(@"a view called ""(.*)"" of the table ""(.*)"" is created")]
-        public void WhenAViewCalledOfTheTableIsCreated(string viewName, string tableName)
-        {
-            var tableActions = new TableActions(database.ConnectionString);
-            tableActions.CreateView(tableName, viewName);
+            Assert.IsTrue(expected.IsMatch(actual, TableDataComparers.UnorderedRowNamedColumn));
         }
 
         [Then(@"the view ""(.*)"" filtered to id (.*) should be populated with data")]
         public void ThenTheViewFilteredToIdShouldBePopulatedWithData(string viewName, int id, Table table)
         {
+            var expected = new CollectionPopulatedTableData(table.Header, table.Rows.Select(x => x.Values));
+
+            var actual = this.LoadTableDataFromSql(string.Format("SELECT * FROM {0} WHERE Id = {1}", viewName, id));
+
+            Assert.IsTrue(expected.IsMatch(actual, TableDataComparers.UnorderedRowNamedColumn));
+        }
+
+        private TableData LoadTableDataFromSql(string sql)
+        {
             using (SqlConnection connection = new SqlConnection(database.ConnectionString))
             {
                 using (SqlCommand command = connection.CreateCommand())
                 {
-                    command.CommandText = string.Format("SELECT * FROM {0} WHERE Id = {1}", viewName, id);
+                    command.CommandText = sql;
                     connection.Open();
 
-                    int index = 0;
                     using (var reader = command.ExecuteReader())
-                        while (reader.NextResult())
-                        {
-                            index++;
-                            for (int i = 0; i < table.Rows[index].Values.Count; i++)
-                            {
-                                string expected = table.Rows[index].Values.ElementAt(i);
-                                string actual = reader[i].ToString();
-                                Assert.AreEqual(expected, actual);
-                            }
-                        }
+                    {
+                        return new DataReaderPopulatedTableData(reader);
+                    }
                 }
             }
         }

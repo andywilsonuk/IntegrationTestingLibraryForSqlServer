@@ -2,25 +2,30 @@
 <package>
   <metadata>
     <id>IntegrationTestingLibraryForSqlServer</id>
-    <version>1.3.1</version>
+    <version>1.4.0</version>
     <title>Integration Testing Library for SQL Server</title>
     <authors>Andy Wilson and contributors</authors>
     <owners>Andy Wilson</owners>
     <description>
       Provides helper functions for setting up and tearing down SQL Server database fakes for use in integration testing.
     </description>
-    <releaseNotes>1.3.1
+    <releaseNotes>1.4.0
+      - TableData objects can now be compared; different rulesets can be applied for column, row and value comparison
+      - Added Data Reader import class: DataReaderPopulatedTableData
+      - Added Specflow friendly import class: CollectionPopulatedTableData
+      - TableDefinition Insert method will now only populate columns from TableDefinition if they are not already set
+1.3.1
       - Breaking change: Extension VerifyEqual on TableDefinition now named VerifyMatch to make it consistent with TableDefinition extension.
       - Renamed ViewDefinition to TableBackedViewDefinition in readiness for ViewCheck.
       - TableDefinition Equal method now handles comparing columns in a different order.
-      1.3.0
+1.3.0
       - Added support for partial table matches; for example if only two columns are used by the application but the table has more.
       - Breaking change: Extension VerifyEqual on TableDefinition now named VerifyMatch to make it clearer that it is checked against a 'real' table.
-      1.2.0
+1.2.0
       - Views can now be created as a front to a table; this was simpler than duplicating all the create logic for views.
-      1.1.0
+1.1.0
       - Added support for Identity constraint on columns.
-      1.0.0
+1.0.0
       - Initial version.
     </releaseNotes>
     <language>en-GB</language>

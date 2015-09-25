@@ -14,7 +14,8 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public static void Insert(this TableDefinition definition, DatabaseActions database, TableData tableData)
         {
-            tableData.ColumnNames = definition.Columns.Select(x => x.Name);
+            if (tableData.ColumnNames == null || !tableData.ColumnNames.Any())
+                tableData = new CollectionPopulatedTableData(definition.Columns.Select(x => x.Name).ToList(), tableData.Rows);
             new TableActions(database.ConnectionString).Insert(definition.Name, tableData);
         }
 

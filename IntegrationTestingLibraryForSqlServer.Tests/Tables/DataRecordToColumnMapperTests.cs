@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Data;
 using Moq;
 
-namespace IntegrationTestingLibraryForSqlServer.Tests.Tables
+namespace IntegrationTestingLibraryForSqlServer.Tests
 {
     [TestClass]
     public class DataRecordToColumnMapperTests

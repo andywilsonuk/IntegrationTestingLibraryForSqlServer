@@ -2,8 +2,5 @@
 Validation on column properies: maximum size and precision, maximum name length etc
 Name validation for invalid characters
 
-Extend TableData class to allow import from a data reader
-Allow TableData classes to be compared irrespective of column and row order
-Update ThenTheTableShouldBePopulatedWithData and ThenTheViewFilteredToIdShouldBePopulatedWithData to use TableData
-
 ViewCheck verify should be compared against GetSchemaTable on the reader
+Improve ValueComparer to truly handle non-string types (comparing DateTime objects for example)
