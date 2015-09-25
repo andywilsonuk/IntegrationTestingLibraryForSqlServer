@@ -79,11 +79,11 @@ ProcedureDefinition definition = new ProcedureDefinition(procedureName, paramete
 definition.CreateOrReplace(database);
 ```
 ###Verifying stored procedure structures
-Dependency tests can be created that will compare the expected stored procedure definition with that of the 'real' procedure to ensure that it has not changed definition (and therefore invalidating the primary test cases). ```VerifyEqual``` will throw an exception if the two definitions don't match.
+Dependency tests can be created that will compare the expected stored procedure definition with that of the 'real' procedure to ensure that it has not changed definition (and therefore invalidating the primary test cases). ```VerifyMatch``` will throw an exception if the two definitions don't match.
 ```C#
 var column1 = new ColumnDefinition("c1", SqlDbType.Int);
 ProcedureDefinition definition = new ProcedureDefinition(procedureName, new[] { column1 });
-definition.VerifyEqual(database);
+definition.VerifyMatch(database);
 ```
 ##Specflow integration best practices
 [Specflow](http://www.specflow.org/) provides a behaviour-driven development structure ideally suited to integration/acceptance test as such this library has been designed to work well with it. There are helper extension methods included with Specflow which can be access by using the namespace ```TechTalk.SpecFlow.Assist```.
@@ -167,6 +167,6 @@ Then the definition of procedure "test" should match
 public void ThenTheDefinitionOfProcedureShouldMatch(string procedureName, Table table)
 {
     var definition = new ProcedureDefinition(procedureName, table.CreateSet<ProcedureParameter>());
-    definition.VerifyEqual(database);
+    definition.VerifyMatch(database);
 }
 ```
