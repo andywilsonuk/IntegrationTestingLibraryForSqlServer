@@ -2,14 +2,16 @@
 <package>
   <metadata>
     <id>IntegrationTestingLibraryForSqlServer</id>
-    <version>1.4.0</version>
+    <version>1.4.1</version>
     <title>Integration Testing Library for SQL Server</title>
     <authors>Andy Wilson and contributors</authors>
     <owners>Andy Wilson</owners>
     <description>
       Provides helper functions for setting up and tearing down SQL Server database fakes for use in integration testing.
     </description>
-    <releaseNotes>1.4.0
+    <releaseNotes>1.4.1
+      - Added support for schema name in tables and views
+1.4.0
       - TableData objects can now be compared; different rulesets can be applied for column, row and value comparison
       - Added Data Reader import class: DataReaderPopulatedTableData
       - Added Specflow friendly import class: CollectionPopulatedTableData

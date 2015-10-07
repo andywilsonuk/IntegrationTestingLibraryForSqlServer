@@ -73,3 +73,9 @@ Scenario: Create a view based on a table
 	Then the view "testview" filtered to id 2 should be populated with data
 	| Id | Name   |
 	| 2  | Second |
+
+@db
+Scenario: Schema creation
+	Given there is a test database
+	When the schema "testSchema" is created
+	Then the schema "testSchema" exists

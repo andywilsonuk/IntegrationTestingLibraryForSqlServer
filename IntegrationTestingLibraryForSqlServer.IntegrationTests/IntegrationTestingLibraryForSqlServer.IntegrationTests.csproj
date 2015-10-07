@@ -69,6 +69,7 @@
     </Compile>
     <Compile Include="Steps\ProcedureSteps.cs" />
     <Compile Include="Steps\DatabaseSteps.cs" />
+    <Compile Include="Steps\SchemaSteps.cs" />
     <Compile Include="Table.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

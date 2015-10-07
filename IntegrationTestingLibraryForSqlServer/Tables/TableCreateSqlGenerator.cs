@@ -13,9 +13,9 @@ namespace IntegrationTestingLibraryForSqlServer
     {
         public string Sql(TableDefinition definition)
         {
-            if (definition == null) throw new ArgumentNullException("defintion");
+            if (definition == null) throw new ArgumentNullException("definition");
             definition.EnsureValid();
-            return string.Format(CreateTableFormat, definition.Name, this.CreateCommaSeparatedColumns(definition));
+            return string.Format(CreateTableFormat, definition.Schema, definition.Name, this.CreateCommaSeparatedColumns(definition));
         }
 
         private string CreateCommaSeparatedColumns(TableDefinition definition)
@@ -65,6 +65,6 @@ namespace IntegrationTestingLibraryForSqlServer
             return column.AllowNulls ? "NULL" : "NOT NULL";
         }
 
-        private const string CreateTableFormat = "CREATE TABLE [{0}] ({1})";
+        private const string CreateTableFormat = "CREATE TABLE [{0}].[{1}] ({2})";
     }
 }

@@ -11,25 +11,29 @@ namespace IntegrationTestingLibraryForSqlServer
 {
     public class TableInsertSqlGenerator
     {
-        public string Sql(string name, IEnumerable<string> columnNames)
+        public string Sql(string name, IEnumerable<string> columnNames, string schema = Constants.DEFAULT_SCHEMA)
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException("name");
+            if (string.IsNullOrWhiteSpace(schema)) throw new ArgumentNullException("schema");
             if (columnNames == null || columnNames == Enumerable.Empty<string>()) throw new ArgumentNullException("columnNames");
 
             return string.Format(
-                InsertTableFormat, 
+                InsertTableFormat,
+                schema,
                 name,
                 this.GetColumnNames(columnNames),
                 this.BindingMarkers(columnNames.Count()));
         }
 
-        public string Sql(string name, int columnCount)
+        public string Sql(string name, int columnCount, string schema = Constants.DEFAULT_SCHEMA)
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException("name");
+            if (string.IsNullOrWhiteSpace(schema)) throw new ArgumentNullException("schema");
             if (columnCount < 1) throw new ArgumentException("The column count must be greater than zero", "columnCount");
 
             return string.Format(
                 InsertTableFormat,
+                schema,
                 name,
                 null,
                 this.BindingMarkers(columnCount));
@@ -45,6 +49,6 @@ namespace IntegrationTestingLibraryForSqlServer
             return string.Join(",", Enumerable.Range(0, columnCount).Select(x => "@" + x));
         }
 
-        private const string InsertTableFormat = "INSERT INTO {0}{1} SELECT {2}";
+        private const string InsertTableFormat = "INSERT INTO [{0}].[{1}]{2} SELECT {3}";
     }
 }
