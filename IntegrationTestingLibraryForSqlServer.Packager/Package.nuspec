@@ -9,7 +9,9 @@
     <description>
       Provides helper functions for setting up and tearing down SQL Server database fakes for use in integration testing.
     </description>
-    <releaseNotes>1.4.1
+    <releaseNotes>1.4.2
+      - Added some more support for schema name in views plus some more tests
+1.4.1
       - Added support for schema name in tables and views
 1.4.0
       - TableData objects can now be compared; different rulesets can be applied for column, row and value comparison
