@@ -18,15 +18,33 @@ database.CreateOrReplace();
 database.GrantDomainUserAccess(Environment.UserDomainName, username);
 database.Drop();
 ```
+##Schemas
+
+###Creating a schema
+```C#
+var database = new DatabaseActions(connectionString);
+database.CreateSchema("schemaName");
+```
+
+###Using schemas
+Tables and views can be created in schemas other than dbo (the dault schema) by creating a schema and then using the table and view creations methods below.
+
+If a TableDefinition object has it's Schema property set then any tables or views created using that TableDefinition object will be created in that schema. If the Schema property is not set then the default dbo schema will be used. If a non dbo schema is specified then it must already exist, eg by calling database.CreateSchema("schemaName") as above.
+
+All operations on tables and views which take a table name or view name parameter also accept an optional schema parameter which defaults to “dbo” if not provided.
 
 ##Tables
 ###Creating tables
 Tables can be created with the same structure as the 'real' table.
 ```C#
 var column = new ColumnDefinition("c1", SqlDbType.Int);
-var definition = new TableDefinition(tableName, new[] { column });
+var definition = new TableDefinition(tableName, new[] { column }, optionalSchemaName);
 definition.CreateOrReplace(database);
 ```
+An optional schema name may be provided in the TableDefinition constructor (or via the Schema property). If a schema is not provided then the table will be created in the dbo schema.
+The schema must already exist before a table can be created using a TableDefinition with a schema other than dbo set.
+Use DatabaseActions.CreateSchema to create a new schema (see Schemas).
+
 ###Populating tables with data
 Tables can be loaded with initial data.
 ```C#
@@ -40,11 +58,11 @@ var tableData = new TableData
     ColumnNames = new[] { "c1", "c2" },
     Rows = rows
 };
-tableActions.Insert(tableName, tableData);
+tableActions.Insert(tableName, tableData, optionalSchemaName);
 ```
 or, if you have a TableDefinition object:
 ```C#
-tableDefintion.Insert(database, tableData);
+tableDefinition.Insert(database, tableData);
 ```
 ###Creating views
 Views can be created as a front to a single table; the single table can model the same structure as the 'real' view.
@@ -54,14 +72,14 @@ tableActions.CreateView("t1", "v1");
 ```
 or, if you have a TableDefinition object:
 ```C#
-tableDefintion.CreateView(database, "v1");
+tableDefinition.CreateView(database, "v1", optionalSchemaName);
 ```
 ###Verifying table structures
 Dependency tests can be created that will compare the expected table structure with that of the 'real' table to ensure that it has not changed structure (and therefore invalidating the primary test cases). ```VerifyMatch``` will throw an exception if the two structures don't match.
 ```C#
 var column1 = new ColumnDefinition("c1", SqlDbType.Int);
 var column2 = new ColumnDefinition("c2", SqlDbType.NVarChar);
-var definition = new TableDefinition(tableName, new[] { column1, column2 });
+var definition = new TableDefinition(tableName, new[] { column1, column2 }, optionalSchemaName);
 definition.VerifyMatch(database);
 ```
 ###Verifying table data
