@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>IntegrationTestingLibraryForSqlServer</id>
-    <version>1.4.1</version>
+    <version>1.4.2</version>
     <title>Integration Testing Library for SQL Server</title>
     <authors>Andy Wilson and contributors</authors>
     <owners>Andy Wilson</owners>
