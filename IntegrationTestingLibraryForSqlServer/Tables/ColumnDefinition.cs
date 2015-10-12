@@ -69,11 +69,11 @@ namespace IntegrationTestingLibraryForSqlServer
         {
             get 
             {
-                return this.Size.HasValue && (this.Size == 0 || this.Size == -1); 
+                return this.Size.HasValue && (this.Size == DataTypeDefaults.MaximumSizeIndicator || this.Size == -1); 
             }
             set 
             {
-                this.Size = 0;
+                this.Size = DataTypeDefaults.MaximumSizeIndicator;
             }
         }
 

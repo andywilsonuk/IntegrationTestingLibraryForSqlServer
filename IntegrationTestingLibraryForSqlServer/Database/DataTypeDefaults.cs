@@ -12,6 +12,8 @@ namespace IntegrationTestingLibraryForSqlServer
         internal const int DefaultDecimalSize = 9;
         internal const byte DefaultDecimalPrecision = 18;
 
+        public const int MaximumSizeIndicator = 0;
+
         public DataTypeDefaults(SqlDbType dataType)
         {
             this.DataType = dataType;
@@ -50,7 +52,7 @@ namespace IntegrationTestingLibraryForSqlServer
         public bool IsSizeEqual(int? sizeLeft, int? sizeRight)
         {
             if ((sizeLeft ?? DefaultSize) == (sizeRight ?? DefaultSize)) return true;
-            return sizeLeft.HasValue && (sizeLeft.Value == 0 || sizeLeft.Value == -1) &&
+            return sizeLeft.HasValue && (sizeLeft.Value == MaximumSizeIndicator || sizeLeft.Value == -1) &&
                 sizeRight.HasValue && (sizeRight.Value == 0 || sizeRight.Value == -1);
         }
 
