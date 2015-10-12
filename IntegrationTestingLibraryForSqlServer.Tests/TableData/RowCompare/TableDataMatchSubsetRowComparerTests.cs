@@ -57,11 +57,24 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void TableDataOrdinalRowComparerIsMatchWithIndexMappingTrue()
+        public void TableDataMatchSubsetComparerIsMatchWithIndexMappingTrue()
         {
             this.indexMappings = new List<int> { 1, 0, 2 };
             var rowsX = new List<IList<object>> { new List<object> { "a", "b", "c" } };
             var rowsY = new List<IList<object>> { new List<object> { "b", "a", "c" } };
+            this.comparer.Initialise(rowsX, rowsY, this.indexMappings, this.valueComparer);
+
+            bool actual = this.comparer.IsMatch();
+
+            Assert.IsTrue(actual);
+        }
+
+        [TestMethod]
+        public void TableDataMatchSubsetRowComparerIsMatchTrueExtraColumns()
+        {
+            var rowsX = new List<IList<object>> { new List<object> { "a", "b" } };
+            var rowsY = new List<IList<object>> { new List<object> { "a", "b", "c" } };
+
             this.comparer.Initialise(rowsX, rowsY, this.indexMappings, this.valueComparer);
 
             bool actual = this.comparer.IsMatch();

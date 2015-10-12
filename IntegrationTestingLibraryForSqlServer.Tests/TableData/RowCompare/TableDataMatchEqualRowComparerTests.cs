@@ -21,7 +21,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void TableDataMatchSubsetRowComparerIsMatchTrue()
+        public void TableDataMatchEqualRowComparerIsMatchTrue()
         {
             var rowsX = new List<IList<object>> { new List<object> { "a", "b", "c" }, new List<object> { "d", "e", "f" } };
             var rowsY = new List<IList<object>> { new List<object> { "d", "e", "f" }, new List<object> { "a", "b", "c" } };
@@ -33,7 +33,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void TableDataMatchSubsetRowComparerIsMatchFalseMismatchedRows()
+        public void TableDataMatchEqualRowComparerIsMatchFalseMismatchedRows()
         {
             var rowsX = new List<IList<object>> { new List<object> { "a", "b", "c" }, new List<object> { "d", "e", "f" } };
             var rowsY = new List<IList<object>> { new List<object> { "d", "e", "f" } };
@@ -43,6 +43,19 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             bool actual = this.comparer.IsMatch();
 
             Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        public void TableDataMatchEqualRowComparerIsMatchTrueExtraColumns()
+        {
+            var rowsX = new List<IList<object>> { new List<object> { "a", "b" } };
+            var rowsY = new List<IList<object>> { new List<object> { "a", "b", "c" } };
+
+            this.comparer.Initialise(rowsX, rowsY, this.indexMappings, this.valueComparer);
+
+            bool actual = this.comparer.IsMatch();
+
+            Assert.IsTrue(actual);
         }
     }
 }

@@ -7,6 +7,14 @@ namespace IntegrationTestingLibraryForSqlServer.TableDataComparison
 {
     public class TableDataMatchSubsetRowComparer : TableDataOrdinalRowComparer
     {
+        public override void Initialise(IList<IList<object>> x, IList<IList<object>> y, IList<int> indexMappings, TableDataValueComparer valueComparer)
+        {
+            this.x = x;
+            this.y = y;
+            this.indexMappings = indexMappings;
+            this.valueComparer = valueComparer;
+        }
+
         public override bool IsMatch()
         {
             return x.All(rowX => y.Any(rowY => this.IsRowEqual(rowX, rowY)));

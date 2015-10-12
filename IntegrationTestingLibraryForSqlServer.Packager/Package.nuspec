@@ -2,14 +2,16 @@
 <package>
   <metadata>
     <id>IntegrationTestingLibraryForSqlServer</id>
-    <version>1.5.0</version>
+    <version>1.5.1</version>
     <title>Integration Testing Library for SQL Server</title>
     <authors>Andy Wilson and contributors</authors>
     <owners>Andy Wilson</owners>
     <description>
       Provides helper functions for setting up and tearing down SQL Server database fakes for use in integration testing.
     </description>
-    <releaseNotes>1.5.0
+    <releaseNotes>1.5.1
+      - Bug fix for non-ordinal row comparisions where columns differ between rows
+1.5.0
       - ViewCheck is now complete and works by comparing the Data Reader schema with an expected definition
       - Added null argument checks into TableDefinitionExtensions
       - Added support for maximum column size
