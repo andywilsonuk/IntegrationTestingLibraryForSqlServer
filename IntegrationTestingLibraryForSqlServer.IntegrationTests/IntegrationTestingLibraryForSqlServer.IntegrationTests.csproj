@@ -69,6 +69,7 @@
     </Compile>
     <Compile Include="Steps\ProcedureSteps.cs" />
     <Compile Include="Steps\DatabaseSteps.cs" />
+    <Compile Include="Steps\ViewSteps.cs" />
     <Compile Include="Table.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -81,6 +82,11 @@
       <DependentUpon>SqlServer.feature</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>View.feature</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IntegrationTestingLibraryForSqlServer\IntegrationTestingLibraryForSqlServer.csproj">
@@ -106,6 +112,10 @@
     <None Include="SqlServer.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SqlServer.feature.cs</LastGenOutput>
+    </None>
+    <None Include="View.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>View.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <Choose>

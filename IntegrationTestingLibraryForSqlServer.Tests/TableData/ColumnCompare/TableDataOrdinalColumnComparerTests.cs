@@ -59,6 +59,17 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
+        public void TableDataOrdinalColumnComparerIsMatchFalseNoYRows()
+        {
+            x.Rows.Add(new[] { "a" });
+            this.comparer.Initialise(x, y);
+
+            bool actual = this.comparer.IsMatch();
+
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void TableDataOrdinalColumnComparerInitialiseInvalidRows()
         {

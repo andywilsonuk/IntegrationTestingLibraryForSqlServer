@@ -113,6 +113,46 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
+        public void SizeEqualsForEqualMaximumSize0()
+        {
+            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
+
+            bool actual = dataTypeDefaults.IsSizeEqual(0, 0);
+
+            Assert.IsTrue(actual);
+        }
+
+        [TestMethod]
+        public void SizeEqualsForEqualMaximumSizeNegative1()
+        {
+            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
+
+            bool actual = dataTypeDefaults.IsSizeEqual(-1, -1);
+
+            Assert.IsTrue(actual);
+        }
+
+        [TestMethod]
+        public void SizeEqualsForEquivalentMaximumSizeLeft0()
+        {
+            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
+
+            bool actual = dataTypeDefaults.IsSizeEqual(0, -1);
+
+            Assert.IsTrue(actual);
+        }
+
+        [TestMethod]
+        public void SizeEqualsForEquivalentMaximumSizeRight0()
+        {
+            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
+
+            bool actual = dataTypeDefaults.IsSizeEqual(-1, 0);
+
+            Assert.IsTrue(actual);
+        }
+
+        [TestMethod]
         public void PrecisionEqualsForEquivalentDecimalDataType()
         {
             var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Decimal);
@@ -160,6 +200,54 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             bool actual = dataTypeDefaults.IsPrecisionEqual(null, null);
 
             Assert.IsTrue(actual);
+        }
+
+        [TestMethod]
+        public void IsSizeAllowedForStringLikeDataType()
+        {
+            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
+
+            Assert.IsTrue(dataTypeDefaults.IsSizeAllowed);
+        }
+
+        [TestMethod]
+        public void IsSizeAllowedForIntegerDataType()
+        {
+            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Int);
+
+            Assert.IsFalse(dataTypeDefaults.IsSizeAllowed);
+        }
+
+        [TestMethod]
+        public void IsUnicodeSizeAllowedForStringLikeDataType()
+        {
+            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
+
+            Assert.IsTrue(dataTypeDefaults.IsUnicodeSizeAllowed);
+        }
+
+        [TestMethod]
+        public void IsUnicodeSizeAllowedForCharDataType()
+        {
+            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Char);
+
+            Assert.IsFalse(dataTypeDefaults.IsUnicodeSizeAllowed);
+        }
+
+        [TestMethod]
+        public void IsPrecisionAllowedForStringLikeDataType()
+        {
+            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
+
+            Assert.IsFalse(dataTypeDefaults.IsPrecisionAllowed);
+        }
+
+        [TestMethod]
+        public void IsPrecisionAllowedForDecimalDataType()
+        {
+            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Decimal);
+
+            Assert.IsTrue(dataTypeDefaults.IsPrecisionAllowed);
         }
     }
 }

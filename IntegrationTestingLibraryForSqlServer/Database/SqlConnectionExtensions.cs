@@ -15,8 +15,14 @@ namespace IntegrationTestingLibraryForSqlServer
             {
                 command.CommandText = string.Format(format, args);
                 connection.Open();
-                command.ExecuteNonQuery();
-                connection.Close();
+                try
+                {
+                    command.ExecuteNonQuery();
+                }
+                finally
+                {
+                    connection.Close();
+                }
             }
         }
 
@@ -29,8 +35,14 @@ namespace IntegrationTestingLibraryForSqlServer
                 command.CommandText = commandText;
                 command.Parameters.AddRange(parameters);
                 connection.Open();
-                command.ExecuteNonQuery();
-                connection.Close();
+                try
+                {
+                    command.ExecuteNonQuery();
+                }
+                finally
+                {
+                    connection.Close();
+                }
             }
         }
 
@@ -40,14 +52,20 @@ namespace IntegrationTestingLibraryForSqlServer
             {
                 command.CommandText = string.Format(format, args);
                 connection.Open();
-                using (var reader = command.ExecuteReader())
+                try
                 {
-                    while (reader.Read())
+                    using (var reader = command.ExecuteReader())
                     {
-                        yield return func(reader);
+                        while (reader.Read())
+                        {
+                            yield return func(reader);
+                        }
                     }
                 }
-                connection.Close();
+                finally
+                {
+                    connection.Close();
+                }
             }
         }
     }

@@ -67,6 +67,7 @@
     <Compile Include="TableData\TableDataComparison\ColumnCompare\TableDataOrdinalColumnComparer.cs" />
     <Compile Include="TableData\TableDataComparison\RowCompare\TableDataRowComparer.cs" />
     <Compile Include="TableData\TableDataComparison\ColumnCompare\TableDataMatchSubsetColumnComparer.cs" />
+    <Compile Include="Tables\SchemaRowToColumnMapper.cs" />
     <Compile Include="Tables\TableDefinitionExtensions.cs" />
     <Compile Include="Tables\TableDefinition.cs" />
     <Compile Include="Database\DatabaseActions.cs" />

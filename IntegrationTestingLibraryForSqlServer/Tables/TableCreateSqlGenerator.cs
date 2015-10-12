@@ -40,11 +40,14 @@ namespace IntegrationTestingLibraryForSqlServer
                 case SqlDbType.Binary:
                 case SqlDbType.Char:
                 case SqlDbType.NChar:
+                    if (!column.Size.HasValue) break;
+                    return string.Format("{0}({1})", column.DataType, column.Size.Value);
                 case SqlDbType.NVarChar:
                 case SqlDbType.VarBinary:
                 case SqlDbType.VarChar:
                     if (!column.Size.HasValue) break;
-                    return string.Format("{0}({1})", column.DataType, column.Size.Value);
+                    string size = column.IsMaximumSize ? "max" : column.Size.Value.ToString();
+                    return string.Format("{0}({1})", column.DataType, size);
                 case SqlDbType.Decimal:
                     if (!column.Size.HasValue) break;
                     return string.Format("{0}({1},{2})", column.DataType, column.Size.Value, column.Precision ?? 0);

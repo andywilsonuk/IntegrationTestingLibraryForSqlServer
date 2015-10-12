@@ -11,14 +11,16 @@ namespace IntegrationTestingLibraryForSqlServer
     internal class DataRecordToColumnMapper
     {
         private IDataRecord record;
+        private DataTypeDefaults dataTypeDefaults;
 
         public ColumnDefinition ToColumnDefinition(IDataRecord record)
         {
             this.record = record;
+            this.dataTypeDefaults = new DataTypeDefaults(this.GetDataType());
             return new ColumnDefinition
             {
                 Name = this.GetName(),
-                DataType = this.GetDataType(),
+                DataType = this.dataTypeDefaults.DataType,
                 Size = this.GetSize(),
                 Precision = this.GetPrecision(),
                 AllowNulls = this.GetNullable(),
@@ -38,28 +40,14 @@ namespace IntegrationTestingLibraryForSqlServer
 
         private int? GetSize()
         {
-            switch (this.GetDataType())
-            {
-                case SqlDbType.Binary:
-                case SqlDbType.Char:
-                case SqlDbType.Decimal:
-                case SqlDbType.VarBinary:
-                case SqlDbType.VarChar:
-                    return this.record.GetInt16(Columns.Size);
-                case SqlDbType.NChar:
-                case SqlDbType.NVarChar:
-                    return this.record.GetInt16(Columns.Size) / 2;
-                default: return (int?)null;
-            }
+            if (this.dataTypeDefaults.IsUnicodeSizeAllowed) return this.record.GetInt16(Columns.Size) / 2;
+            if (this.dataTypeDefaults.IsSizeAllowed) return this.record.GetInt16(Columns.Size);
+            return (int?)null;
         }
 
         private byte? GetPrecision()
         {
-            switch (this.GetDataType())
-            {
-                case SqlDbType.Decimal: return this.record.GetByte(Columns.Precision);
-                default: return null;
-            }
+            return this.dataTypeDefaults.IsPrecisionAllowed ? this.record.GetByte(Columns.Precision) : (byte?)null;
         }
 
         private bool GetNullable()

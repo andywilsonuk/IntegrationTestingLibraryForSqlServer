@@ -57,7 +57,7 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
 
             var actual = this.LoadTableDataFromSql(string.Format("SELECT * FROM {0}", tableName));
 
-            Assert.IsTrue(expected.IsMatch(actual, TableDataComparers.UnorderedRowNamedColumn));
+            expected.VerifyMatch(actual, TableDataComparers.UnorderedRowNamedColumn);
         }
 
         [Then(@"the view ""(.*)"" filtered to id (.*) should be populated with data")]
@@ -67,7 +67,7 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
 
             var actual = this.LoadTableDataFromSql(string.Format("SELECT * FROM {0} WHERE Id = {1}", viewName, id));
 
-            Assert.IsTrue(expected.IsMatch(actual, TableDataComparers.UnorderedRowNamedColumn));
+            expected.VerifyMatch(actual, TableDataComparers.UnorderedRowNamedColumn);
         }
 
         private TableData LoadTableDataFromSql(string sql)
@@ -86,6 +86,5 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
                 }
             }
         }
-
     }
 }

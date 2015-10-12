@@ -46,6 +46,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -79,8 +80,10 @@
     <Compile Include="TableData\DataReaderPopulatedTableDataTests.cs" />
     <Compile Include="TableData\ValueCompare\TableDataCaseSensitiveStringValueComparerTests.cs" />
     <Compile Include="Tables\ColumnDefinitionTests.cs" />
+    <Compile Include="Tables\SchemaRowToColumnMapperTests.cs" />
     <Compile Include="Tables\DataRecordToColumnMapperTests.cs" />
     <Compile Include="Tables\TableCreateSqlGeneratorTests.cs" />
+    <Compile Include="Tables\TableDefinitionExtensionsTests.cs" />
     <Compile Include="Tables\TableDefinitionTests.cs" />
     <Compile Include="Tables\TableInsertSqlGeneratorTests.cs" />
     <Compile Include="Views\TableBackedViewDefinitionTests.cs" />

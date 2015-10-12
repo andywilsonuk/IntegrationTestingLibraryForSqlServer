@@ -64,3 +64,17 @@ Scenario: Default sizes
 	| C29  | Time			  |      |           | true        |
 	| C30  | DateTime2		  |      |           | true        |
 	| C31  | DateTimeOffset	  |      |           | true        |
+
+@db
+Scenario: Default maximum sizes
+	Given there is a test database
+	When the table "test" is created
+	| Name | Data Type        | Size | Precision | Allow Nulls |
+	| C13  | NVarChar		  | 0    |           | true        |
+	| C22  | VarBinary		  | 0    |           | true        |
+	| C23  | VarChar		  | 0    |           | true        |
+	Then the definition of table "test" should match
+	| Name | Data Type        | Size | Precision | Allow Nulls |
+	| C13  | NVarChar		  | 0    |           | true        |
+	| C22  | VarBinary		  | 0    |           | true        |
+	| C23  | VarChar		  | 0    |           | true        |

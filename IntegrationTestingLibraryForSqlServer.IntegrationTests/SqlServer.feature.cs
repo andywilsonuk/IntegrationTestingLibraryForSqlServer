@@ -437,6 +437,76 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Default maximum sizes")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlServer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("db")]
+        public virtual void DefaultMaximumSizes()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Default maximum sizes", new string[] {
+                        "db"});
+#line 69
+this.ScenarioSetup(scenarioInfo);
+#line 70
+ testRunner.Given("there is a test database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Data Type",
+                        "Size",
+                        "Precision",
+                        "Allow Nulls"});
+            table3.AddRow(new string[] {
+                        "C13",
+                        "NVarChar",
+                        "0",
+                        "",
+                        "true"});
+            table3.AddRow(new string[] {
+                        "C22",
+                        "VarBinary",
+                        "0",
+                        "",
+                        "true"});
+            table3.AddRow(new string[] {
+                        "C23",
+                        "VarChar",
+                        "0",
+                        "",
+                        "true"});
+#line 71
+ testRunner.When("the table \"test\" is created", ((string)(null)), table3, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Data Type",
+                        "Size",
+                        "Precision",
+                        "Allow Nulls"});
+            table4.AddRow(new string[] {
+                        "C13",
+                        "NVarChar",
+                        "0",
+                        "",
+                        "true"});
+            table4.AddRow(new string[] {
+                        "C22",
+                        "VarBinary",
+                        "0",
+                        "",
+                        "true"});
+            table4.AddRow(new string[] {
+                        "C23",
+                        "VarChar",
+                        "0",
+                        "",
+                        "true"});
+#line 76
+ testRunner.Then("the definition of table \"test\" should match", ((string)(null)), table4, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

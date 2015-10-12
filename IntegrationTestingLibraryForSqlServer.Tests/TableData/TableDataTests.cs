@@ -50,5 +50,70 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             Assert.IsTrue(actual);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TableDataIsMatchNullCustomComparerThrows()
+        {
+            var other = new TableData();
+
+            this.tableData.IsMatch(other, (TableDataComparer)null);
+        }
+
+        [TestMethod]
+        public void TableDataToString()
+        {
+            string expected = @"Column names: a, b
+1, 2
+";
+
+            string actual = this.tableData.ToString();
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void TableDataToStringNoColumnNames()
+        {
+            this.tableData.ColumnNames = null;
+            string expected = @"Column names: 
+1, 2
+";
+
+            string actual = this.tableData.ToString();
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void TableDataVerifyMatchSpecificComparerFromEnum()
+        {
+            var other = new TableData();
+            other.ColumnNames = this.tableData.ColumnNames;
+            other.Rows = this.tableData.Rows;
+
+            this.tableData.VerifyMatch(other, TableDataComparers.OrdinalRowOrdinalColumn);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(EquivalenceException))]
+        public void TableDataVerifyMatchSpecificComparerFromEnumThrows()
+        {
+            var other = new TableData();
+            other.ColumnNames = this.tableData.ColumnNames;
+
+            this.tableData.VerifyMatch(other, TableDataComparers.OrdinalRowOrdinalColumn);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(EquivalenceException))]
+        public void TableDataIsMatchCustomComparerThrows()
+        {
+            var other = new TableData();
+            other.ColumnNames = this.tableData.ColumnNames;
+            var strategy = new TableDataComparerStrategyFactory().Comparer(TableDataComparers.OrdinalRowOrdinalColumn);
+
+            this.tableData.VerifyMatch(other, strategy);
+        }
     }
 }

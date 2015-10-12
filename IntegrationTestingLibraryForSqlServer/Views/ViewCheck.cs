@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IntegrationTestingLibraryForSqlServer
 {
-    internal class ViewCheck
+    public class ViewCheck
     {
         private string connectionString;
 
@@ -17,29 +17,46 @@ namespace IntegrationTestingLibraryForSqlServer
             this.connectionString = connectionString;
         }
 
-        //public void VerifyMatch(TableBackedViewDefinition expected)
-        //{
-        //    expected.VerifyEqual(this.GetDefinition(expected.Name));
-        //}
+        public void VerifyMatch(TableDefinition expected)
+        {
+            expected.VerifyEqual(this.GetDefinition(expected.Name));
+        }
 
-        //public void VerifyMatchOrSubset(TableBackedViewDefinition expected)
-        //{
-        //    expected.VerifyEqualOrSubsetOf(this.GetDefinition(expected.Name));
-        //}
+        public void VerifyMatchOrSubset(TableDefinition expected)
+        {
+            expected.VerifyEqualOrSubsetOf(this.GetDefinition(expected.Name));
+        }
 
-        //public TableBackedViewDefinition GetDefinition(string viewName)
-        //{
-        //    var mapper = new DataRecordToColumnMapper();
+        public TableDefinition GetDefinition(string viewName)
+        {
+            var mapper = new SchemaRowToColumnMapper();
+            var viewDefinition = new TableDefinition(viewName);
 
-        //    using (SqlConnection connection = new SqlConnection(this.connectionString))
-        //    {
-        //        return new TableBackedViewDefinition(viewName,
-        //            connection.Execute<ColumnDefinition>(
-        //                (reader) => mapper.ToColumnDefinition(reader),
-        //                ViewDefinitionQuery,
-        //                viewName));
-        //    }
-        //}
+            using (SqlConnection connection = new SqlConnection(this.connectionString))
+            {
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = string.Format(ViewDefinitionQuery, viewName);
+                    connection.Open();
+                    try
+                    {
+                        using (var reader = command.ExecuteReader())
+                        {
+                            foreach (DataRow row in reader.GetSchemaTable().Rows)
+                            {
+                                viewDefinition.Columns.Add(mapper.ToColumnDefinition(row));
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+
+            return viewDefinition;
+        }
 
         private const string ViewDefinitionQuery = @"SELECT TOP 1 * FROM [{0}]";
     }

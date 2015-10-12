@@ -11,18 +11,19 @@ namespace IntegrationTestingLibraryForSqlServer
         internal const int DefaultStringSize = 1;
         internal const int DefaultDecimalSize = 9;
         internal const byte DefaultDecimalPrecision = 18;
-        private SqlDbType dataType;
 
         public DataTypeDefaults(SqlDbType dataType)
         {
-            this.dataType = dataType;
+            this.DataType = dataType;
         }
+
+        public SqlDbType DataType { get; private set; }
 
         public int? DefaultSize
         {
             get
             {
-                switch (this.dataType)
+                switch (this.DataType)
                 {
                     case SqlDbType.Binary:
                     case SqlDbType.Char:
@@ -42,18 +43,58 @@ namespace IntegrationTestingLibraryForSqlServer
         {
             get
             {
-                return this.dataType == SqlDbType.Decimal ? DefaultDecimalPrecision : (byte?)null;
+                return this.DataType == SqlDbType.Decimal ? DefaultDecimalPrecision : (byte?)null;
             }
         }
 
         public bool IsSizeEqual(int? sizeLeft, int? sizeRight)
         {
-            return (sizeLeft ?? DefaultSize) == (sizeRight ?? DefaultSize);
+            if ((sizeLeft ?? DefaultSize) == (sizeRight ?? DefaultSize)) return true;
+            return sizeLeft.HasValue && (sizeLeft.Value == 0 || sizeLeft.Value == -1) &&
+                sizeRight.HasValue && (sizeRight.Value == 0 || sizeRight.Value == -1);
         }
 
         public bool IsPrecisionEqual(byte? precisionLeft, byte? precisionRight)
         {
             return (precisionLeft ?? DefaultPrecision) == (precisionRight ?? DefaultPrecision);
+        }
+
+        public bool IsPrecisionAllowed
+        {
+            get { return this.DataType == SqlDbType.Decimal; }
+        }
+
+        public bool IsSizeAllowed
+        {
+            get 
+            { 
+                switch(this.DataType)
+                {
+                    case SqlDbType.Binary:
+                    case SqlDbType.Char:
+                    case SqlDbType.Decimal:
+                    case SqlDbType.VarBinary:
+                    case SqlDbType.VarChar:
+                    case SqlDbType.NChar:
+                    case SqlDbType.NVarChar:
+                        return true;
+                    default: return false;
+                }
+            }
+        }
+
+        public bool IsUnicodeSizeAllowed
+        {
+            get
+            {
+                switch (this.DataType)
+                {
+                    case SqlDbType.NChar:
+                    case SqlDbType.NVarChar:
+                        return true;
+                    default: return false;
+                }
+            }
         }
     }
 }

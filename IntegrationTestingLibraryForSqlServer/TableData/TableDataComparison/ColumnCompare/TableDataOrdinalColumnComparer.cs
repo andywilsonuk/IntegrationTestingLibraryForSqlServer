@@ -21,6 +21,7 @@ namespace IntegrationTestingLibraryForSqlServer.TableDataComparison
         public virtual bool IsMatch()
         {
             if (this.x.Rows.Count == 0 && this.y.Rows.Count == 0) return true;
+            if (this.x.Rows.Count != 0 && this.y.Rows.Count == 0) return false;
             return this.x.Rows[0].Count == this.y.Rows[0].Count;
         }
 

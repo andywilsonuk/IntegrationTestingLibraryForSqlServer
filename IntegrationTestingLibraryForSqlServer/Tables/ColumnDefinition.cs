@@ -54,7 +54,8 @@ namespace IntegrationTestingLibraryForSqlServer
         public bool IsValid()
         {
             if (string.IsNullOrWhiteSpace(this.Name)) return false;
-            if (this.Size.HasValue && this.Size.Value < 1) return false;
+            if (this.IsMaximumSize) return true;
+            if (this.Size.HasValue && this.Size.Value < -1) return false;
             return true;
         }
 
@@ -62,6 +63,18 @@ namespace IntegrationTestingLibraryForSqlServer
         {
             if (this.IsValid()) return;
             throw new ValidationException("Column definition is invalid." + Environment.NewLine + this.ToString());
+        }
+
+        public bool IsMaximumSize
+        {
+            get 
+            {
+                return this.Size.HasValue && (this.Size == 0 || this.Size == -1); 
+            }
+            set 
+            {
+                this.Size = 0;
+            }
         }
 
         public override string ToString()

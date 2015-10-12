@@ -74,6 +74,28 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
+        public void CreateTableWithStringLikeColumnMaxSize()
+        {
+            string expected = "CREATE TABLE [t1] ([c1] NVarChar(max) NULL)";
+            definition.Columns.Add(new ColumnDefinition { Name = "c1", DataType = SqlDbType.NVarChar, IsMaximumSize = true });
+
+            string actual = generator.Sql(definition);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CreateTableWithBinaryColumn()
+        {
+            string expected = "CREATE TABLE [t1] ([c1] Binary(10) NULL)";
+            definition.Columns.Add(new ColumnDefinition { Name = "c1", DataType = SqlDbType.Binary, Size = 10 });
+
+            string actual = generator.Sql(definition);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         public void CreateTableWithDecimalColumnNoSize()
         {
             string expected = "CREATE TABLE [t1] ([c1] Decimal NULL)";
