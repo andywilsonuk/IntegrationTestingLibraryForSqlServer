@@ -73,3 +73,30 @@ Scenario: Create a view based on a table
 	Then the view "testview" filtered to id 2 should be populated with data
 	| Id | Name   |
 	| 2  | Second |
+
+@db
+Scenario: Create a view based on a table in a schema
+	Given there is a test database
+	And the schema "testSchema" is created
+	And the table "testTable" is created in the schema "testSchema"
+	| Name | Data Type | Size | Precision | Allow Nulls |
+	| Id   | int       |      |           | false       |
+	| Name | nvarchar  | 50   |           | true        |
+	When the view "testView" of the table "testTable" is created in the schema "testSchema"
+	Then the table "testTable" exists in the schema "testSchema"
+
+@db
+Scenario: Schema creation
+	Given there is a test database
+	When the schema "testSchema" is created
+	Then the schema "testSchema" exists
+
+@db
+Scenario: Schema and table creation
+	Given there is a test database
+	When the schema "testSchema" is created
+	And the table "testTable" is created in schema "testSchema"
+	| Name | Data Type | Size | Precision | Allow Nulls |
+	| Id   | int       |      |           | false       |
+	| Name | nvarchar  | 50   |           | true        |
+	Then the table "testTable" exists in the schema "testSchema"

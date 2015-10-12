@@ -2,5 +2,4 @@
 Validation on column properies: maximum size and precision, maximum name length etc
 Name validation for invalid characters
 
-ViewCheck verify should be compared against GetSchemaTable on the reader
 Improve ValueComparer to truly handle non-string types (comparing DateTime objects for example)

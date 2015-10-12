@@ -63,6 +63,19 @@ namespace IntegrationTestingLibraryForSqlServer
             }
         }
 
+        public void CreateSchema(string schemaName)
+        {
+            using (var conn = new SqlConnection(ConnectionString))
+            {
+                using (SqlCommand command = conn.CreateCommand())
+                {
+                    conn.Open();
+                    command.CommandText = string.Format(CreateSchemaScript, schemaName);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
         private const string CreateDatabaseCommand = @"create database [{0}]";
         private const string DropDatabaseCommand = @"
 if exists(select name from sys.databases where name = '{0}')
@@ -78,5 +91,10 @@ alter role db_datareader add member [{0}]
 alter role db_datawriter add member [{0}]
 grant execute to [{0}]
 ";
+        private const string CreateSchemaScript = @"
+            IF NOT EXISTS(SELECT * FROM sys.schemas WHERE name = '{0}')
+            BEGIN
+                EXEC sp_executesql N'CREATE SCHEMA {0}'
+            END";
     }
 }

@@ -27,6 +27,20 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TableDefinitionConstructorNullTableName()
+        {
+            TableDefinition definition = new TableDefinition(null);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TableDefinitionConstructorNullSchemaName()
+        {
+            TableDefinition definition = new TableDefinition(TableName, null);
+        }
+
+        [TestMethod]
         public void TableDefinitionEnsureValid()
         {
             table.EnsureValid();
@@ -128,7 +142,8 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void TableDefinitionGetHashCode()
         {
-            int expected = table.Name.ToLowerInvariant().GetHashCode();
+            int expected = table.Name.ToLowerInvariant().GetHashCode() ^
+                           table.Schema.ToLowerInvariant().GetHashCode();
 
             int actual = table.GetHashCode();
 
@@ -151,6 +166,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             string expected = new StringBuilder()
                 .AppendLine("Name: table1")
+                .AppendLine(string.Format("Schema: {0}", Constants.DEFAULT_SCHEMA))
                 .AppendLine("Name: c1, Type: Decimal, Size: 10, Precision: 5, Allow Nulls: True, Identity Seed: 10")
                 .ToString();
 

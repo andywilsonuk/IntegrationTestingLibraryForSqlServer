@@ -19,15 +19,15 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public void VerifyMatch(TableDefinition expected)
         {
-            expected.VerifyEqual(this.GetDefinition(expected.Name));
+            expected.VerifyEqual(this.GetDefinition(expected.Name, expected.Schema));
         }
 
         public void VerifyMatchOrSubset(TableDefinition expected)
         {
-            expected.VerifyEqualOrSubsetOf(this.GetDefinition(expected.Name));
+            expected.VerifyEqualOrSubsetOf(this.GetDefinition(expected.Name, expected.Schema));
         }
 
-        public TableDefinition GetDefinition(string tableName)
+        public TableDefinition GetDefinition(string tableName, string schema)
         {
             var mapper = new DataRecordToColumnMapper();
 
@@ -37,7 +37,7 @@ namespace IntegrationTestingLibraryForSqlServer
                     connection.Execute<ColumnDefinition>(
                         (reader) => mapper.ToColumnDefinition(reader),
                         TableDefinitionQuery,
-                        tableName));
+                        schema, tableName), schema);
             }
         }
 
@@ -49,9 +49,9 @@ SELECT
     c.precision,
     c.is_nullable,
     c.is_identity,
-    IDENT_SEED('{0}')
+    IDENT_SEED('[{0}].[{1}]')
 FROM sys.columns c
 INNER JOIN sys.types t ON c.user_type_id = t.user_type_id
-WHERE c.object_id = OBJECT_ID('{0}')";
+WHERE c.object_id = OBJECT_ID('[{0}].[{1}]')";
     }
 }

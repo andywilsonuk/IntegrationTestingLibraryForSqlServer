@@ -384,6 +384,111 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create a view based on a table in a schema")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Table")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("db")]
+        public virtual void CreateAViewBasedOnATableInASchema()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a view based on a table in a schema", new string[] {
+                        "db"});
+#line 78
+this.ScenarioSetup(scenarioInfo);
+#line 79
+ testRunner.Given("there is a test database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 80
+ testRunner.And("the schema \"testSchema\" is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Data Type",
+                        "Size",
+                        "Precision",
+                        "Allow Nulls"});
+            table14.AddRow(new string[] {
+                        "Id",
+                        "int",
+                        "",
+                        "",
+                        "false"});
+            table14.AddRow(new string[] {
+                        "Name",
+                        "nvarchar",
+                        "50",
+                        "",
+                        "true"});
+#line 81
+ testRunner.And("the table \"testTable\" is created in the schema \"testSchema\"", ((string)(null)), table14, "And ");
+#line 85
+ testRunner.When("the view \"testView\" of the table \"testTable\" is created in the schema \"testSchema" +
+                    "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 86
+ testRunner.Then("the table \"testTable\" exists in the schema \"testSchema\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Schema creation")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Table")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("db")]
+        public virtual void SchemaCreation()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Schema creation", new string[] {
+                        "db"});
+#line 89
+this.ScenarioSetup(scenarioInfo);
+#line 90
+ testRunner.Given("there is a test database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 91
+ testRunner.When("the schema \"testSchema\" is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 92
+ testRunner.Then("the schema \"testSchema\" exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Schema and table creation")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Table")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("db")]
+        public virtual void SchemaAndTableCreation()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Schema and table creation", new string[] {
+                        "db"});
+#line 95
+this.ScenarioSetup(scenarioInfo);
+#line 96
+ testRunner.Given("there is a test database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 97
+ testRunner.When("the schema \"testSchema\" is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Data Type",
+                        "Size",
+                        "Precision",
+                        "Allow Nulls"});
+            table15.AddRow(new string[] {
+                        "Id",
+                        "int",
+                        "",
+                        "",
+                        "false"});
+            table15.AddRow(new string[] {
+                        "Name",
+                        "nvarchar",
+                        "50",
+                        "",
+                        "true"});
+#line 98
+ testRunner.And("the table \"testTable\" is created in schema \"testSchema\"", ((string)(null)), table15, "And ");
+#line 102
+ testRunner.Then("the table \"testTable\" exists in the schema \"testSchema\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

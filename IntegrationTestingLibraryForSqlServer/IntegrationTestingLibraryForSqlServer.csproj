@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="Database\DataTypeDefaults.cs" />
     <Compile Include="Procedures\ProcedureCreateSqlGenerator.cs" />
     <Compile Include="Procedures\ProcedureDefinitionExtensions.cs" />
