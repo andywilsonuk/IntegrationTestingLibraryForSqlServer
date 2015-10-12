@@ -29,7 +29,7 @@ database.CreateSchema("schemaName");
 ###Using schemas
 Tables and views can be created in schemas other than dbo (the dault schema) by creating a schema and then using the table and view creations methods below.
 
-If a TableDefinition object has it's Schema property set then any tables or views created using that TableDefinition object will be created in that schema. If the Schema property is not set then the default dbo schema will be used. If a non dbo schema is specified then it must already exist, eg by calling database.CreateSchema("schemaName") as above.
+If a TableDefinition object has it's Schema property set then any tables or views created using that TableDefinition object will be created in that schema. If the Schema property is not set then the default dbo schema will be used. If a non dbo schema is specified then it must already exist, eg by calling ```database.CreateSchema("schemaName")``` as above.
 
 All operations on tables and views which take a table name or view name parameter also accept an optional schema parameter which defaults to “dbo” if not provided.
 
@@ -44,6 +44,8 @@ definition.CreateOrReplace(database);
 An optional schema name may be provided in the TableDefinition constructor (or via the Schema property). If a schema is not provided then the table will be created in the dbo schema.
 The schema must already exist before a table can be created using a TableDefinition with a schema other than dbo set.
 Use DatabaseActions.CreateSchema to create a new schema (see Schemas).
+####Notes
+* Some data types such as nvarchar can have sizes set; whilst a null value will give you the default size for that type a size of zero will give the maximum size. The property ```IsMaximumSize``` on ```ColumnDefinition``` is a convenient way to set the maximum size.
 
 ###Populating tables with data
 Tables can be loaded with initial data.
@@ -105,7 +107,7 @@ using (SqlConnection connection = new SqlConnection(database.ConnectionString))
     }
 }
 
-Assert.IsTrue(expected.IsMatch(actual, TableDataComparers.UnorderedRowNamedColumn));
+expected.VerifyMatch(actual, TableDataComparers.UnorderedRowNamedColumn);
 ```
 There are a number of different matching strategies depending on how strict you want to be, how your system will access the real data, and what changes to the 'real' table are tolerable. the built-in comparers allow for combinations of:
 Columns: by ordinal, by name, by name as a subset of the returned columns
@@ -118,6 +120,16 @@ Custom comparers can be built using the classes in the TableComparision namespac
 * If your system can tolerate new columns to a table or view you can use the subset column comparer
 * If you're inserting rows, you probably want your test to fail if new columns are added so match equals column comparer would be best
 * If you're not selecting with an ORDER BY you'll probably want the unordered rows comparer as the order is not guaranteed subset rows is probably only useful for checking against a 'real' table with known values
+
+###Verifying view structures
+As for table structures, views can be tested to ensure that the 'real' view matches an expected structure. The method of retrieving the structure of a view differs from that of a table in that for a view the first row is selected and the resulting data reader is used for the comparision. ```VerifyMatch``` will throw an exception if the two structures don't match.
+```C#
+var column1 = new ColumnDefinition("c1", SqlDbType.Int);
+var column2 = new ColumnDefinition("c2", SqlDbType.NVarChar);
+var viewDefinition = new TableDefinition(viewName, new[] { column1, column2 });
+var checker = new ViewCheck(this.database.ConnectionString);
+checker.VerifyMatch(viewDefinition);
+```
 
 ##Procedures
 ###Creating procedures
@@ -186,6 +198,22 @@ public void GivenTableIsPopulated(string tableName, Table table)
     var tableActions = new TableActions(database.ConnectionString);
     var tableData = new CollectionPopulatedTableData(table.Header, table.Rows.Select(x => x.Values));
     tableActions.Insert(tableName, tableData);
+}
+```
+###View verification
+```Gherkin
+Then the definition of view "test" should match
+| Name | Data Type | Size | Precision |
+| Id   | int       |      |           |
+| Name | nvarchar  | 50   |           |
+```
+```C#
+[Then(@"the definition of view ""(.*)"" should match")]
+public void ThenTheDefinitionOfViewShouldMatch(string viewName, Table table)
+{
+    var definition = new TableDefinition(viewName, table.CreateSet<ColumnDefinition>());
+    var checker = new ViewCheck(this.database.ConnectionString);
+    checker.VerifyMatch(definition);
 }
 ```
 ###Procedure creation
