@@ -30,17 +30,18 @@ Scenario: Table setup and verify subset
 Scenario: Table populate
 	Given there is a test database
 	And the table "test" is created
-	| Name | Data Type | Size | Precision | Allow Nulls |
-	| Id   | int       |      |           | false       |
-	| Name | nvarchar  | 50   |           | true        |
+	| Name | Data Type        | Size | Precision | Allow Nulls |
+	| Id   | int              |      |           | false       |
+	| Name | nvarchar         | 50   |           | true        |
+	| Uid  | uniqueidentifier |      |           | false       |
 	When table "test" is populated
-	| Id | Name   |
-	| 1  | First  |
-	| 2  | Second |
+	| Id | Name   | Uid                                    |
+	| 1  | First  | {15B42E6F-16D5-4DCB-B202-C9D24F20FD6A} |
+	| 2  | Second | {71F0E5E6-D572-47E8-94A6-15FDA7E986A7} |
 	Then the table "test" should be populated with data
-	| Id | Name   |
-	| 1  | First  |
-	| 2  | Second |
+	| Id | Name   | Uid                                    |
+	| 1  | First  | 15B42E6F-16D5-4DCB-B202-C9D24F20FD6A   |
+	| 2  | Second | {71F0E5E6-D572-47E8-94A6-15FDA7E986A7} |
 
 @db
 Scenario: Table populate with identity

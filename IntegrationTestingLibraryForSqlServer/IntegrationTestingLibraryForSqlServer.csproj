@@ -54,8 +54,14 @@
     <Compile Include="TableData\CollectionPopulatedTableData.cs" />
     <Compile Include="TableData\TableDataComparison\TableDataComparer.cs" />
     <Compile Include="TableData\TableDataComparers.cs" />
+    <Compile Include="TableData\TableDataComparison\ValueCompare\Pipeline\TableDataDefaultValueComparer.cs" />
+    <Compile Include="TableData\TableDataComparison\ValueCompare\Pipeline\TableDataNullValueComparer.cs" />
     <Compile Include="TableData\TableDataComparison\ValueCompare\TableDataCaseSensitiveStringValueComparer.cs" />
+    <Compile Include="TableData\TableDataComparison\ValueCompare\Pipeline\TableDataGuidValueComparer.cs" />
     <Compile Include="TableData\TableDataComparison\ValueCompare\TableDataValueComparer.cs" />
+    <Compile Include="TableData\TableDataComparison\ValueCompare\Pipeline\TableDataValueComparerPipeElement.cs" />
+    <Compile Include="TableData\TableDataComparison\ValueCompare\Pipeline\TableDataValueComparerPipeElementArguments.cs" />
+    <Compile Include="TableData\TableDataComparison\ValueCompare\Pipeline\TableDataValueComparerPipeline.cs" />
     <Compile Include="Tables\ColumnDefinition.cs" />
     <Compile Include="TableData\DataReaderPopulatedTableData.cs" />
     <Compile Include="TableData\TableDataComparison\RowCompare\TableDataMatchEqualRowComparer.cs" />

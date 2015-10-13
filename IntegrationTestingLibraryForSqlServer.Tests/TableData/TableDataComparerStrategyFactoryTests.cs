@@ -16,7 +16,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             Assert.IsInstanceOfType(actual.ColumnComparer, typeof(TableDataOrdinalColumnComparer));
             Assert.IsInstanceOfType(actual.RowComparer, typeof(TableDataOrdinalRowComparer));
-            Assert.IsInstanceOfType(actual.ValueComparer, typeof(TableDataCaseSensitiveStringValueComparer));
+            Assert.IsInstanceOfType(actual.ValueComparer, typeof(TableDataValueComparerPipeline));
         }
 
         [TestMethod]
@@ -26,7 +26,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             Assert.IsInstanceOfType(actual.ColumnComparer, typeof(TableDataMatchEqualColumnComparer));
             Assert.IsInstanceOfType(actual.RowComparer, typeof(TableDataOrdinalRowComparer));
-            Assert.IsInstanceOfType(actual.ValueComparer, typeof(TableDataCaseSensitiveStringValueComparer));
+            Assert.IsInstanceOfType(actual.ValueComparer, typeof(TableDataValueComparerPipeline));
         }
 
         [TestMethod]
@@ -36,7 +36,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             Assert.IsInstanceOfType(actual.ColumnComparer, typeof(TableDataMatchSubsetColumnComparer));
             Assert.IsInstanceOfType(actual.RowComparer, typeof(TableDataOrdinalRowComparer));
-            Assert.IsInstanceOfType(actual.ValueComparer, typeof(TableDataCaseSensitiveStringValueComparer));
+            Assert.IsInstanceOfType(actual.ValueComparer, typeof(TableDataValueComparerPipeline));
         }
 
         [TestMethod]
@@ -46,7 +46,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             Assert.IsInstanceOfType(actual.ColumnComparer, typeof(TableDataMatchEqualColumnComparer));
             Assert.IsInstanceOfType(actual.RowComparer, typeof(TableDataMatchSubsetRowComparer));
-            Assert.IsInstanceOfType(actual.ValueComparer, typeof(TableDataCaseSensitiveStringValueComparer));
+            Assert.IsInstanceOfType(actual.ValueComparer, typeof(TableDataValueComparerPipeline));
         }
 
         [TestMethod]
@@ -56,7 +56,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             Assert.IsInstanceOfType(actual.ColumnComparer, typeof(TableDataOrdinalColumnComparer));
             Assert.IsInstanceOfType(actual.RowComparer, typeof(TableDataMatchSubsetRowComparer));
-            Assert.IsInstanceOfType(actual.ValueComparer, typeof(TableDataCaseSensitiveStringValueComparer));
+            Assert.IsInstanceOfType(actual.ValueComparer, typeof(TableDataValueComparerPipeline));
         }
 
         [TestMethod]
@@ -66,7 +66,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             Assert.IsInstanceOfType(actual.ColumnComparer, typeof(TableDataMatchSubsetColumnComparer));
             Assert.IsInstanceOfType(actual.RowComparer, typeof(TableDataMatchSubsetRowComparer));
-            Assert.IsInstanceOfType(actual.ValueComparer, typeof(TableDataCaseSensitiveStringValueComparer));
+            Assert.IsInstanceOfType(actual.ValueComparer, typeof(TableDataValueComparerPipeline));
         }
 
         [TestMethod]
@@ -76,7 +76,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             Assert.IsInstanceOfType(actual.ColumnComparer, typeof(TableDataMatchEqualColumnComparer));
             Assert.IsInstanceOfType(actual.RowComparer, typeof(TableDataMatchEqualRowComparer));
-            Assert.IsInstanceOfType(actual.ValueComparer, typeof(TableDataCaseSensitiveStringValueComparer));
+            Assert.IsInstanceOfType(actual.ValueComparer, typeof(TableDataValueComparerPipeline));
         }
 
         [TestMethod]
@@ -86,7 +86,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             Assert.IsInstanceOfType(actual.ColumnComparer, typeof(TableDataOrdinalColumnComparer));
             Assert.IsInstanceOfType(actual.RowComparer, typeof(TableDataMatchEqualRowComparer));
-            Assert.IsInstanceOfType(actual.ValueComparer, typeof(TableDataCaseSensitiveStringValueComparer));
+            Assert.IsInstanceOfType(actual.ValueComparer, typeof(TableDataValueComparerPipeline));
         }
 
         [TestMethod]
@@ -96,7 +96,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             Assert.IsInstanceOfType(actual.ColumnComparer, typeof(TableDataMatchSubsetColumnComparer));
             Assert.IsInstanceOfType(actual.RowComparer, typeof(TableDataMatchEqualRowComparer));
-            Assert.IsInstanceOfType(actual.ValueComparer, typeof(TableDataCaseSensitiveStringValueComparer));
+            Assert.IsInstanceOfType(actual.ValueComparer, typeof(TableDataValueComparerPipeline));
         }
 
         [TestMethod]

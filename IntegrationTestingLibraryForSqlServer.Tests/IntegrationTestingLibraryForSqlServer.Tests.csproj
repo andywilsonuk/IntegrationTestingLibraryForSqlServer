@@ -78,6 +78,11 @@
     <Compile Include="TableData\TableDataComparerStrategyFactoryTests.cs" />
     <Compile Include="TableData\TableDataCompositeComparerTests.cs" />
     <Compile Include="TableData\DataReaderPopulatedTableDataTests.cs" />
+    <Compile Include="TableData\ValueCompare\Pipeline\TableDataValueComparerPipeElementArgumentsTests.cs" />
+    <Compile Include="TableData\ValueCompare\Pipeline\TableDataNullValueComparerTests.cs" />
+    <Compile Include="TableData\ValueCompare\Pipeline\TableDataGuidValueComparerTests.cs" />
+    <Compile Include="TableData\ValueCompare\Pipeline\TableDataDefaultValueComparerTests.cs" />
+    <Compile Include="TableData\ValueCompare\Pipeline\TableDataValueComparerPipelineTests.cs" />
     <Compile Include="TableData\ValueCompare\TableDataCaseSensitiveStringValueComparerTests.cs" />
     <Compile Include="Tables\ColumnDefinitionTests.cs" />
     <Compile Include="Tables\SchemaRowToColumnMapperTests.cs" />
