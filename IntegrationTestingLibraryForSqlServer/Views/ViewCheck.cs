@@ -19,24 +19,24 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public void VerifyMatch(TableDefinition expected)
         {
-            expected.VerifyEqual(this.GetDefinition(expected.Name));
+            expected.VerifyEqual(this.GetDefinition(expected.Name, expected.Schema));
         }
 
         public void VerifyMatchOrSubset(TableDefinition expected)
         {
-            expected.VerifyEqualOrSubsetOf(this.GetDefinition(expected.Name));
+            expected.VerifyEqualOrSubsetOf(this.GetDefinition(expected.Name, expected.Schema));
         }
 
-        public TableDefinition GetDefinition(string viewName)
+        public TableDefinition GetDefinition(string viewName, string schemaName = Constants.DEFAULT_SCHEMA)
         {
             var mapper = new SchemaRowToColumnMapper();
-            var viewDefinition = new TableDefinition(viewName);
+            var viewDefinition = new TableDefinition(viewName, schemaName);
 
             using (SqlConnection connection = new SqlConnection(this.connectionString))
             {
                 using (SqlCommand command = connection.CreateCommand())
                 {
-                    command.CommandText = string.Format(ViewDefinitionQuery, viewName);
+                    command.CommandText = string.Format(ViewDefinitionQuery, schemaName, viewName);
                     connection.Open();
                     try
                     {
@@ -58,6 +58,6 @@ namespace IntegrationTestingLibraryForSqlServer
             return viewDefinition;
         }
 
-        private const string ViewDefinitionQuery = @"SELECT TOP 1 * FROM [{0}]";
+        private const string ViewDefinitionQuery = @"SELECT TOP 1 * FROM [{0}].[{1}]";
     }
 }

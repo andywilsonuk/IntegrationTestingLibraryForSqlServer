@@ -27,7 +27,7 @@ namespace IntegrationTestingLibraryForSqlServer
             expected.VerifyEqualOrSubsetOf(this.GetDefinition(expected.Name, expected.Schema));
         }
 
-        public TableDefinition GetDefinition(string tableName, string schema)
+        public TableDefinition GetDefinition(string tableName, string schemaName = Constants.DEFAULT_SCHEMA)
         {
             var mapper = new DataRecordToColumnMapper();
 
@@ -37,7 +37,7 @@ namespace IntegrationTestingLibraryForSqlServer
                     connection.Execute<ColumnDefinition>(
                         (reader) => mapper.ToColumnDefinition(reader),
                         TableDefinitionQuery,
-                        schema, tableName), schema);
+                        schemaName, tableName), schemaName);
             }
         }
 
