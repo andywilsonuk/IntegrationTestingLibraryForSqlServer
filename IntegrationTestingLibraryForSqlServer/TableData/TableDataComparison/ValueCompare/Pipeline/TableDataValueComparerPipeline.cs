@@ -11,6 +11,8 @@ namespace IntegrationTestingLibraryForSqlServer.TableDataComparison
         {
             new TableDataNullValueComparer(),
             new TableDataGuidValueComparer(),
+            new TableDataDateTimeValueComparer(),
+            new TableDataCaseSensitiveStringValuePipeElementComparer(),
             new TableDataDefaultValueComparer()
         };
 

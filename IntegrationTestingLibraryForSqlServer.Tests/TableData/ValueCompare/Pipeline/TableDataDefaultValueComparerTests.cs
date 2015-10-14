@@ -10,9 +10,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         private TableDataDefaultValueComparer comparer = new TableDataDefaultValueComparer();
 
         [TestMethod]
-        public void StringMatch()
+        public void StringXIntYMatch()
         {
-            var args = new TableDataValueComparerPipeElementArguments { X = "a", Y = "a" };
+            var args = new TableDataValueComparerPipeElementArguments { X = "5", Y = 5 };
 
             comparer.Process(args);
 

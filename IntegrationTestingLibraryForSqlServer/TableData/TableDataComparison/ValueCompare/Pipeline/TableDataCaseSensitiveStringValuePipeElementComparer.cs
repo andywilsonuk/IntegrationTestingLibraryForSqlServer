@@ -5,13 +5,18 @@ using System.Text;
 
 namespace IntegrationTestingLibraryForSqlServer.TableDataComparison
 {
-    public class TableDataDefaultValueComparer : TableDataValueComparerPipeElement
+    public class TableDataCaseSensitiveStringValuePipeElementComparer : TableDataValueComparerPipeElement
     {
         public void Process(TableDataValueComparerPipeElementArguments args)
         {
             if (args.MatchStatus != MatchedValueComparer.NotYetCompared) return;
 
-            args.MatchStatus = args.X.ToString().Equals(args.Y.ToString()) ? MatchedValueComparer.IsMatch : MatchedValueComparer.NoMatch;
+            string x = args.X as string;
+            string y = args.Y as string;
+
+            if (x == null || y == null) return;
+
+            args.MatchStatus = x.Equals(y) ? MatchedValueComparer.IsMatch : MatchedValueComparer.NoMatch;
         }
     }
 }
