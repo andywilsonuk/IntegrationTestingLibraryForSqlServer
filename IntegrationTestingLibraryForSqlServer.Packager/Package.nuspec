@@ -2,14 +2,17 @@
 <package>
   <metadata>
     <id>IntegrationTestingLibraryForSqlServer</id>
-    <version>1.5.4</version>
+    <version>1.5.5</version>
     <title>Integration Testing Library for SQL Server</title>
     <authors>Andy Wilson and contributors</authors>
     <owners>Andy Wilson</owners>
     <description>
       Provides helper functions for setting up and tearing down SQL Server database fakes for use in integration testing.
     </description>
-    <releaseNotes>1.5.4
+    <releaseNotes>1.5.5
+      - Added support for custom table data value transformations
+      - Added value transformer to support string to DBNull conversion
+1.5.4
       - Added support for schema name in ViewCheck
 1.5.3
       - For TableData added value pipeline comparers: DateTime and String
