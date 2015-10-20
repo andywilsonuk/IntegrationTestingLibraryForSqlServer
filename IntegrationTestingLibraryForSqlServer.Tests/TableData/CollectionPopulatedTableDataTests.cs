@@ -26,7 +26,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             var tableData = new CollectionPopulatedTableData(columnNames, sourceRows);
 
             Assert.IsTrue(expectedColumnNames.SequenceEqual(tableData.ColumnNames));
-            tableData.Rows[0][0] = expectedRows[0][0];
+            Assert.IsTrue(expectedRows[0].SequenceEqual(tableData.Rows[0]));
         }
 
         [TestMethod]
@@ -39,7 +39,21 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             var tableData = new CollectionPopulatedTableData(columnNames, sourceRows);
 
             Assert.IsTrue(expectedColumnNames.SequenceEqual(tableData.ColumnNames));
-            tableData.Rows[0][0] = expectedRows[0][0];
+            Assert.IsTrue(expectedRows[0].SequenceEqual(tableData.Rows[0]));
+        }
+
+        [TestMethod]
+        public void CollectionPopulatedTableDataNullValueTransformer()
+        {
+            var expectedColumnNames = new List<string> { "a", "b"};
+            var expectedRows = new List<IList<object>> { new List<object> { DBNull.Value, "2" } };
+            var sourceRows = new List<List<object>> { new List<object> { "NULL", "2" } };
+
+            var tableData = new CollectionPopulatedTableData(columnNames, sourceRows);
+            tableData.TransformData(new TableDataNullValueTransformer());
+
+            Assert.IsTrue(expectedColumnNames.SequenceEqual(tableData.ColumnNames));
+            Assert.IsTrue(expectedRows[0].SequenceEqual(tableData.Rows[0]));
         }
     }
 }

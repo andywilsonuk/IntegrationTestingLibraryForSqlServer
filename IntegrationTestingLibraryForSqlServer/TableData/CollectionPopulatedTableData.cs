@@ -19,5 +19,12 @@ namespace IntegrationTestingLibraryForSqlServer
             this.ColumnNames = columnNames.ToList();
             this.Rows = rows.Select(x => (IList<object>)x.ToList()).ToList();
         }
+
+        public void TransformData(TableDataValueTransformer transformer)
+        {
+            foreach (var row in Rows)
+                for (int i = 0; i < row.Count; ++i)
+                    row[i] = transformer.Transform(row[i]);
+        }
     }
 }

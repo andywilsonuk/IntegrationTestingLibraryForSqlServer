@@ -29,6 +29,15 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
             tableActions.Insert(tableName, tableData);
         }
 
+        [When(@"table ""(.*)"" is populated supporting Null values")]
+        public void WhenTableIsPopulatedSupportingNullValues(string tableName, Table table)
+        {
+            var tableActions = new TableActions(database.ConnectionString);
+            var tableData = new CollectionPopulatedTableData(table.Header, table.Rows.Select(x => x.Values));
+            tableData.TransformData(new TableDataNullValueTransformer());
+            tableActions.Insert(tableName, tableData);
+        }
+
         [When(@"a view called ""(.*)"" of the table ""(.*)"" is created")]
         public void WhenAViewCalledOfTheTableIsCreated(string viewName, string tableName)
         {
@@ -54,6 +63,21 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         public void ThenTheTableShouldBePopulatedWithData(string tableName, Table table)
         {
             var expected = new CollectionPopulatedTableData(table.Header, table.Rows.Select(x => x.Values));
+
+            var actual = this.LoadTableDataFromSql(string.Format("SELECT * FROM {0}", tableName));
+
+            expected.VerifyMatch(actual, TableDataComparers.UnorderedRowNamedColumn);
+        }
+
+        [Then(@"the table ""(.*)"" should be populated with Id and dates")]
+        public void ThenTheTableShouldBePopulatedWithIdAndDates(string tableName, Table table)
+        {
+            var expected = new CollectionPopulatedTableData(table.Header, table.Rows.Select(x => x.Values));
+            foreach (var row in expected.Rows)
+            {
+                if (row[1] == "NULL")
+                    row[1] = DBNull.Value;
+            }
 
             var actual = this.LoadTableDataFromSql(string.Format("SELECT * FROM {0}", tableName));
 

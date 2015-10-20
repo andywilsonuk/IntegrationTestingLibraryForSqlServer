@@ -7,7 +7,7 @@ namespace IntegrationTestingLibraryForSqlServer.TableDataComparison
 {
     public class TableDataValueComparerPipeline : TableDataValueComparer
     {
-        private static TableDataValueComparerPipeElement[] elements = new TableDataValueComparerPipeElement[]
+        private static readonly TableDataValueComparerPipeElement[] elements = 
         {
             new TableDataNullValueComparer(),
             new TableDataGuidValueComparer(),

@@ -59,6 +59,23 @@ Scenario: Table populate with identity
 	| 5  | First  |
 	| 6  | Second |
 
+	
+@db
+Scenario: Table populate with null
+	Given there is a test database
+	And the table "test" is created
+	| Name | Data Type | Size | Precision | Allow Nulls | Identity Seed |
+	| Id   | int       |      |           | false       | 70            |
+	| Date | DateTime  |      |           | true        |               |
+	When table "test" is populated supporting Null values
+	| Date     |
+	| 2015-10-10 |
+	| NULL     |
+	Then the table "test" should be populated with Id and dates
+	| Id | Date     |
+	| 70 | 2015-10-10 |
+	| 71 | NULL     |
+
 @db
 Scenario: Create a view based on a table
 	Given there is a test database
@@ -101,3 +118,4 @@ Scenario: Schema and table creation
 	| Id   | int       |      |           | false       |
 	| Name | nvarchar  | 50   |           | true        |
 	Then the table "testTable" exists in the schema "testSchema"
+

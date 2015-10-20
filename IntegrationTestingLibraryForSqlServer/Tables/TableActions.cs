@@ -45,7 +45,7 @@ namespace IntegrationTestingLibraryForSqlServer
             if (table == null) throw new ArgumentNullException("table");
             if (string.IsNullOrWhiteSpace(schema)) throw new ArgumentNullException("schema");
 
-            bool hasColumnNames = table.ColumnNames != null && table.ColumnNames != Enumerable.Empty<string>();
+            bool hasColumnNames = table.ColumnNames != null && !table.ColumnNames.Equals(Enumerable.Empty<string>());
             var generator = new TableInsertSqlGenerator();
             using (var connection = new SqlConnection(this.connectionString))
             {
