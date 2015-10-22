@@ -5,9 +5,9 @@ using System.Text;
 
 namespace IntegrationTestingLibraryForSqlServer
 {
-    public class Constants
+    public enum TableDefinitionInterrogationStrategyType
     {
-        public const string DEFAULT_SCHEMA = "dbo";
-        public const string NUMERIC_COLUMN_NAME = "numeric";
+        SystemTables,
+        DataReaderSchema
     }
 }

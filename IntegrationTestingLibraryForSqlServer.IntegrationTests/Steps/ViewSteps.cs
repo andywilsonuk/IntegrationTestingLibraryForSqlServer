@@ -27,5 +27,13 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
             var checker = new ViewCheck(this.database.ConnectionString);
             checker.VerifyMatch(definition);
         }
+
+        [Then(@"the definition of view ""(.*)"" should match SystemTables definition")]
+        public void ThenTheDefinitionOfViewShouldMatchSystemTablesDefinition(string viewName, Table table)
+        {
+            var definition = new TableDefinition(viewName, table.CreateSet<ColumnDefinition>());
+            var checker = new ViewCheck(this.database.ConnectionString);
+            checker.VerifyMatch(definition, TableDefinitionInterrogationStrategyType.SystemTables);
+        }
     }
 }

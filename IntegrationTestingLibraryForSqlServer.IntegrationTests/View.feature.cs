@@ -123,6 +123,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 11
  testRunner.Then("the definition of view \"test\" should match", ((string)(null)), table2, "Then ");
 #line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Data Type",
+                        "Size",
+                        "Precision",
+                        "Allow Nulls"});
+            table3.AddRow(new string[] {
+                        "Id",
+                        "int",
+                        "",
+                        "",
+                        "false"});
+            table3.AddRow(new string[] {
+                        "Name",
+                        "nvarchar",
+                        "50",
+                        "",
+                        "true"});
+#line 15
+ testRunner.And("the definition of view \"test\" should match SystemTables definition", ((string)(null)), table3, "And ");
+#line hidden
             this.ScenarioCleanup();
         }
     }

@@ -12,4 +12,8 @@ Scenario: View setup and verify
 	| Name | Data Type | Size | Precision | Allow Nulls |
 	| Id   | int       |      |           | false       |
 	| Name | nvarchar  | 50   |           | true        |
+	And the definition of view "test" should match SystemTables definition
+	| Name | Data Type | Size | Precision | Allow Nulls |
+	| Id   | int       |      |           | false       |
+	| Name | nvarchar  | 50   |           | true        |
 

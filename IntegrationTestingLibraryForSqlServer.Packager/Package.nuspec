@@ -9,7 +9,11 @@
     <description>
       Provides helper functions for setting up and tearing down SQL Server database fakes for use in integration testing.
     </description>
-    <releaseNotes>1.5.5
+    <releaseNotes>1.5.6
+      - Added alternative strategies for checking view definitions in ViewCheck.VerifyMatch and VerifyMatchOrSubset.
+      - TableDefinitionInterrogationStrategyType.SystemTables queries the sys.columns and sys.types tables in the db
+      - TableDefinitionInterrogationStrategyType.DataReaderSchema uses SqlDataReader.GetSchemaTable
+1.5.5
       - Added support for custom table data value transformations
       - Added value transformer to support string to DBNull conversion
 1.5.4

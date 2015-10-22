@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace IntegrationTestingLibraryForSqlServer
 {
     public class ViewCheck
@@ -17,47 +10,36 @@ namespace IntegrationTestingLibraryForSqlServer
             this.connectionString = connectionString;
         }
 
-        public void VerifyMatch(TableDefinition expected)
+        public void VerifyMatch(TableDefinition expected, TableDefinitionInterrogationStrategyType strategyType = TableDefinitionInterrogationStrategyType.DataReaderSchema)
         {
-            expected.VerifyEqual(this.GetDefinition(expected.Name, expected.Schema));
+            expected.VerifyEqual(GetDefinition(expected.Name, expected.Schema, strategyType));
         }
 
-        public void VerifyMatchOrSubset(TableDefinition expected)
+        public void VerifyMatchOrSubset(TableDefinition expected, TableDefinitionInterrogationStrategyType strategyType = TableDefinitionInterrogationStrategyType.DataReaderSchema)
         {
-            expected.VerifyEqualOrSubsetOf(this.GetDefinition(expected.Name, expected.Schema));
+            expected.VerifyEqualOrSubsetOf(GetDefinition(expected.Name, expected.Schema, strategyType));
         }
 
-        public TableDefinition GetDefinition(string viewName, string schemaName = Constants.DEFAULT_SCHEMA)
+        private TableDefinition GetDefinition(string tableName)
         {
-            var mapper = new SchemaRowToColumnMapper();
-            var viewDefinition = new TableDefinition(viewName, schemaName);
-
-            using (SqlConnection connection = new SqlConnection(this.connectionString))
-            {
-                using (SqlCommand command = connection.CreateCommand())
-                {
-                    command.CommandText = string.Format(ViewDefinitionQuery, schemaName, viewName);
-                    connection.Open();
-                    try
-                    {
-                        using (var reader = command.ExecuteReader())
-                        {
-                            foreach (DataRow row in reader.GetSchemaTable().Rows)
-                            {
-                                viewDefinition.Columns.Add(mapper.ToColumnDefinition(row));
-                            }
-                        }
-                    }
-                    finally
-                    {
-                        connection.Close();
-                    }
-                }
-            }
-
-            return viewDefinition;
+            return GetDefinition(tableName, Constants.DEFAULT_SCHEMA, TableDefinitionInterrogationStrategyType.DataReaderSchema);
         }
 
-        private const string ViewDefinitionQuery = @"SELECT TOP 1 * FROM [{0}].[{1}]";
+        private TableDefinition GetDefinition(string tableName, string schemaName)
+        {
+            return GetDefinition(tableName, schemaName, TableDefinitionInterrogationStrategyType.DataReaderSchema);
+        }
+
+        private TableDefinition GetDefinition(string tableName, TableDefinitionInterrogationStrategyType strategyType)
+        {
+            return GetDefinition(tableName, Constants.DEFAULT_SCHEMA, strategyType);
+        }
+
+        private TableDefinition GetDefinition(string tableName, string schemaName, TableDefinitionInterrogationStrategyType strategyType)
+        {
+            var factory = new TableDefinitionInterrogationStrategyFactory(connectionString);
+            var strategy = factory.GetTableDefinitionInterrogationStrategy(tableName, schemaName, strategyType);
+            return strategy.GetTableDefinition(tableName, schemaName);
+        }
     }
 }
