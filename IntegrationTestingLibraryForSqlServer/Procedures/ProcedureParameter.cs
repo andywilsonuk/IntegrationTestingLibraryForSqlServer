@@ -33,8 +33,12 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public bool IsValid()
         {
+            var dataTypeDefaults = new DataTypeDefaults(this.DataType);
             if (string.IsNullOrWhiteSpace(this.Name)) return false;
-            if (this.Size.HasValue && this.Size.Value < 1) return false;
+            if (!dataTypeDefaults.IsSizeAllowed && this.Size.HasValue) return false;
+            if (!dataTypeDefaults.IsPrecisionAllowed && this.Precision.HasValue) return false;
+            if (this.IsMaximumSize) return true;
+            if (this.Size.HasValue && this.Size.Value < -1) return false;
             return true;
         }
 
@@ -42,6 +46,18 @@ namespace IntegrationTestingLibraryForSqlServer
         {
             if (this.IsValid()) return;
             throw new ValidationException("Parameter definition is invalid." + Environment.NewLine + this.ToString());
+        }
+
+        public bool IsMaximumSize
+        {
+            get
+            {
+                return this.Size.HasValue && (this.Size == DataTypeDefaults.MaximumSizeIndicator || this.Size == -1);
+            }
+            set
+            {
+                this.Size = DataTypeDefaults.MaximumSizeIndicator;
+            }
         }
 
         public bool Equals(ProcedureParameter other)

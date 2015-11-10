@@ -53,7 +53,10 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public bool IsValid()
         {
+            var dataTypeDefaults = new DataTypeDefaults(this.DataType);
             if (string.IsNullOrWhiteSpace(this.Name)) return false;
+            if (!dataTypeDefaults.IsSizeAllowed && this.Size.HasValue) return false;
+            if (!dataTypeDefaults.IsPrecisionAllowed && this.Precision.HasValue) return false;
             if (this.IsMaximumSize) return true;
             if (this.Size.HasValue && this.Size.Value < -1) return false;
             return true;

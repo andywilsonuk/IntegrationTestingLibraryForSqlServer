@@ -129,6 +129,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void ColumnDefinitionIsValid()
         {
+            definition.DataType = SqlDbType.Decimal;
             definition.Size = 10;
             definition.Precision = 5;
 
@@ -171,6 +172,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void ColumnDefinitionEnsureValid()
         {
+            definition.DataType = SqlDbType.Decimal;
             definition.Size = 10;
             definition.Precision = 5;
 
