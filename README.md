@@ -47,7 +47,7 @@ Use DatabaseActions.CreateSchema to create a new schema (see Schemas).
 ####Notes
 * Some data types such as nvarchar can have sizes set; whilst a null value will give you the default size for that type a size of zero will give the maximum size. The property ```IsMaximumSize``` on ```ColumnDefinition``` is a convenient way to set the maximum size.
 * The data type Decimal must be used for the SQL data type Numeric. This is because the Microsoft System.Data.SqlDbType Enum is used which does not have a value for Numeric.
-* The SQL "Precision" (total number of digits) and "Scale" (numberr of digits after the decimal point) properties of the Decimal/Numeric data types must be mapped to the "Size" and "DecimalPlaces" properties of the ColumnDefinition class.
+* The SQL "Precision" (total number of digits) and "Scale" (number of digits after the decimal point) properties of the Decimal/Numeric data types must be mapped to the "Size" and "DecimalPlaces" properties of the ColumnDefinition class.
 * If no value is set for Size then the default value of 18 is used. If no value is set for "Decimal Places" then the default value of 0 is used - see [decimal and numeric (Transact-SQL)](https://msdn.microsoft.com/en-us/library/ms187746.aspx). Note that Size must be greater than or equal to Decimal Places. Setting Decimal Places without setting Size will result in an error.
 * See [Specflow integration best practices](#specflow-integration-best-practices) below for some examples of setting up tables, views and stored procedure parameters using Numeric/Decimal data types.
 
