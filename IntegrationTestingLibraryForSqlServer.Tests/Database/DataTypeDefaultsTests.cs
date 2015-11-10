@@ -249,5 +249,45 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             Assert.IsTrue(dataTypeDefaults.AreDecimalPlacesAllowed);
         }
+
+        [TestMethod]
+        public void IsMaximumSizeIndicatorFor1()
+        {
+            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
+
+            bool actual = dataTypeDefaults.IsMaximumSizeIndicator(1);
+
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        public void IsMaximumSizeIndicatorForNegative1()
+        {
+            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
+
+            bool actual = dataTypeDefaults.IsMaximumSizeIndicator(-1);
+
+            Assert.IsTrue(actual);
+        }
+
+        [TestMethod]
+        public void IsMaximumSizeIndicatorFor0()
+        {
+            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
+
+            bool actual = dataTypeDefaults.IsMaximumSizeIndicator(0);
+
+            Assert.IsTrue(actual);
+        }
+
+        [TestMethod]
+        public void IsMaximumSizeIndicatorForNull()
+        {
+            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
+
+            bool actual = dataTypeDefaults.IsMaximumSizeIndicator(null);
+
+            Assert.IsFalse(actual);
+        }
     }
 }

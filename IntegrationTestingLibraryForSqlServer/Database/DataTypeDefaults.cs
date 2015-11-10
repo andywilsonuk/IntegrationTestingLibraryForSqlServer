@@ -12,7 +12,8 @@ namespace IntegrationTestingLibraryForSqlServer
         internal const int DefaultDecimalSize = 18;
         internal const byte DefaultNumberOfDecimalPlaces = 0;
 
-        public const int MaximumSizeIndicator = 0;
+        internal const int MaximumSizeIndicator1 = 0;
+        internal const int MaximumSizeIndicator2 = -1;
 
         public DataTypeDefaults(SqlDbType dataType)
         {
@@ -52,8 +53,8 @@ namespace IntegrationTestingLibraryForSqlServer
         public bool IsSizeEqual(int? sizeLeft, int? sizeRight)
         {
             if ((sizeLeft ?? DefaultSize) == (sizeRight ?? DefaultSize)) return true;
-            return sizeLeft.HasValue && (sizeLeft.Value == MaximumSizeIndicator || sizeLeft.Value == -1) &&
-                sizeRight.HasValue && (sizeRight.Value == 0 || sizeRight.Value == -1);
+            return sizeLeft.HasValue && (this.IsMaximumSizeIndicator(sizeLeft)) &&
+                sizeRight.HasValue && (this.IsMaximumSizeIndicator(sizeRight));
         }
 
         public bool AreDecimalPlacesEqual(byte? decimalPlacesLeft, byte? decimalPlacesRight)
@@ -100,6 +101,12 @@ namespace IntegrationTestingLibraryForSqlServer
                     default: return false;
                 }
             }
+        }
+
+        public bool IsMaximumSizeIndicator(int? size)
+        {
+            if (!size.HasValue) return false;
+            return size == MaximumSizeIndicator1 || size == MaximumSizeIndicator2;
         }
     }
 }

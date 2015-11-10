@@ -47,7 +47,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void TableDataOrdinalColumnComparerIsMatchFalse()
+        public void TableDataOrdinalColumnComparerIsMatchFalseMismatchedRows()
         {
             x.Rows.Add(new[] { "a", "b", "c" });
             y.Rows.Add(new[] { "a", "b" });

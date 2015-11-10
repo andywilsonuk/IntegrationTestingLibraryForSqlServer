@@ -130,6 +130,14 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
+        public void TableDefinitionNotEqualString()
+        {
+            bool actual = table.Equals(string.Empty);
+
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
         public void TableDefinitionEqualMixedColumnOrder()
         {
             var column2 = new ColumnDefinition("c2", SqlDbType.NVarChar);

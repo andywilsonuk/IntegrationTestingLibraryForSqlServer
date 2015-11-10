@@ -26,6 +26,13 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
+        public void ProcedureParameterQualifiedNameAlreadyQualified()
+        {
+            this.parameter = new ProcedureParameter("@" + ParameterName, SqlDbType.Int, ParameterDirection.Input);
+            Assert.AreEqual("@" + ParameterName, parameter.QualifiedName);
+        }
+
+        [TestMethod]
         public void ProcedureParameterIsValid()
         {
             bool actual = parameter.IsValid();
@@ -46,7 +53,40 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void ProcedureParameterIsNotValidSize()
         {
-            parameter = new ProcedureParameter() { Size = -10 };
+            parameter.Size = -10;
+            parameter.DataType = SqlDbType.NVarChar;
+
+            bool actual = parameter.IsValid();
+
+            Assert.IsFalse(actual);
+        }
+
+
+        [TestMethod]
+        public void ProcedureParameterIsValidMaximumSize()
+        {
+            parameter.DataType = SqlDbType.NVarChar;
+            parameter.Size = 0;
+
+            bool actual = parameter.IsValid();
+
+            Assert.IsTrue(actual);
+        }
+
+        [TestMethod]
+        public void ProcedureParameterIsNotValidWhenNotSizeType()
+        {
+            parameter.Size = 10;
+
+            bool actual = parameter.IsValid();
+
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        public void ProcedureParameterIsNotValidWhenNotDecimalPlacesType()
+        {
+            parameter.DecimalPlaces = 5;
 
             bool actual = parameter.IsValid();
 
@@ -191,6 +231,22 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             string actual = parameter.ToString();
 
             Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void ProcedureParameterGetMaximumSize0()
+        {
+            parameter.Size = 0;
+
+            Assert.IsTrue(parameter.IsMaximumSize);
+        }
+
+        [TestMethod]
+        public void ProcedureParameterSetMaximumSize()
+        {
+            parameter.IsMaximumSize = true;
+
+            Assert.AreEqual(0, parameter.Size);
         }
     }
 }

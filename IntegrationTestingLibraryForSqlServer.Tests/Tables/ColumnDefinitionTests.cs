@@ -151,6 +151,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void ColumnDefinitionIsNotValidSize()
         {
+            definition.DataType = SqlDbType.NVarChar;
             definition.Size = -10;
 
             bool actual = definition.IsValid();
@@ -167,6 +168,26 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             bool actual = definition.IsValid();
 
             Assert.IsTrue(actual);
+        }
+
+        [TestMethod]
+        public void ColumnDefinitionIsNotValidWhenNotSizeType()
+        {
+            definition.Size = 10;
+
+            bool actual = definition.IsValid();
+
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        public void ColumnDefinitionIsNotValidWhenNotDecimalPlacesType()
+        {
+            definition.DecimalPlaces = 5;
+
+            bool actual = definition.IsValid();
+
+            Assert.IsFalse(actual);
         }
 
         [TestMethod]
@@ -216,22 +237,6 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             definition.Size = 0;
 
             Assert.IsTrue(definition.IsMaximumSize);
-        }
-
-        [TestMethod]
-        public void ColumnDefinitionGetMaximumSizeNegative1()
-        {
-            definition.Size = -1;
-
-            Assert.IsTrue(definition.IsMaximumSize);
-        }
-
-        [TestMethod]
-        public void ColumnDefinitionGetMaximumSizeFalse()
-        {
-            definition.Size = 10;
-
-            Assert.IsFalse(definition.IsMaximumSize);
         }
 
         [TestMethod]

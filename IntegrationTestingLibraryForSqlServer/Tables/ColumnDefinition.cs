@@ -72,11 +72,11 @@ namespace IntegrationTestingLibraryForSqlServer
         {
             get 
             {
-                return this.Size.HasValue && (this.Size == DataTypeDefaults.MaximumSizeIndicator || this.Size == -1); 
+                return new DataTypeDefaults(this.DataType).IsMaximumSizeIndicator(this.Size); 
             }
             set 
             {
-                this.Size = DataTypeDefaults.MaximumSizeIndicator;
+                this.Size = DataTypeDefaults.MaximumSizeIndicator1;
             }
         }
 
