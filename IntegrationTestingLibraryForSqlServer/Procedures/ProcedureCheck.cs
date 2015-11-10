@@ -35,7 +35,8 @@ namespace IntegrationTestingLibraryForSqlServer
                     command.CommandType = CommandType.StoredProcedure;
                     connection.Open();
                     SqlCommandBuilder.DeriveParameters(command);
-                    var parameters = command.Parameters.Cast<SqlParameter>().Select(x => ProcedureParameter.FromSqlParameter(x));
+                    var mapper = new SqlParameterToProcedureParameterMapper();
+                    var parameters = command.Parameters.Cast<SqlParameter>().Select(x => mapper.FromSqlParameter(x));
                     return new ProcedureDefinition(name, parameters);
                 }
             }

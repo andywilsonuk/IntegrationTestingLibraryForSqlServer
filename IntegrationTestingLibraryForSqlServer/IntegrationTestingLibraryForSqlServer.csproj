@@ -51,6 +51,7 @@
     <Compile Include="Procedures\ProcedureCreateSqlGenerator.cs" />
     <Compile Include="Procedures\ProcedureDefinitionExtensions.cs" />
     <Compile Include="Procedures\ProcedureParameter.cs" />
+    <Compile Include="Procedures\SqlParameterToProcedureParameterMapper.cs" />
     <Compile Include="TableData\CollectionPopulatedTableData.cs" />
     <Compile Include="TableData\TableDataComparison\TableDataComparer.cs" />
     <Compile Include="TableData\TableDataComparers.cs" />

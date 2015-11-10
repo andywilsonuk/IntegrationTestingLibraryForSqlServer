@@ -5,24 +5,60 @@
 Scenario: Table setup and verify
 	Given there is a test database
 	When the table "test" is created
-	| Name | Data Type | Size | Precision | Allow Nulls | Identity Seed |
+	| Name | Data Type | Size | Decimal Places | Allow Nulls | Identity Seed |
 	| Id   | int       |      |           | false       | 4             |
 	| Name | nvarchar  | 50   |           | true        |               |
 	Then the definition of table "test" should match
-	| Name | Data Type | Size | Precision | Allow Nulls | Identity Seed |
+	| Name | Data Type | Size | Decimal Places | Allow Nulls | Identity Seed |
 	| Id   | int       |      |           | false       | 4             |
 	| Name | nvarchar  | 50   |           | true        |               |
+
+@db
+Scenario: Table setup and verify with numeric column
+	Given there is a test database
+	When the table "test" is created with a numeric column
+	| Name     | Data Type | Size | Decimal Places | Allow Nulls | Identity Seed |
+	| Decimal1 | decimal   | 10   | 5              | true        |               |
+	| Decimal2 | decimal   |      |                | true        |               |
+	| Decimal3 | decimal   | 28   | 1              | false       |               |
+	| Decimal4 | decimal   | 10   | 2              | true        |               |
+	| Decimal5 | decimal   | 11   |                | true        |               |
+	| Id       | int       |      |                | false       | true          |
+	| Name     | nvarchar  | 50   |                | true        |               |
+	Then the definition of table "test" should match
+	| Name     | Data Type | Size | Decimal Places | Allow Nulls | Identity Seed |
+	| Decimal1 | decimal   | 10   | 5              | true        |               |
+	| Decimal2 | decimal   | 18   | 0              | true        |               |
+	| Decimal3 | decimal   | 28   | 1              | false       |               |
+	| Decimal4 | decimal   | 10   | 2              | true        |               |
+	| Decimal5 | decimal   | 11   | 0              | true        |               |
+	| Id       | int       |      |                | false       | true          |
+	| Name     | nvarchar  | 50   |                | true        |               |
+
+@db
+Scenario: Table setup - decimal places set without size
+	Given there is a test database
+	Then an attempt to create the table "test" with an invalid definition should fail
+	| Name     | Data Type | Size | Decimal Places |
+	| Decimal4 | decimal   |      | 2              |
+
+@db
+Scenario: Table setup - decimal places greater than size
+	Given there is a test database
+	Then an attempt to create the table "test" with an invalid definition should fail
+	| Name     | Data Type | Size | Decimal Places |
+	| Decimal4 | decimal   | 10   | 11            |
 
 @db
 Scenario: Table setup and verify subset
 	Given there is a test database
 	When the table "test" is created
-	| Name      | Data Type | Size | Precision | Allow Nulls | Identity Seed |
+	| Name      | Data Type | Size | Decimal Places | Allow Nulls | Identity Seed |
 	| Id        | int       |      |           | false       | 4             |
 	| Name      | nvarchar  | 50   |           | true        |               |
 	| NewColumn | int       |      |           | true        |               |
 	Then the definition of table "test" should contain
-	| Name | Data Type | Size | Precision | Allow Nulls | Identity Seed |
+	| Name | Data Type | Size | Decimal Places | Allow Nulls | Identity Seed |
 	| Id   | int       |      |           | false       | 4             |
 	| Name | nvarchar  | 50   |           | true        |               |
 
@@ -30,7 +66,7 @@ Scenario: Table setup and verify subset
 Scenario: Table populate
 	Given there is a test database
 	And the table "test" is created
-	| Name | Data Type        | Size | Precision | Allow Nulls |
+	| Name | Data Type        | Size | Decimal Places | Allow Nulls |
 	| Id   | int              |      |           | false       |
 	| Name | nvarchar         | 50   |           | true        |
 	| Uid  | uniqueidentifier |      |           | false       |
@@ -47,7 +83,7 @@ Scenario: Table populate
 Scenario: Table populate with identity
 	Given there is a test database
 	And the table "test" is created
-	| Name | Data Type | Size | Precision | Allow Nulls | Identity Seed |
+	| Name | Data Type | Size | Decimal Places | Allow Nulls | Identity Seed |
 	| Id   | int       |      |           | false       | 5             |
 	| Name | nvarchar  | 50   |           | true        |               |
 	When table "test" is populated
@@ -64,7 +100,7 @@ Scenario: Table populate with identity
 Scenario: Table populate with null
 	Given there is a test database
 	And the table "test" is created
-	| Name | Data Type | Size | Precision | Allow Nulls | Identity Seed |
+	| Name | Data Type | Size | Decimal Places | Allow Nulls | Identity Seed |
 	| Id   | int       |      |           | false       | 70            |
 	| Date | DateTime  |      |           | true        |               |
 	When table "test" is populated supporting Null values
@@ -80,7 +116,7 @@ Scenario: Table populate with null
 Scenario: Create a view based on a table
 	Given there is a test database
 	And the table "test" is created
-	| Name | Data Type | Size | Precision | Allow Nulls |
+	| Name | Data Type | Size | Decimal Places | Allow Nulls |
 	| Id   | int       |      |           | false       |
 	| Name | nvarchar  | 50   |           | true        |
 	And table "test" is populated
@@ -97,7 +133,7 @@ Scenario: Create a view based on a table in a schema
 	Given there is a test database
 	And the schema "testSchema" is created
 	And the table "testTable" is created in the schema "testSchema"
-	| Name | Data Type | Size | Precision | Allow Nulls |
+	| Name | Data Type | Size | Decimal Places | Allow Nulls |
 	| Id   | int       |      |           | false       |
 	| Name | nvarchar  | 50   |           | true        |
 	When the view "testView" of the table "testTable" is created in the schema "testSchema"
@@ -114,7 +150,7 @@ Scenario: Schema and table creation
 	Given there is a test database
 	When the schema "testSchema" is created
 	And the table "testTable" is created in schema "testSchema"
-	| Name | Data Type | Size | Precision | Allow Nulls |
+	| Name | Data Type | Size | Decimal Places | Allow Nulls |
 	| Id   | int       |      |           | false       |
 	| Name | nvarchar  | 50   |           | true        |
 	Then the table "testTable" exists in the schema "testSchema"

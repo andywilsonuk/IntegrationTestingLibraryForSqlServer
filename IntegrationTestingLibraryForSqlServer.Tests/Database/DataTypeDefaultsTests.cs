@@ -41,23 +41,23 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void DefaultPrecisionForDecimalDataType()
+        public void DefaultDecimalPlacesForDecimalDataType()
         {
             var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Decimal);
-            int? expected = DataTypeDefaults.DefaultDecimalPrecision;
+            int? expected = DataTypeDefaults.DefaultNumberOfDecimalPlaces;
 
-            byte? actual = dataTypeDefaults.DefaultPrecision;
+            byte? actual = dataTypeDefaults.DefaultDecimalPlaces;
 
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
-        public void DefaultPrecisionForIntegerDataType()
+        public void DefaultDecimalPlacesForIntegerDataType()
         {
             var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Int);
             int? expected = null;
 
-            byte? actual = dataTypeDefaults.DefaultPrecision;
+            byte? actual = dataTypeDefaults.DefaultDecimalPlaces;
 
             Assert.AreEqual(expected, actual);
         }
@@ -153,51 +153,51 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void PrecisionEqualsForEquivalentDecimalDataType()
+        public void DecimalPlacesEqualsForEquivalentDecimalDataType()
         {
             var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Decimal);
 
-            bool actual = dataTypeDefaults.IsPrecisionEqual(5, 5);
+            bool actual = dataTypeDefaults.AreDecimalPlacesEqual(5, 5);
 
             Assert.IsTrue(actual);
         }
 
         [TestMethod]
-        public void PrecisionEqualsForNonEquivalentDecimalDataType()
+        public void DecimalPlacesEqualsForNonEquivalentDecimalDataType()
         {
             var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Decimal);
 
-            bool actual = dataTypeDefaults.IsPrecisionEqual(5, 3);
+            bool actual = dataTypeDefaults.AreDecimalPlacesEqual(5, 3);
 
             Assert.IsFalse(actual);
         }
 
         [TestMethod]
-        public void PrecisionEqualsForLeftDefaultedEquivalentDecimalDataType()
+        public void DecimalPlacesEqualsForLeftDefaultedEquivalentDecimalDataType()
         {
             var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Decimal);
 
-            bool actual = dataTypeDefaults.IsPrecisionEqual(null, DataTypeDefaults.DefaultDecimalPrecision);
+            bool actual = dataTypeDefaults.AreDecimalPlacesEqual(null, DataTypeDefaults.DefaultNumberOfDecimalPlaces);
 
             Assert.IsTrue(actual);
         }
 
         [TestMethod]
-        public void PrecisionEqualsForRightDefaultedEquivalentDecimalDataType()
+        public void DecimalPlacesEqualsForRightDefaultedEquivalentDecimalDataType()
         {
             var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Decimal);
 
-            bool actual = dataTypeDefaults.IsPrecisionEqual(DataTypeDefaults.DefaultDecimalPrecision, null);
+            bool actual = dataTypeDefaults.AreDecimalPlacesEqual(DataTypeDefaults.DefaultNumberOfDecimalPlaces, null);
 
             Assert.IsTrue(actual);
         }
 
         [TestMethod]
-        public void PrecisionEqualsForBothDefaultedEquivalentDecimalDataType()
+        public void DecimalPlacesEqualsForBothDefaultedEquivalentDecimalDataType()
         {
             var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Decimal);
 
-            bool actual = dataTypeDefaults.IsPrecisionEqual(null, null);
+            bool actual = dataTypeDefaults.AreDecimalPlacesEqual(null, null);
 
             Assert.IsTrue(actual);
         }
@@ -235,19 +235,19 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void IsPrecisionAllowedForStringLikeDataType()
+        public void AreDecimalPlacesAllowedForStringLikeDataType()
         {
             var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
 
-            Assert.IsFalse(dataTypeDefaults.IsPrecisionAllowed);
+            Assert.IsFalse(dataTypeDefaults.AreDecimalPlacesAllowed);
         }
 
         [TestMethod]
-        public void IsPrecisionAllowedForDecimalDataType()
+        public void AreDecimalPlacesAllowedForDecimalDataType()
         {
             var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Decimal);
 
-            Assert.IsTrue(dataTypeDefaults.IsPrecisionAllowed);
+            Assert.IsTrue(dataTypeDefaults.AreDecimalPlacesAllowed);
         }
     }
 }

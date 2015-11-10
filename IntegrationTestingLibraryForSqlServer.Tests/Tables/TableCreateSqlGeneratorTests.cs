@@ -30,7 +30,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void CreateTable()
         {
             string expected = string.Format("CREATE TABLE [{0}].[t1] ([c1] Decimal(10,5) NOT NULL)", Constants.DEFAULT_SCHEMA);
-            definition.Columns.Add(new ColumnDefinition { Name = "c1", DataType = SqlDbType.Decimal, Size = 10, Precision = 5, AllowNulls = false });
+            definition.Columns.Add(new ColumnDefinition { Name = "c1", DataType = SqlDbType.Decimal, Size = 10, DecimalPlaces = 5, AllowNulls = false });
 
             string actual = generator.Sql(definition);
 
@@ -41,7 +41,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void CreateTableInSchema()
         {
             string expected = string.Format("CREATE TABLE [{0}].[t1] ([c1] Decimal(10,5) NOT NULL)", TEST_SCHEMA);
-            definitionWithSchema.Columns.Add(new ColumnDefinition { Name = "c1", DataType = SqlDbType.Decimal, Size = 10, Precision = 5, AllowNulls = false });
+            definitionWithSchema.Columns.Add(new ColumnDefinition { Name = "c1", DataType = SqlDbType.Decimal, Size = 10, DecimalPlaces = 5, AllowNulls = false });
 
             string actual = generator.Sql(definitionWithSchema);
 

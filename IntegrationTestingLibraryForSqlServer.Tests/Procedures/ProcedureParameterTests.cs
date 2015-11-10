@@ -72,14 +72,14 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void ProcedureParameterEquals()
         {
             parameter.Size = 10;
-            parameter.Precision = 2;
+            parameter.DecimalPlaces = 2;
             var other = new ProcedureParameter 
             { 
                 Name = ParameterName, 
                 DataType = SqlDbType.Int, 
                 Direction = ParameterDirection.Input,
                 Size = 10,
-                Precision = 2,
+                DecimalPlaces = 2,
             };
             bool actual = parameter.Equals(parameter);
 
@@ -160,13 +160,13 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void ProcedureParameterNotEqualsPrecision()
         {
-            parameter.Precision = 10;
+            parameter.DecimalPlaces = 10;
             var other = new ProcedureParameter
             {
                 Name = ParameterName,
                 DataType = SqlDbType.Int,
                 Direction = ParameterDirection.Input,
-                Precision = 20
+                DecimalPlaces = 20
             };
             bool actual = parameter.Equals(other);
 
@@ -185,52 +185,12 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void ProcedureParameterToString()
         {
             parameter.Size = 10;
-            parameter.Precision = 5;
-            string expected = "Name: " + ParameterName + ", Data type: Int, Direction: Input, Size: 10, Precision: 5";
+            parameter.DecimalPlaces = 5;
+            string expected = "Name: " + ParameterName + ", Data type: Int, Direction: Input, Size: 10, Decimal Places: 5";
 
             string actual = parameter.ToString();
 
             Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void ProcedureParameterFromSqlParameter()
-        {
-            SqlParameter sqlParameter = new SqlParameter
-            {
-                ParameterName = ParameterName,
-                SqlDbType = SqlDbType.Int,
-                Size = 10,
-                Precision = 5,
-                Direction = ParameterDirection.Input
-            };
-
-            var parameter = ProcedureParameter.FromSqlParameter(sqlParameter);
-
-            Assert.AreEqual(sqlParameter.ParameterName, parameter.Name);
-            Assert.AreEqual(sqlParameter.SqlDbType, parameter.DataType);
-            Assert.AreEqual(sqlParameter.Size, parameter.Size);
-            Assert.AreEqual(sqlParameter.Precision, parameter.Precision);
-            Assert.AreEqual(sqlParameter.Direction, parameter.Direction);
-        }
-
-        [TestMethod]
-        public void ProcedureParameterFromSqlParameterNoSize()
-        {
-            SqlParameter sqlParameter = new SqlParameter
-            {
-                ParameterName = ParameterName,
-                SqlDbType = SqlDbType.Int,
-                Direction = ParameterDirection.Input
-            };
-
-            var parameter = ProcedureParameter.FromSqlParameter(sqlParameter);
-
-            Assert.AreEqual(sqlParameter.ParameterName, parameter.Name);
-            Assert.AreEqual(sqlParameter.SqlDbType, parameter.DataType);
-            Assert.AreEqual(null, parameter.Size);
-            Assert.AreEqual(null, parameter.Precision);
-            Assert.AreEqual(sqlParameter.Direction, parameter.Direction);
         }
     }
 }

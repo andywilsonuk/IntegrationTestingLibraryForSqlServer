@@ -13,7 +13,7 @@ namespace IntegrationTestingLibraryForSqlServer
     {
         public string Sql(ProcedureDefinition definition)
         {
-            if (definition == null) throw new ArgumentNullException("defintion");
+            if (definition == null) throw new ArgumentNullException("definition");
             definition.EnsureValid(true);
             return string.Format(CreateProcedureFormat, definition.Name, this.CreateCommaSeparatedParameters(definition), definition.Body);
         }
@@ -45,8 +45,10 @@ namespace IntegrationTestingLibraryForSqlServer
                     if (!parameter.Size.HasValue) break;
                     return string.Format("{0}({1})", parameter.DataType, parameter.Size.Value);
                 case SqlDbType.Decimal:
-                    if (!parameter.Size.HasValue) break;
-                    return string.Format("{0}({1},{2})", parameter.DataType, parameter.Size.Value, parameter.Precision ?? 0);
+                    if (!parameter.Size.HasValue && !parameter.DecimalPlaces.HasValue) break;
+                    var parameterSize = parameter.Size ?? 0;
+                    var parameterDecimalPlaces = parameter.DecimalPlaces ?? 0;
+                    return string.Format("{0}({1},{2})", parameter.DataType, parameterSize, parameterDecimalPlaces);
             }
             return string.Format("{0}", parameter.DataType);
         }

@@ -29,8 +29,22 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
                 Direction = this.Direction,
                 Value = this.Value
             };
-            if (this.Size.HasValue) parameter.Size = this.Size.Value;
-            if (this.Precision.HasValue) parameter.Precision = this.Precision.Value;
+
+            if (this.Size.HasValue)
+            {
+                if (this.DataType == SqlDbType.Decimal)
+                {
+                    parameter.Precision = Convert.ToByte(this.Size.Value);
+                    if (this.DecimalPlaces.HasValue)
+                    {
+                        parameter.Scale = Convert.ToByte(this.DecimalPlaces.Value);
+                    }
+                }
+                else
+                {
+                    parameter.Size = this.Size.Value;
+                }
+            }
             return parameter;
         }
     }

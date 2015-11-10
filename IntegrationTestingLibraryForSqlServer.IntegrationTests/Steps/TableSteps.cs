@@ -20,6 +20,13 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
             definition.CreateOrReplace(database);
         }
 
+        [When(@"the table ""(.*)"" is created with a numeric column")]
+        public void WhenTheTableIsCreatedWithANumericColumn(string tableName, Table table)
+        {
+            var definition = new TableDefinition(tableName, table.CreateSet<ColumnDefinition>());
+            definition.CreateOrReplaceWithDecimalsAsNumerics(database);
+        }
+
         [Given(@"table ""(.*)"" is populated")]
         [When(@"table ""(.*)"" is populated")]
         public void WhenTableIsPopulated(string tableName, Table table)
@@ -52,6 +59,21 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
             definition.VerifyMatch(database);
         }
 
+        [Then(@"an attempt to create the table ""(.*)"" with an invalid definition should fail")]
+        public void ThenAnAttemptToCreateTheTableWithAnInvalidDefinitionShouldFail(string tableName, Table table)
+        {
+            Exception ex = null;
+            try
+            {
+                WhenTheTableIsCreatedWithANumericColumn(tableName, table);
+            }
+            catch (Exception e)
+            {
+                ex = e;
+            }
+            Assert.IsNotNull(ex, ex == null ? "Exception not thrown when expected" : ex.Message);
+        }
+
         [Then(@"the definition of table ""(.*)"" should contain")]
         public void ThenTheDefinitionOfTableShouldContain(string tableName, Table table)
         {
@@ -75,7 +97,7 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
             var expected = new CollectionPopulatedTableData(table.Header, table.Rows.Select(x => x.Values));
             foreach (var row in expected.Rows)
             {
-                if (row[1] == "NULL")
+                if (row[1].ToString() == "NULL")
                     row[1] = DBNull.Value;
             }
 

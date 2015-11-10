@@ -66,7 +66,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
             this.definition.Body = "return 5";
             string expected = new StringBuilder()
                 .AppendLine("Name: " + procedureName)
-                .AppendLine("Name: p1, Data type: Int, Direction: Input, Size: , Precision: ")
+                .AppendLine("Name: p1, Data type: Int, Direction: Input, Size: , Decimal Places: ")
                 .AppendLine("Body: " + "return 5")
                 .ToString();
 

@@ -60,5 +60,19 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
             Assert.AreEqual(returnValue, this.returnValue);
         }
 
+        [Then(@"an attempt to create the procedure ""(.*)"" with body ""(.*)"" and an invalid parameter definition should fail")]
+        public void ThenAnAttemptToCreateTheProcedureWithBodyAndAnInvalidParameterDefinitionShouldFail(string procedureName, string body, Table table)
+        {
+            Exception ex = null;
+            try
+            {
+                GivenTheProcedureIsCreatedWithBody(procedureName, body, table);
+            }
+            catch (Exception e)
+            {
+                ex = e;
+            }
+            Assert.IsNotNull(ex, ex == null ? "Exception not thrown when expected" : ex.Message);
+        }
     }
 }
