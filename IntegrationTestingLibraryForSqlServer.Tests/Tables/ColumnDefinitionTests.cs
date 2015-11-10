@@ -22,12 +22,12 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             definition.AllowNulls = false;
             definition.Size = 10;
-            definition.Precision = 5;
+            definition.DecimalPlaces = 5;
             var other = new ColumnDefinition(ColumnName, SqlDbType.Int)
             {
                 AllowNulls = false,
                 Size = 10,
-                Precision = 5
+                DecimalPlaces = 5
             };
 
             bool actual = definition.Equals(other);
@@ -92,12 +92,12 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void ColumnDefinitionNotEqualsPrecision()
+        public void ColumnDefinitionNotEqualsDecimalPlaces()
         {
-            definition.Precision = 5;
+            definition.DecimalPlaces = 5;
             var other = new ColumnDefinition(ColumnName, SqlDbType.Int)
             {
-                Precision = 0
+                DecimalPlaces = 0
             };
 
             bool actual = definition.Equals(other);
@@ -130,7 +130,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void ColumnDefinitionIsValid()
         {
             definition.Size = 10;
-            definition.Precision = 5;
+            definition.DecimalPlaces = 5;
 
             bool actual = definition.IsValid();
 
@@ -172,7 +172,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void ColumnDefinitionEnsureValid()
         {
             definition.Size = 10;
-            definition.Precision = 5;
+            definition.DecimalPlaces = 5;
 
             definition.EnsureValid();
         }
@@ -190,14 +190,14 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void ColumnDefinitionToString()
         {
             definition.Size = 10;
-            definition.Precision = 5;
+            definition.DecimalPlaces = 5;
             definition.AllowNulls = false;
             definition.IdentitySeed = 10;
             string expected = new StringBuilder()
                 .Append("Name: " + ColumnName)
                 .Append(", Type: Int")
                 .Append(", Size: 10")
-                .Append(", Precision: 5")
+                .Append(", Decimal Places: 5")
                 .Append(", Allow Nulls: False")
                 .Append(", Identity Seed: 10")
                 .AppendLine()

@@ -23,7 +23,7 @@ namespace IntegrationTestingLibraryForSqlServer
         public string Name { get; set; }
         public SqlDbType DataType { get; set; }
         public int? Size { get; set; }
-        public byte? Precision { get; set; }
+        public byte? DecimalPlaces { get; set; }
         public ParameterDirection Direction { get; set; }
 
         public string QualifiedName
@@ -51,7 +51,7 @@ namespace IntegrationTestingLibraryForSqlServer
             if (this.DataType != other.DataType) return false;
             var dataTypeDefaults = new DataTypeDefaults(this.DataType);
             if (!dataTypeDefaults.IsSizeEqual(this.Size, other.Size)) return false;
-            if (!dataTypeDefaults.IsPrecisionEqual(this.Precision, other.Precision)) return false;
+            if (!dataTypeDefaults.AreDecimalPlacesEqual(this.DecimalPlaces, other.DecimalPlaces)) return false;
             return this.IsDirectionEquivalent(other);
         }
 
@@ -72,20 +72,8 @@ namespace IntegrationTestingLibraryForSqlServer
                 .Append(", Data type: " + this.DataType)
                 .Append(", Direction: " + this.Direction)
                 .Append(", Size: " + this.Size)
-                .Append(", Precision: " + this.Precision)
+                .Append(", Decimal Places: " + this.DecimalPlaces)
                 .ToString();
-        }
-
-        public static ProcedureParameter FromSqlParameter(SqlParameter parameter)
-        {
-            return new ProcedureParameter
-            {
-                Name = parameter.ParameterName,
-                DataType = parameter.SqlDbType,
-                Size = parameter.Size == 0 ? (int?)null : parameter.Size,
-                Precision = parameter.Precision == 0 ? (byte?)null : parameter.Precision,
-                Direction = parameter.Direction
-            };
         }
 
         private bool IsDirectionEquivalent(ProcedureParameter other)

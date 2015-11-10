@@ -74,7 +74,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void CreateProcedureWithDecimalParameter()
         {
-            procedure.Parameters.Add(new ProcedureParameter("money", SqlDbType.Decimal, ParameterDirection.Input) { Size = 10, Precision = 5 });
+            procedure.Parameters.Add(new ProcedureParameter("money", SqlDbType.Decimal, ParameterDirection.Input) { Size = 10, DecimalPlaces = 5 });
             string expected = "create procedure [testproc] @money Decimal(10,5) as begin return 5 end";
 
             string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
@@ -85,8 +85,11 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void CreateProcedureWithDecimalNoSizeParameter()
         {
-            procedure.Parameters.Add(new ProcedureParameter("money", SqlDbType.Decimal, ParameterDirection.Input) { Precision = 5 });
-            string expected = "create procedure [testproc] @money Decimal as begin return 5 end";
+            procedure.Parameters.Add(new ProcedureParameter("money", SqlDbType.Decimal, ParameterDirection.Input) { DecimalPlaces = 5 });
+            string expected = "create procedure [testproc] @money Decimal(0,5) as begin return 5 end";
+            // Note this would fail when run.
+            // This then forces the user to provide a valid combination of Size and Decimal Places.
+            // SQL requires Precision (represented by ProcedureParameter.Size) to be >= Scale (represented by ProcedureParameter.DecimalPlaces)
 
             string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
 

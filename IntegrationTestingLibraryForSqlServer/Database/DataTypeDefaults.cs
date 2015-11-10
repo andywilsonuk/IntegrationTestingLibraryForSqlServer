@@ -9,8 +9,8 @@ namespace IntegrationTestingLibraryForSqlServer
     internal class DataTypeDefaults
     {
         internal const int DefaultStringSize = 1;
-        internal const int DefaultDecimalSize = 9;
-        internal const byte DefaultDecimalPrecision = 18;
+        internal const int DefaultDecimalSize = 18;
+        internal const byte DefaultNumberOfDecimalPlaces = 0;
 
         public const int MaximumSizeIndicator = 0;
 
@@ -41,11 +41,11 @@ namespace IntegrationTestingLibraryForSqlServer
             }
         }
 
-        public byte? DefaultPrecision
+        public byte? DefaultDecimalPlaces
         {
             get
             {
-                return this.DataType == SqlDbType.Decimal ? DefaultDecimalPrecision : (byte?)null;
+                return this.DataType == SqlDbType.Decimal ? DefaultNumberOfDecimalPlaces : (byte?)null;
             }
         }
 
@@ -56,14 +56,17 @@ namespace IntegrationTestingLibraryForSqlServer
                 sizeRight.HasValue && (sizeRight.Value == 0 || sizeRight.Value == -1);
         }
 
-        public bool IsPrecisionEqual(byte? precisionLeft, byte? precisionRight)
+        public bool AreDecimalPlacesEqual(byte? decimalPlacesLeft, byte? decimalPlacesRight)
         {
-            return (precisionLeft ?? DefaultPrecision) == (precisionRight ?? DefaultPrecision);
+            return (decimalPlacesLeft ?? DefaultNumberOfDecimalPlaces) == (decimalPlacesRight ?? DefaultNumberOfDecimalPlaces);
         }
 
-        public bool IsPrecisionAllowed
+        public bool AreDecimalPlacesAllowed
         {
-            get { return this.DataType == SqlDbType.Decimal; }
+            get
+            {
+                return this.DataType == SqlDbType.Decimal;
+            }
         }
 
         public bool IsSizeAllowed

@@ -15,6 +15,7 @@ namespace IntegrationTestingLibraryForSqlServer
                 t.name,
                 c.max_length,
                 c.precision,
+                c.scale,
                 c.is_nullable,
                 c.is_identity,
                 IDENT_SEED('[{0}].[{1}]')

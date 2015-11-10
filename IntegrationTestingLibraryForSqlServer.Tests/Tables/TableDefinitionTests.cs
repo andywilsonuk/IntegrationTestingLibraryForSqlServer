@@ -159,7 +159,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
                 Name = ColumnName,
                 DataType = SqlDbType.Decimal,
                 Size = 10,
-                Precision = 5,
+                DecimalPlaces = 5,
                 AllowNulls = true,
                 IdentitySeed = 10
             });
@@ -167,7 +167,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             string expected = new StringBuilder()
                 .AppendLine("Name: table1")
                 .AppendLine(string.Format("Schema: {0}", Constants.DEFAULT_SCHEMA))
-                .AppendLine("Name: c1, Type: Decimal, Size: 10, Precision: 5, Allow Nulls: True, Identity Seed: 10")
+                .AppendLine("Name: c1, Type: Decimal, Size: 10, Decimal Places: 5, Allow Nulls: True, Identity Seed: 10")
                 .ToString();
 
             string actual = table.ToString();

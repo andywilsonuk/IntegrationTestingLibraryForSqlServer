@@ -22,7 +22,7 @@ namespace IntegrationTestingLibraryForSqlServer
                 Name = this.GetName(),
                 DataType = this.dataTypeDefaults.DataType,
                 Size = this.GetSize(),
-                Precision = this.GetPrecision(),
+                DecimalPlaces = this.GetDecimalPlaces(),
                 AllowNulls = this.GetNullable(),
             };
         }
@@ -39,12 +39,27 @@ namespace IntegrationTestingLibraryForSqlServer
 
         private int? GetSize()
         {
-            return this.dataTypeDefaults.IsSizeAllowed ? (int)record[Columns.Size] : (int?)null;
+            if (this.dataTypeDefaults.IsSizeAllowed)
+            {
+                if (dataTypeDefaults.DataType == SqlDbType.Decimal)
+                {
+                    return Convert.ToInt32(record[Columns.Precision]);
+                }
+                else
+                {
+                    return (int?)record[Columns.Size];
+                }
+            }
+            return (int?)null;
         }
 
-        private byte? GetPrecision()
+        private byte? GetDecimalPlaces()
         {
-            return this.dataTypeDefaults.IsPrecisionAllowed ? Convert.ToByte(record[Columns.Precision]) : (byte?)null;
+            if (dataTypeDefaults.AreDecimalPlacesAllowed)
+            {
+                return Convert.ToByte(record[Columns.DecimalPlaces]);
+            }
+            return (byte?)null;
         }
 
         private bool GetNullable()
@@ -57,6 +72,7 @@ namespace IntegrationTestingLibraryForSqlServer
             public const string Name = "ColumnName";
             public const string DataType = "ProviderType";
             public const string Size = "ColumnSize";
+            public const string DecimalPlaces = "NumericScale";
             public const string Precision = "NumericPrecision";
             public const string IsNullable = "AllowDBNull";
         }

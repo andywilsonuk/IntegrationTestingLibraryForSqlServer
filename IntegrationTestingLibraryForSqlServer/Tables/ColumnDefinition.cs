@@ -12,7 +12,7 @@ namespace IntegrationTestingLibraryForSqlServer
         public string Name { get; set; }
         public SqlDbType DataType { get; set; }
         public int? Size { get; set; }
-        public byte? Precision { get; set; }
+        public byte? DecimalPlaces { get; set; }
         public bool AllowNulls { get; set; }
         public decimal? IdentitySeed { get; set; }
 
@@ -35,7 +35,7 @@ namespace IntegrationTestingLibraryForSqlServer
             if (this.DataType != other.DataType) return false;
             var dataTypeDefaults = new DataTypeDefaults(this.DataType);
             if (!dataTypeDefaults.IsSizeEqual(this.Size, other.Size)) return false;
-            if (!dataTypeDefaults.IsPrecisionEqual(this.Precision, other.Precision)) return false;
+            if (!dataTypeDefaults.AreDecimalPlacesEqual(this.DecimalPlaces, other.DecimalPlaces)) return false;
             if (this.AllowNulls != other.AllowNulls) return false;
             if (this.IdentitySeed != other.IdentitySeed) return false;
             return true;
@@ -83,7 +83,7 @@ namespace IntegrationTestingLibraryForSqlServer
                 .Append("Name: " + this.Name)
                 .Append(", Type: " + this.DataType)
                 .Append(", Size: " + this.Size)
-                .Append(", Precision: " + this.Precision)
+                .Append(", Decimal Places: " + this.DecimalPlaces)
                 .Append(", Allow Nulls: " + this.AllowNulls)
                 .AppendLine(", Identity Seed: " + this.IdentitySeed)
                 .ToString();

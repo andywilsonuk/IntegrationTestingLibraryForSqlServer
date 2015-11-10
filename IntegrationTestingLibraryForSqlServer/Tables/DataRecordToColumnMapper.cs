@@ -22,7 +22,7 @@ namespace IntegrationTestingLibraryForSqlServer
                 Name = this.GetName(),
                 DataType = this.dataTypeDefaults.DataType,
                 Size = this.GetSize(),
-                Precision = this.GetPrecision(),
+                DecimalPlaces = this.GetDecimalPlaces(),
                 AllowNulls = this.GetNullable(),
                 IdentitySeed = this.GetIdentitySeed()
             };
@@ -35,19 +35,38 @@ namespace IntegrationTestingLibraryForSqlServer
 
         private SqlDbType GetDataType()
         {
-            return (SqlDbType)Enum.Parse(typeof(SqlDbType), this.record.GetString(Columns.DataType), true);
+            var dataTypeName = this.record.GetString(Columns.DataType);
+            if (dataTypeName == Constants.NUMERIC_COLUMN_NAME)
+            {
+                return SqlDbType.Decimal;
+            }
+            return (SqlDbType)Enum.Parse(typeof(SqlDbType), dataTypeName, true);
         }
 
         private int? GetSize()
         {
             if (this.dataTypeDefaults.IsUnicodeSizeAllowed) return this.record.GetInt16(Columns.Size) / 2;
-            if (this.dataTypeDefaults.IsSizeAllowed) return this.record.GetInt16(Columns.Size);
+            if (this.dataTypeDefaults.IsSizeAllowed)
+            {
+                if (GetDataType() == SqlDbType.Decimal)
+                {
+                    return (int?)this.record.GetByte(Columns.Precision);
+                }
+                else
+                {
+                    return this.record.GetInt16(Columns.Size);
+                }
+            }
             return (int?)null;
         }
 
-        private byte? GetPrecision()
+        private byte? GetDecimalPlaces()
         {
-            return this.dataTypeDefaults.IsPrecisionAllowed ? this.record.GetByte(Columns.Precision) : (byte?)null;
+            if (dataTypeDefaults.AreDecimalPlacesAllowed)
+            {
+                return this.record.GetByte(Columns.Scale);
+            }
+            return (byte?)null;
         }
 
         private bool GetNullable()
@@ -68,9 +87,10 @@ namespace IntegrationTestingLibraryForSqlServer
             public const int DataType = 1;
             public const int Size = 2;
             public const int Precision = 3;
-            public const int IsNullable = 4;
-            public const int IsIdentity = 5;
-            public const int IdentitySeed = 6;
+            public const int Scale = 4;
+            public const int IsNullable = 5;
+            public const int IsIdentity = 6;
+            public const int IdentitySeed = 7;
         }
     }
 }
