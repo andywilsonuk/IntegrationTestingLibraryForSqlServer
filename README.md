@@ -46,6 +46,10 @@ The schema must already exist before a table can be created using a TableDefinit
 Use DatabaseActions.CreateSchema to create a new schema (see Schemas).
 ####Notes
 * Some data types such as nvarchar can have sizes set; whilst a null value will give you the default size for that type a size of zero will give the maximum size. The property ```IsMaximumSize``` on ```ColumnDefinition``` is a convenient way to set the maximum size.
+* The data type Decimal must be used for the SQL data type Numeric. This is because the Microsoft System.Data.SqlDbType Enum is used which does not have a value for Numeric.
+* The SQL "Precision" (total number of digits) and "Scale" (numberr of digits after the decimal point) properties of the Decimal/Numeric data types must be mapped to the "Size" and "DecimalPlaces" properties of the ColumnDefinition class.
+* If no value is set for Size then the default value of 18 is used. If no value is set for "Decimal Places" then the default value of 0 is used - see [decimal and numeric (Transact-SQL)](https://msdn.microsoft.com/en-us/library/ms187746.aspx). Note that Size must be greater than or equal to Decimal Places. Setting Decimal Places without setting Size will result in an error.
+* See [Specflow integration best practices](#specflow-integration-best-practices) below for some examples of setting up tables, views and stored procedure parameters using Numeric/Decimal data types.
 
 ###Populating tables with data
 Tables can be loaded with initial data.
@@ -157,9 +161,10 @@ definition.VerifyMatch(database);
 ###Table creation
 ```Gherkin
 Given the table "test" is created
-| Name | Data Type | Size | Precision | Allow Nulls |
-| Id   | int       |      |           | false       |
-| Name | nvarchar  | 50   |           | true        |
+| Name   | Data Type | Size | Decimal Places | Allow Nulls |
+| Id     | int       |      |                | false       |
+| Name   | nvarchar  | 50   |                | true        |
+| Number | decimal   | 10   | 5              | true        |
 ```
 ```C#
 [Given(@"the table ""(.*)"" is created")]
@@ -172,9 +177,10 @@ public void GivenTheTableIsCreated(string tableName, Table table)
 ###Table verification
 ```Gherkin
 Then the definition of table "test" should match
-| Name | Data Type | Size | Precision | Allow Nulls |
-| Id   | int       |      |           | false       |
-| Name | nvarchar  | 50   |           | true        |
+| Name   | Data Type | Size | Decimal Places | Allow Nulls |
+| Id     | int       |      |                | false       |
+| Name   | nvarchar  | 50   |                | true        |
+| Number | decimal   | 10   | 5              | true        |
 ```
 ```C#
 [Then(@"the definition of table ""(.*)"" should match")]
@@ -203,9 +209,10 @@ public void GivenTableIsPopulated(string tableName, Table table)
 ###View verification
 ```Gherkin
 Then the definition of view "test" should match
-| Name | Data Type | Size | Precision |
-| Id   | int       |      |           |
-| Name | nvarchar  | 50   |           |
+| Name   | Data Type | Size | Decimal Places |
+| Id     | int       |      |                |
+| Name   | nvarchar  | 50   |                |
+| Number | decimal   | 10   | 5              |
 ```
 ```C#
 [Then(@"the definition of view ""(.*)"" should match")]
@@ -219,9 +226,10 @@ public void ThenTheDefinitionOfViewShouldMatch(string viewName, Table table)
 ###Procedure creation
 ```Gherkin
 Given the procedure "test" is created with body "return 0"
-| Name | Data Type | Size | Precision | Direction |
-| Id   | int       |      |           | Input     |
-| Name | nvarchar  | 50   |           | Input     |
+| Name   | Data Type | Size | Decimal Places | Direction |
+| Id     | int       |      |                | Input     |
+| Name   | nvarchar  | 50   |                | Input     |
+| Number | decimal   | 10   | 5              | Input     |
 ```
 ```C#
 [Given(@"the procedure ""(.*)"" is created with body ""(.*)""")]
@@ -237,9 +245,10 @@ public void GivenTheProcedureIsCreatedWithBody(string procedureName, string body
 ###Procedure verification
 ```Gherkin
 Then the definition of procedure "test" should match
-| Name | Data Type | Size | Precision | Direction |
-| Id   | int       |      |           | Input     |
-| Name | nvarchar  | 50   |           | Input     |
+| Name   | Data Type | Size | Decimal Places | Direction |
+| Id     | int       |      |                | Input     |
+| Name   | nvarchar  | 50   |                | Input     |
+| Number | decimal   | 10   | 5              | Input     |
 ```
 ```C#
 [Then(@"the definition of procedure ""(.*)"" should match")]
