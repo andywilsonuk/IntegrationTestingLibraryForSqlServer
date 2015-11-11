@@ -10,6 +10,8 @@ namespace IntegrationTestingLibraryForSqlServer.TableDataComparison
         private static readonly TableDataValueComparerPipeElement[] elements = 
         {
             new TableDataNullValueComparer(),
+            new TableDataNumberValueComparer(),
+            new TableDataBooleanValueComparer(),
             new TableDataGuidValueComparer(),
             new TableDataDateTimeValueComparer(),
             new TableDataCaseSensitiveStringValuePipeElementComparer(),

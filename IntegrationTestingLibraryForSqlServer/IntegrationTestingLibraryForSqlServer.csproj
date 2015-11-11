@@ -55,7 +55,9 @@
     <Compile Include="TableData\CollectionPopulatedTableData.cs" />
     <Compile Include="TableData\TableDataComparison\TableDataComparer.cs" />
     <Compile Include="TableData\TableDataComparers.cs" />
+    <Compile Include="TableData\TableDataComparison\ValueCompare\Pipeline\TableDataNumberValueComparer.cs" />
     <Compile Include="TableData\TableDataComparison\ValueCompare\Pipeline\TableDataCaseSensitiveStringValuePipeElementComparer.cs" />
+    <Compile Include="TableData\TableDataComparison\ValueCompare\Pipeline\TableDataBooleanValueComparer.cs" />
     <Compile Include="TableData\TableDataComparison\ValueCompare\Pipeline\TableDataDefaultValueComparer.cs" />
     <Compile Include="TableData\TableDataComparison\ValueCompare\Pipeline\TableDataDateTimeValueComparer.cs" />
     <Compile Include="TableData\TableDataComparison\ValueCompare\Pipeline\TableDataNullValueComparer.cs" />
@@ -107,9 +109,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\IntegrationTestingLibraryForSqlServer.snk" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Todo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

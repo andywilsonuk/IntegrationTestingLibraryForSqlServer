@@ -2,68 +2,14 @@
 <package>
   <metadata>
     <id>IntegrationTestingLibraryForSqlServer</id>
-    <version>1.5.7</version>
+    <version>1.5.8</version>
     <title>Integration Testing Library for SQL Server</title>
     <authors>Andy Wilson and contributors</authors>
     <owners>Andy Wilson</owners>
     <description>
       Provides helper functions for setting up and tearing down SQL Server database fakes for use in integration testing.
     </description>
-    <releaseNotes>1.5.7
-      - BREAKING CHANGE FOR DECIMAL COLUMNS WITH PRECISION AND SCALE.
-      - Columns defined as Numeric in the database must be defined as Decimal in this library.
-      - This is because the SqlDataType Enum does not have a value for numeric.
-      - Also in SQL Decimals have a Precision (max number of digits) and a Scale (number of digits after the decimal point).
-      - In this library Precision maps to Size and Scale maps to DecimalPlaces for numeric/decimal columns.
-      - eg :-
-      - | Name          | Data Type | Size | Decimal Places |
-      - | DecimalColumn | decimal   | 10   | 5              |
-      - instead of :-
-      - | Name          | Data Type | Precision | Scale |
-      - | DecimalColumn | decimal   | 10        | 5     |
-      1.5.6
-      - Added alternative strategies for checking view definitions in ViewCheck.VerifyMatch and VerifyMatchOrSubset.
-      - TableDefinitionInterrogationStrategyType.SystemTables queries the sys.columns and sys.types tables in the db
-      - TableDefinitionInterrogationStrategyType.DataReaderSchema uses SqlDataReader.GetSchemaTable
-      1.5.5
-      - Added support for custom table data value transformations
-      - Added value transformer to support string to DBNull conversion
-      1.5.4
-      - Added support for schema name in ViewCheck
-      1.5.3
-      - For TableData added value pipeline comparers: DateTime and String
-      1.5.2
-      - For TableData added value comparer pipeline with some initial comparers
-      1.5.1
-      - Bug fix for non-ordinal row comparisions where columns differ between rows
-      1.5.0
-      - ViewCheck is now complete and works by comparing the Data Reader schema with an expected definition
-      - Added null argument checks into TableDefinitionExtensions
-      - Added support for maximum column size
-      - Added VerifyMatch methods to TableData for easier comparison assertion
-      1.4.2
-      - Added some more support for schema name in views plus some more tests
-      1.4.1
-      - Added support for schema name in tables and views
-      1.4.0
-      - TableData objects can now be compared; different rulesets can be applied for column, row and value comparison
-      - Added Data Reader import class: DataReaderPopulatedTableData
-      - Added Specflow friendly import class: CollectionPopulatedTableData
-      - TableDefinition Insert method will now only populate columns from TableDefinition if they are not already set
-      1.3.1
-      - Breaking change: Extension VerifyEqual on TableDefinition now named VerifyMatch to make it consistent with TableDefinition extension.
-      - Renamed ViewDefinition to TableBackedViewDefinition in readiness for ViewCheck.
-      - TableDefinition Equal method now handles comparing columns in a different order.
-      1.3.0
-      - Added support for partial table matches; for example if only two columns are used by the application but the table has more.
-      - Breaking change: Extension VerifyEqual on TableDefinition now named VerifyMatch to make it clearer that it is checked against a 'real' table.
-      1.2.0
-      - Views can now be created as a front to a table; this was simpler than duplicating all the create logic for views.
-      1.1.0
-      - Added support for Identity constraint on columns.
-      1.0.0
-      - Initial version.
-    </releaseNotes>
+    <releaseNotes>See https://github.com/andywilsonuk/IntegrationTestingLibraryForSqlServer/releases </releaseNotes>
     <language>en-GB</language>
     <projectUrl>https://github.com/andywilsonuk/IntegrationTestingLibraryForSqlServer</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -76,7 +22,7 @@
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="System.Data" targetFramework="net40" />
     </frameworkAssemblies>
-    <tags>testing sqlserver continuous integration database automation utility</tags>
+    <tags>testing sqlserver sql server continuous integration database automation utility</tags>
   </metadata>
   <files>
     <file src="lib\" target="lib" />
