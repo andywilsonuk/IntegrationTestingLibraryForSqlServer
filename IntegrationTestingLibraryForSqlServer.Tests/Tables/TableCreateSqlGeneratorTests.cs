@@ -129,8 +129,8 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void CreateTableWithIdentity()
         {
-            string expected = string.Format("CREATE TABLE [{0}].[t1] ([c1] NVarChar IDENTITY(8,1) NULL)", Constants.DEFAULT_SCHEMA); ;
-            definition.Columns.Add(new ColumnDefinition { Name = "c1", DataType = SqlDbType.NVarChar, IdentitySeed = 8});
+            string expected = string.Format("CREATE TABLE [{0}].[t1] ([c1] Int IDENTITY(8,1) NOT NULL)", Constants.DEFAULT_SCHEMA); ;
+            definition.Columns.Add(new ColumnDefinition { Name = "c1", DataType = SqlDbType.Int, IdentitySeed = 8, AllowNulls = false});
 
             string actual = generator.Sql(definition);
 

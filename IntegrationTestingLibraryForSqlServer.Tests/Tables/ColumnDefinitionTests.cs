@@ -191,6 +191,53 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
+        public void ColumnDefinitionIsNotValidWhenIdentityOnWrongType()
+        {
+            definition.DataType = SqlDbType.VarChar;
+            definition.IdentitySeed = 1;
+            definition.AllowNulls = false;
+
+            bool actual = definition.IsValid();
+
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        public void ColumnDefinitionIsNotValidWhenNullIsAllowedOnIdentity()
+        {
+            definition.DataType = SqlDbType.Int;
+            definition.IdentitySeed = 1;
+
+            bool actual = definition.IsValid();
+
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        public void ColumnDefinitionIsNotValidWhenDecimalPlacesAreSet()
+        {
+            definition.DataType = SqlDbType.Decimal;
+            definition.DecimalPlaces = 5;
+            definition.IdentitySeed = 1;
+
+            bool actual = definition.IsValid();
+
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        public void ColumnDefinitionIsValidIdentity()
+        {
+            definition.DataType = SqlDbType.Decimal;
+            definition.IdentitySeed = 1;
+            definition.AllowNulls = false;
+
+            bool actual = definition.IsValid();
+
+            Assert.IsTrue(actual);
+        }
+
+        [TestMethod]
         public void ColumnDefinitionEnsureValid()
         {
             definition.DataType = SqlDbType.Decimal;

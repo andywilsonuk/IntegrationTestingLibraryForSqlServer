@@ -59,6 +59,7 @@ namespace IntegrationTestingLibraryForSqlServer
             if (!dataTypeDefaults.AreDecimalPlacesAllowed && this.DecimalPlaces.HasValue) return false;
             if (this.IsMaximumSize) return true;
             if (this.Size.HasValue && this.Size.Value < -1) return false;
+            if (this.IdentitySeed.HasValue && (!dataTypeDefaults.IsIdentitySeedAllowed || this.AllowNulls || this.DecimalPlaces.GetValueOrDefault() > 0)) return false;
             return true;
         }
 

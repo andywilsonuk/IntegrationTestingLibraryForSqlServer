@@ -70,6 +70,23 @@ namespace IntegrationTestingLibraryForSqlServer
             }
         }
 
+        public bool IsIdentitySeedAllowed
+        {
+            get
+            {
+                switch (this.DataType)
+                {
+                    case SqlDbType.Int:
+                    case SqlDbType.BigInt:
+                    case SqlDbType.SmallInt:
+                    case SqlDbType.TinyInt:
+                    case SqlDbType.Decimal:
+                        return true;
+                    default: return false;
+                }
+            }
+        }
+
         public bool IsSizeAllowed
         {
             get 
