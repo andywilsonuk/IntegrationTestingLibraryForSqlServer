@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTestingLibraryForSqlServer", "IntegrationTestingLibraryForSqlServer\IntegrationTestingLibraryForSqlServer.csproj", "{2F3DD475-685E-4688-8DC4-63919D9CAD3A}"
 EndProject
@@ -10,6 +10,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTestingLibraryForSqlServer.Packager", "IntegrationTestingLibraryForSqlServer.Packager\IntegrationTestingLibraryForSqlServer.Packager.csproj", "{0451BAEF-DF2E-4B98-8644-94EE9415E389}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTestingLibraryForSqlServer.Tests", "IntegrationTestingLibraryForSqlServer.Tests\IntegrationTestingLibraryForSqlServer.Tests.csproj", "{5D5F2F79-1BD6-4368-87EC-C16467225971}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8547980B-23F5-46AF-983A-B4FFD6F75DB1}"
+	ProjectSection(SolutionItems) = preProject
+		Solution Items\Generate-ColumnDefinitions.ps1 = Solution Items\Generate-ColumnDefinitions.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
