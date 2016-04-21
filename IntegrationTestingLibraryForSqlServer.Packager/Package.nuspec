@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>IntegrationTestingLibraryForSqlServer</id>
-    <version>1.5.9</version>
+    <version></version>
     <title>Integration Testing Library for SQL Server</title>
     <authors>Andy Wilson and contributors</authors>
     <owners>Andy Wilson</owners>
@@ -20,7 +20,7 @@
     <references>
     </references>
     <frameworkAssemblies>
-      <frameworkAssembly assemblyName="System.Data" targetFramework="net40" />
+      <frameworkAssembly assemblyName="System.Data" targetFramework="net45" />
     </frameworkAssemblies>
     <tags>testing sqlserver sql server continuous integration database automation utility</tags>
   </metadata>

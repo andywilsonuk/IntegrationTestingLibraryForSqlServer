@@ -22,7 +22,7 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         [Given(@"there is a test database")]
         public void GivenThereIsATestDatabase()
         {
-            database = new DatabaseActions(@"server=(localdb)\v11.0;database=Test2;integrated security=True");
+            database = new DatabaseActions(@"server=(localdb)\MSSQLLocalDB;database=Test2;integrated security=True");
             database.CreateOrReplace();
             ScenarioContext.Current["Database"] = database;
         }
@@ -30,7 +30,7 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         [When(@"the user '(.*)' is granted access to the database")]
         public void WhenTheUserIsGrantedAccessToTheDatabase(string username)
         {
-            database.GrantDomainUserAccess(Environment.UserDomainName, username);
+            database.GrantDomainUserAccess(new DomainAccount(Environment.UserDomainName, username));
         }
 
         [Then(@"the permissions for '(.*)' should be")]

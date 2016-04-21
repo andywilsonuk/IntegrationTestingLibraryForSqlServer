@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>IntegrationTestingLibraryForSqlServer</RootNamespace>
     <AssemblyName>IntegrationTestingLibraryForSqlServer</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -48,6 +50,8 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="Database\DataTypeDefaults.cs" />
+    <Compile Include="Database\DomainAccount.cs" />
+    <Compile Include="Database\SqlConnectionStringBuilderExtensions.cs" />
     <Compile Include="Procedures\ProcedureCreateSqlGenerator.cs" />
     <Compile Include="Procedures\ProcedureDefinitionExtensions.cs" />
     <Compile Include="Procedures\ProcedureParameter.cs" />
@@ -112,7 +116,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(ProjectDir)bin\$(ConfigurationName)\*.dll" "$(SolutionDir)IntegrationTestingLibraryForSqlServer.Packager\lib\net40" /Ys</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(ProjectDir)bin\$(ConfigurationName)\*.dll" "$(SolutionDir)IntegrationTestingLibraryForSqlServer.Packager\lib\net45" /Ys</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
