@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -11,38 +12,19 @@ namespace IntegrationTestingLibraryForSqlServer
     {
         public static void Execute(this SqlConnection connection, string format, params object[] args)
         {
-            using (SqlCommand command = connection.CreateCommand())
-            {
-                command.CommandText = string.Format(format, args);
-                connection.Open();
-                try
-                {
-                    command.ExecuteNonQuery();
-                }
-                finally
-                {
-                    connection.Close();
-                }
-            }
+            connection.ExecuteWithParameters(string.Format(format, args), null);
         }
 
         public static void ExecuteWithParameters(this SqlConnection connection, string commandText, IEnumerable<object> parameterValues)
         {
-            var parameters = parameterValues.Select((x, i) => new SqlParameter("@" + i, x)).ToArray();
+            var parameters = parameterValues == null ? new SqlParameter[0] : parameterValues.Select((x, i) => new SqlParameter("@" + i, x)).ToArray();
 
             using (SqlCommand command = connection.CreateCommand())
             {
                 command.CommandText = commandText;
                 command.Parameters.AddRange(parameters);
-                connection.Open();
-                try
-                {
-                    command.ExecuteNonQuery();
-                }
-                finally
-                {
-                    connection.Close();
-                }
+                if (connection.State == ConnectionState.Closed) connection.Open();
+                command.ExecuteNonQuery();
             }
         }
 
@@ -51,20 +33,13 @@ namespace IntegrationTestingLibraryForSqlServer
             using (SqlCommand command = connection.CreateCommand())
             {
                 command.CommandText = string.Format(format, args);
-                connection.Open();
-                try
+                if (connection.State == ConnectionState.Closed) connection.Open();
+                using (var reader = command.ExecuteReader())
                 {
-                    using (var reader = command.ExecuteReader())
+                    while (reader.Read())
                     {
-                        while (reader.Read())
-                        {
-                            yield return func(reader);
-                        }
+                        yield return func(reader);
                     }
-                }
-                finally
-                {
-                    connection.Close();
                 }
             }
         }
