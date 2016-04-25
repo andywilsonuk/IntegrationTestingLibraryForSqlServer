@@ -91,7 +91,7 @@
     <Compile Include="Tables\DataReaderSchemaTableDefinitionInterrogationStrategy.cs" />
     <Compile Include="Tables\SchemaRowToColumnMapper.cs" />
     <Compile Include="Tables\SystemTablesTableDefinitionInterrogationStrategy.cs" />
-    <Compile Include="Tables\TableDefinitionExtensionsCSharpBuilder.cs" />
+    <Compile Include="Database\TableCodeBuilder.cs" />
     <Compile Include="Tables\TableDefinitionExtensions.cs" />
     <Compile Include="Tables\TableDefinition.cs" />
     <Compile Include="Database\DatabaseActions.cs" />

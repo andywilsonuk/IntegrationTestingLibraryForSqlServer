@@ -2,10 +2,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Data;
 
-namespace IntegrationTestingLibraryForSqlServer.Tests.Tables
+namespace IntegrationTestingLibraryForSqlServer.Tests
 {
     [TestClass]
-    public class TableDefinitionExtensionsCSharpBuilderTests
+    public class TableCodeBuilderTests
     {
         [TestMethod]
         public void TableDefinitionToCSharp()
