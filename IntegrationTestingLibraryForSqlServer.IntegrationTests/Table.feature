@@ -6,12 +6,12 @@ Scenario: Table setup and verify
 	Given there is a test database
 	When the table "test" is created
 	| Name | Data Type | Size | Decimal Places | Allow Nulls | Identity Seed |
-	| Id   | int       |      |           | false       | 4             |
-	| Name | nvarchar  | 50   |           | true        |               |
+	| Id   | int       |      |                | false       | 4             |
+	| Name | nvarchar  | 50   |                | true        |               |
 	Then the definition of table "test" should match
 	| Name | Data Type | Size | Decimal Places | Allow Nulls | Identity Seed |
-	| Id   | int       |      |           | false       | 4             |
-	| Name | nvarchar  | 50   |           | true        |               |
+	| Id   | int       |      |                | false       | 4             |
+	| Name | nvarchar  | 50   |                | true        |               |
 
 @db
 Scenario: Table setup and verify with numeric column
@@ -22,9 +22,7 @@ Scenario: Table setup and verify with numeric column
 	| Decimal2 | decimal   |      |                | true        |               |
 	| Decimal3 | decimal   | 28   | 1              | false       |               |
 	| Decimal4 | decimal   | 10   | 2              | true        |               |
-	| Decimal5 | decimal   | 11   |                | true        |               |
-	| Id       | int       |      |                | false       | true          |
-	| Name     | nvarchar  | 50   |                | true        |               |
+	| Decimal5 | numeric   | 11   |                | true        |               |
 	Then the definition of table "test" should match
 	| Name     | Data Type | Size | Decimal Places | Allow Nulls | Identity Seed |
 	| Decimal1 | decimal   | 10   | 5              | true        |               |
@@ -32,8 +30,6 @@ Scenario: Table setup and verify with numeric column
 	| Decimal3 | decimal   | 28   | 1              | false       |               |
 	| Decimal4 | decimal   | 10   | 2              | true        |               |
 	| Decimal5 | decimal   | 11   | 0              | true        |               |
-	| Id       | int       |      |                | false       | true          |
-	| Name     | nvarchar  | 50   |                | true        |               |
 
 @db
 Scenario: Table setup - decimal places set without size

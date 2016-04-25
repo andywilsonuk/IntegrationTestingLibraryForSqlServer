@@ -181,22 +181,8 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table3.AddRow(new string[] {
                         "Decimal5",
-                        "decimal",
+                        "numeric",
                         "11",
-                        "",
-                        "true",
-                        ""});
-            table3.AddRow(new string[] {
-                        "Id",
-                        "int",
-                        "",
-                        "",
-                        "false",
-                        "true"});
-            table3.AddRow(new string[] {
-                        "Name",
-                        "nvarchar",
-                        "50",
                         "",
                         "true",
                         ""});
@@ -245,21 +231,7 @@ this.ScenarioSetup(scenarioInfo);
                         "0",
                         "true",
                         ""});
-            table4.AddRow(new string[] {
-                        "Id",
-                        "int",
-                        "",
-                        "",
-                        "false",
-                        "true"});
-            table4.AddRow(new string[] {
-                        "Name",
-                        "nvarchar",
-                        "50",
-                        "",
-                        "true",
-                        ""});
-#line 28
+#line 26
  testRunner.Then("the definition of table \"test\" should match", ((string)(null)), table4, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -273,9 +245,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Table setup - decimal places set without size", new string[] {
                         "db"});
-#line 39
+#line 35
 this.ScenarioSetup(scenarioInfo);
-#line 40
+#line 36
  testRunner.Given("there is a test database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -288,7 +260,7 @@ this.ScenarioSetup(scenarioInfo);
                         "decimal",
                         "",
                         "2"});
-#line 41
+#line 37
  testRunner.Then("an attempt to create the table \"test\" with an invalid definition should fail", ((string)(null)), table5, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -302,9 +274,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Table setup - decimal places greater than size", new string[] {
                         "db"});
-#line 46
+#line 42
 this.ScenarioSetup(scenarioInfo);
-#line 47
+#line 43
  testRunner.Given("there is a test database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -317,7 +289,7 @@ this.ScenarioSetup(scenarioInfo);
                         "decimal",
                         "10",
                         "11"});
-#line 48
+#line 44
  testRunner.Then("an attempt to create the table \"test\" with an invalid definition should fail", ((string)(null)), table6, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -331,9 +303,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Table setup and verify subset", new string[] {
                         "db"});
-#line 53
+#line 49
 this.ScenarioSetup(scenarioInfo);
-#line 54
+#line 50
  testRunner.Given("there is a test database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -364,7 +336,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "true",
                         ""});
-#line 55
+#line 51
  testRunner.When("the table \"test\" is created", ((string)(null)), table7, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -388,7 +360,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "true",
                         ""});
-#line 60
+#line 56
  testRunner.Then("the definition of table \"test\" should contain", ((string)(null)), table8, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -402,9 +374,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Table populate", new string[] {
                         "db"});
-#line 66
+#line 62
 this.ScenarioSetup(scenarioInfo);
-#line 67
+#line 63
  testRunner.Given("there is a test database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -455,7 +427,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "false"});
-#line 68
+#line 64
  testRunner.And("the table \"test\" is created", ((string)(null)), table9, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
@@ -474,7 +446,7 @@ this.ScenarioSetup(scenarioInfo);
                         "2010-01-01",
                         "1234.50",
                         "02"});
-#line 77
+#line 73
  testRunner.When("table \"test\" is populated", ((string)(null)), table10, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
@@ -493,7 +465,7 @@ this.ScenarioSetup(scenarioInfo);
                         "2010-1-1",
                         "1234.5",
                         "2"});
-#line 80
+#line 76
  testRunner.Then("the table \"test\" should be populated with data", ((string)(null)), table11, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -507,9 +479,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Table populate with identity", new string[] {
                         "db"});
-#line 85
+#line 81
 this.ScenarioSetup(scenarioInfo);
-#line 86
+#line 82
  testRunner.Given("there is a test database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
@@ -533,7 +505,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "true",
                         ""});
-#line 87
+#line 83
  testRunner.And("the table \"test\" is created", ((string)(null)), table12, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
@@ -542,7 +514,7 @@ this.ScenarioSetup(scenarioInfo);
                         "First"});
             table13.AddRow(new string[] {
                         "Second"});
-#line 91
+#line 87
  testRunner.When("table \"test\" is populated", ((string)(null)), table13, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
@@ -554,7 +526,7 @@ this.ScenarioSetup(scenarioInfo);
             table14.AddRow(new string[] {
                         "6",
                         "Second"});
-#line 95
+#line 91
  testRunner.Then("the table \"test\" should be populated with data", ((string)(null)), table14, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -568,9 +540,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Table populate with null", new string[] {
                         "db"});
-#line 101
+#line 97
 this.ScenarioSetup(scenarioInfo);
-#line 102
+#line 98
  testRunner.Given("there is a test database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
@@ -594,7 +566,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "true",
                         ""});
-#line 103
+#line 99
  testRunner.And("the table \"test\" is created", ((string)(null)), table15, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
@@ -603,7 +575,7 @@ this.ScenarioSetup(scenarioInfo);
                         "2015-10-10"});
             table16.AddRow(new string[] {
                         "NULL"});
-#line 107
+#line 103
  testRunner.When("table \"test\" is populated supporting Null values", ((string)(null)), table16, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
@@ -615,7 +587,7 @@ this.ScenarioSetup(scenarioInfo);
             table17.AddRow(new string[] {
                         "71",
                         "NULL"});
-#line 111
+#line 107
  testRunner.Then("the table \"test\" should be populated with Id and dates", ((string)(null)), table17, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -629,9 +601,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a view based on a table", new string[] {
                         "db"});
-#line 117
+#line 113
 this.ScenarioSetup(scenarioInfo);
-#line 118
+#line 114
  testRunner.Given("there is a test database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
@@ -652,7 +624,7 @@ this.ScenarioSetup(scenarioInfo);
                         "50",
                         "",
                         "true"});
-#line 119
+#line 115
  testRunner.And("the table \"test\" is created", ((string)(null)), table18, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
@@ -664,9 +636,9 @@ this.ScenarioSetup(scenarioInfo);
             table19.AddRow(new string[] {
                         "2",
                         "Second"});
-#line 123
+#line 119
  testRunner.And("table \"test\" is populated", ((string)(null)), table19, "And ");
-#line 127
+#line 123
  testRunner.When("a view called \"testview\" of the table \"test\" is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
@@ -675,7 +647,7 @@ this.ScenarioSetup(scenarioInfo);
             table20.AddRow(new string[] {
                         "2",
                         "Second"});
-#line 128
+#line 124
  testRunner.Then("the view \"testview\" filtered to id 2 should be populated with data", ((string)(null)), table20, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -689,11 +661,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a view based on a table in a schema", new string[] {
                         "db"});
-#line 133
+#line 129
 this.ScenarioSetup(scenarioInfo);
-#line 134
+#line 130
  testRunner.Given("there is a test database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 135
+#line 131
  testRunner.And("the schema \"testSchema\" is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
@@ -714,12 +686,12 @@ this.ScenarioSetup(scenarioInfo);
                         "50",
                         "",
                         "true"});
-#line 136
+#line 132
  testRunner.And("the table \"testTable\" is created in the schema \"testSchema\"", ((string)(null)), table21, "And ");
-#line 140
+#line 136
  testRunner.When("the view \"testView\" of the table \"testTable\" is created in the schema \"testSchema" +
                     "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 141
+#line 137
  testRunner.Then("the table \"testTable\" exists in the schema \"testSchema\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -733,13 +705,13 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Schema creation", new string[] {
                         "db"});
-#line 144
+#line 140
 this.ScenarioSetup(scenarioInfo);
-#line 145
+#line 141
  testRunner.Given("there is a test database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 146
+#line 142
  testRunner.When("the schema \"testSchema\" is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 147
+#line 143
  testRunner.Then("the schema \"testSchema\" exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -753,11 +725,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Schema and table creation", new string[] {
                         "db"});
-#line 150
+#line 146
 this.ScenarioSetup(scenarioInfo);
-#line 151
+#line 147
  testRunner.Given("there is a test database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 152
+#line 148
  testRunner.When("the schema \"testSchema\" is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
@@ -778,9 +750,9 @@ this.ScenarioSetup(scenarioInfo);
                         "50",
                         "",
                         "true"});
-#line 153
+#line 149
  testRunner.And("the table \"testTable\" is created in schema \"testSchema\"", ((string)(null)), table22, "And ");
-#line 157
+#line 153
  testRunner.Then("the table \"testTable\" exists in the schema \"testSchema\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

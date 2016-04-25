@@ -16,15 +16,17 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         [When(@"the table ""(.*)"" is created")]
         public void WhenTheTableIsCreated(string tableName, Table table)
         {
-            var definition = new TableDefinition(tableName, table.CreateSet<ColumnDefinition>());
+            var definition = new TableDefinition(tableName);
+            definition.Columns.AddFromRaw(table.CreateSet<ColumnDefinitionRaw>());
             definition.CreateOrReplace(database);
         }
 
         [When(@"the table ""(.*)"" is created with a numeric column")]
         public void WhenTheTableIsCreatedWithANumericColumn(string tableName, Table table)
         {
-            var definition = new TableDefinition(tableName, table.CreateSet<ColumnDefinition>());
-            definition.CreateOrReplaceWithDecimalsAsNumerics(database);
+            var definition = new TableDefinition(tableName);
+            definition.Columns.AddFromRaw(table.CreateSet<ColumnDefinitionRaw>());
+            definition.CreateOrReplace(database);
         }
 
         [Given(@"table ""(.*)"" is populated")]

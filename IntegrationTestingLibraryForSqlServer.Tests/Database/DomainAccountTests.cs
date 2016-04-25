@@ -11,7 +11,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         readonly string qualifiedAccount = $"{domainName}\\{accountName}";
 
         [TestMethod]
-        public void DomainAccount_QualifiedConstructor()
+        public void QualifiedConstructor()
         {
             DomainAccount account = new DomainAccount(qualifiedAccount);
 
@@ -20,13 +20,13 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
         [TestMethod]
         [ExpectedException(typeof(ValidationException))]
-        public void DomainAccount_QualifiedConstructorMissingDomain()
+        public void QualifiedConstructorMissingDomain()
         {
             new DomainAccount(accountName);
         }
 
         [TestMethod]
-        public void DomainAccount_SplitConstructor()
+        public void SplitConstructor()
         {
             DomainAccount account = new DomainAccount(domainName, accountName);
 
@@ -34,7 +34,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void DomainAccount_Equality()
+        public void Equality()
         {
             DomainAccount account1 = new DomainAccount(qualifiedAccount);
             DomainAccount account2 = new DomainAccount(qualifiedAccount);
@@ -44,14 +44,14 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
         [TestMethod]
         [ExpectedException(typeof(ValidationException))]
-        public void DomainAccount_SplitConstructorMissingDomain()
+        public void SplitConstructorMissingDomain()
         {
             new DomainAccount(null, accountName);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ValidationException))]
-        public void DomainAccount_SplitConstructorMissingAccount()
+        public void SplitConstructorMissingAccount()
         {
             new DomainAccount(domainName, null);
         }

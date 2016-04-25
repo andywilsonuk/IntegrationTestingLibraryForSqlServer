@@ -8,7 +8,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Database
     public class SqlConnectionStringBuilderExtensionsTests
     {
         [TestMethod]
-        public void SqlConnectionStringBuilderExtensions_IsMasterCatalog()
+        public void IsMasterCatalog()
         {
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(@"server=(localdb)\MSSQLLocalDB;database=master;integrated security=True");
 
@@ -16,7 +16,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Database
         }
 
         [TestMethod]
-        public void SqlConnectionStringBuilderExtensions_IsMasterCatalogFalse()
+        public void IsMasterCatalogFalse()
         {
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(@"server=(localdb)\MSSQLLocalDB;database=Test2;integrated security=True");
 
@@ -24,7 +24,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Database
         }
 
         [TestMethod]
-        public void SqlConnectionStringBuilderExtensions_ToMasterCatalog()
+        public void ToMasterCatalog()
         {
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(@"server=(localdb)\MSSQLLocalDB;database=Test2;integrated security=True");
 

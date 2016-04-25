@@ -11,7 +11,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             new SqlConnectionStringBuilder(@"server=(localdb)\MSSQLLocalDB;database=Test2;integrated security=True");
 
         [TestMethod]
-        public void DatabaseActions_Constructor()
+        public void Constructor()
         {
             DatabaseActions databaseActions = new DatabaseActions(connectionDetails.ToString());
 
@@ -21,7 +21,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void DatabaseActions_ConstructorMaster()
+        public void ConstructorMaster()
         {
             connectionDetails.InitialCatalog = "master";
 
@@ -29,7 +29,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void DatabaseActions_IsLocalDb()
+        public void IsLocalDb()
         {
             DatabaseActions databaseActions = new DatabaseActions(connectionDetails.ToString());
 
@@ -37,7 +37,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void DatabaseActions_IsLocalDbFalse()
+        public void IsLocalDbFalse()
         {
             connectionDetails.DataSource = "server1";
 

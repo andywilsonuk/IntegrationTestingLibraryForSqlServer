@@ -58,7 +58,9 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
@@ -93,6 +95,7 @@
     <Compile Include="TableData\ValueCompare\Pipeline\TableDataDefaultValueComparerTests.cs" />
     <Compile Include="TableData\ValueCompare\Pipeline\TableDataValueComparerPipelineTests.cs" />
     <Compile Include="TableData\ValueCompare\TableDataCaseSensitiveStringValueComparerTests.cs" />
+    <Compile Include="Tables\ColumnDefinitionFactoryTests.cs" />
     <Compile Include="Tables\ColumnDefinitionTests.cs" />
     <Compile Include="Tables\SchemaRowToColumnMapperTests.cs" />
     <Compile Include="Tables\DataRecordToColumnMapperTests.cs" />
@@ -100,6 +103,7 @@
     <Compile Include="Tables\TableDefinitionExtensionsTests.cs" />
     <Compile Include="Tables\TableDefinitionTests.cs" />
     <Compile Include="Tables\TableInsertSqlGeneratorTests.cs" />
+    <Compile Include="Tables\ColumnDefinitionCollectionExtensionsTests.cs" />
     <Compile Include="Views\TableBackedViewDefinitionTests.cs" />
     <Compile Include="Views\TableBackedViewCreateSqlGeneratorTests.cs" />
     <None Include="packages.config" />
