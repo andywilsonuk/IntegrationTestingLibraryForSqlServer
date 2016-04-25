@@ -15,7 +15,8 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         [When(@"the table-backed view ""(.*)"" is created")]
         public void WhenTheTable_BackedViewIsCreated(string viewName, Table table)
         {
-            var definition = new TableDefinition("tbl" + viewName, table.CreateSet<ColumnDefinition>());
+            var definition = new TableDefinition("tbl" + viewName); 
+            definition.Columns.AddFromRaw(table.CreateSet<ColumnDefinitionRaw>());
             definition.CreateOrReplace(database);
             definition.CreateView(this.database, viewName);
         }
@@ -23,7 +24,8 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         [Then(@"the definition of view ""(.*)"" should match")]
         public void ThenTheDefinitionOfViewShouldMatch(string viewName, Table table)
         {
-            var definition = new TableDefinition(viewName, table.CreateSet<ColumnDefinition>());
+            var definition = new TableDefinition(viewName);
+            definition.Columns.AddFromRaw(table.CreateSet<ColumnDefinitionRaw>());
             var checker = new ViewCheck(this.database.ConnectionString);
             checker.VerifyMatch(definition);
         }
@@ -31,7 +33,8 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         [Then(@"the definition of view ""(.*)"" should match SystemTables definition")]
         public void ThenTheDefinitionOfViewShouldMatchSystemTablesDefinition(string viewName, Table table)
         {
-            var definition = new TableDefinition(viewName, table.CreateSet<ColumnDefinition>());
+            var definition = new TableDefinition(viewName);
+            definition.Columns.AddFromRaw(table.CreateSet<ColumnDefinitionRaw>());
             var checker = new ViewCheck(this.database.ConnectionString);
             checker.VerifyMatch(definition, TableDefinitionInterrogationStrategyType.SystemTables);
         }

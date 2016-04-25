@@ -25,7 +25,7 @@ namespace IntegrationTestingLibraryForSqlServer
             if (tableData == null) throw new ArgumentNullException("tableData");
             if (tableData.ColumnNames == null || !tableData.ColumnNames.Any())
                 tableData = new CollectionPopulatedTableData(definition.Columns.Select(x => x.Name).ToList(), tableData.Rows);
-            new TableActions(database.ConnectionString).Insert(definition.Name, tableData, definition.Schema);
+            new TableActions(database.ConnectionString).Insert(definition.Name.ObjectName, tableData, definition.Name.SchemaName);
         }
 
         public static void VerifyMatch(this TableDefinition definition, DatabaseActions database)
@@ -45,7 +45,7 @@ namespace IntegrationTestingLibraryForSqlServer
         public static void CreateView(this TableDefinition definition, DatabaseActions database, string viewName)
         {
             if (database == null) throw new ArgumentNullException("database");
-            new TableActions(database.ConnectionString).CreateView(definition.Name, viewName, definition.Schema);
+            new TableActions(database.ConnectionString).CreateView(definition.Name.ObjectName, viewName, definition.Name.SchemaName);
         }
     }
 }

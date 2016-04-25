@@ -7,19 +7,16 @@ namespace IntegrationTestingLibraryForSqlServer
 {
     public class TableBackedViewDefinition
     {
-        public TableBackedViewDefinition(string name, string backingTable, string schema = Constants.DEFAULT_SCHEMA)
+        public TableBackedViewDefinition(DatabaseObjectName name, DatabaseObjectName backingTable)
         {
-            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException("name");
-            if (string.IsNullOrWhiteSpace(backingTable)) throw new ArgumentNullException("backingTable");
-            if (string.IsNullOrWhiteSpace(schema)) throw new ArgumentNullException("schema");
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            if (backingTable == null) throw new ArgumentNullException(nameof(backingTable));
 
-            this.Name = name;
-            this.BackingTable = backingTable;
-            this.Schema = schema;
+            Name = name;
+            BackingTable = backingTable;
         }
 
-        public string Name { get; private set; }
-        public string BackingTable { get; private set; }
-        public string Schema { get; private set; }
+        public DatabaseObjectName Name { get; private set; }
+        public DatabaseObjectName BackingTable { get; private set; }
     }
 }

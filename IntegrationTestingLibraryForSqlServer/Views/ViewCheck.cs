@@ -9,37 +9,20 @@ namespace IntegrationTestingLibraryForSqlServer
         {
             this.connectionString = connectionString;
         }
-
         public void VerifyMatch(TableDefinition expected, TableDefinitionInterrogationStrategyType strategyType = TableDefinitionInterrogationStrategyType.DataReaderSchema)
         {
-            expected.VerifyEqual(GetDefinition(expected.Name, expected.Schema, strategyType));
+            expected.VerifyEqual(GetDefinition(expected.Name, strategyType));
         }
-
         public void VerifyMatchOrSubset(TableDefinition expected, TableDefinitionInterrogationStrategyType strategyType = TableDefinitionInterrogationStrategyType.DataReaderSchema)
         {
-            expected.VerifyEqualOrSubsetOf(GetDefinition(expected.Name, expected.Schema, strategyType));
+            expected.VerifyEqualOrSubsetOf(GetDefinition(expected.Name, strategyType));
         }
 
-        private TableDefinition GetDefinition(string tableName)
-        {
-            return GetDefinition(tableName, Constants.DEFAULT_SCHEMA, TableDefinitionInterrogationStrategyType.DataReaderSchema);
-        }
-
-        private TableDefinition GetDefinition(string tableName, string schemaName)
-        {
-            return GetDefinition(tableName, schemaName, TableDefinitionInterrogationStrategyType.DataReaderSchema);
-        }
-
-        private TableDefinition GetDefinition(string tableName, TableDefinitionInterrogationStrategyType strategyType)
-        {
-            return GetDefinition(tableName, Constants.DEFAULT_SCHEMA, strategyType);
-        }
-
-        private TableDefinition GetDefinition(string tableName, string schemaName, TableDefinitionInterrogationStrategyType strategyType)
+        private TableDefinition GetDefinition(DatabaseObjectName tableName, TableDefinitionInterrogationStrategyType strategyType)
         {
             var factory = new TableDefinitionInterrogationStrategyFactory(connectionString);
-            var strategy = factory.GetTableDefinitionInterrogationStrategy(tableName, schemaName, strategyType);
-            return strategy.GetTableDefinition(tableName, schemaName);
+            var strategy = factory.GetTableDefinitionInterrogationStrategy(tableName.ObjectName, tableName.SchemaName, strategyType);
+            return strategy.GetTableDefinition(tableName.ObjectName, tableName.SchemaName);
         }
     }
 }

@@ -43,7 +43,8 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         public void GivenTheTableIsCreatedInTheSchema(string tableName, string schemaName, Table table)
         {
             var tableActions = new TableActions(database.ConnectionString);
-            var def = new TableDefinition(tableName, table.CreateSet<ColumnDefinition>(), schemaName);
+            var def = new TableDefinition(new DatabaseObjectName(schemaName, tableName));
+            def.Columns.AddFromRaw(table.CreateSet<ColumnDefinitionRaw>());
             tableActions.Create(def);
         }
 

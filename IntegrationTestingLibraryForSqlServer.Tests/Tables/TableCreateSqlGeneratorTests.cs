@@ -10,20 +10,13 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         TableCreateSqlGenerator generator = new TableCreateSqlGenerator();
         TableDefinition definition = new TableDefinition("t1");
         private const string TEST_SCHEMA = "testSchema";
-        TableDefinition definitionWithSchema = new TableDefinition("t1", TEST_SCHEMA);
+        TableDefinition definitionWithSchema = new TableDefinition(new DatabaseObjectName(TEST_SCHEMA, "t1"));
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void CreateTableNullThrowsException()
         {
             generator.Sql(null);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void CreateTableNullSchemaThrowsException()
-        {
-            TableDefinition definitionWithNullSchema = new TableDefinition("t1", null);
         }
 
         [TestMethod]

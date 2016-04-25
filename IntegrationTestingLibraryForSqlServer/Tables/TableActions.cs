@@ -33,24 +33,29 @@ namespace IntegrationTestingLibraryForSqlServer
             }
         }
 
-        public void Drop(string name, string schema = Constants.DEFAULT_SCHEMA)
+        public void Drop(string name)
+        {
+            Drop(DatabaseObjectName.FromName(name));
+        }
+
+        public void Drop(DatabaseObjectName name)
         {
             using (var connection = new SqlConnection(this.connectionString))
             {
-                connection.Execute(dropTableCommand, schema, name);
+                connection.Execute(dropTableCommand, name.Qualified);
             }
         }
 
         public void CreateOrReplace(TableDefinition definition)
         {
-            this.Drop(definition.Name, definition.Schema);
-            this.Create(definition);
+            Drop(definition.Name);
+            Create(definition);
         }
 
         public void CreateOrReplaceWithDecimalsAsNumerics(TableDefinition definition)
         {
-            this.Drop(definition.Name, definition.Schema);
-            this.CreateWithDecimalsAsNumerics(definition);
+            Drop(definition.Name);
+            CreateWithDecimalsAsNumerics(definition);
         }
 
         public void Insert(string name, TableData table, string schema = Constants.DEFAULT_SCHEMA)
@@ -78,7 +83,7 @@ namespace IntegrationTestingLibraryForSqlServer
             if (string.IsNullOrWhiteSpace(viewName)) throw new ArgumentNullException("viewName");
             if (string.IsNullOrWhiteSpace(schema)) throw new ArgumentNullException("schema");
 
-            var definition = new TableBackedViewDefinition(viewName, tableName, schema);
+            var definition = new TableBackedViewDefinition(new DatabaseObjectName(schema, viewName), new DatabaseObjectName(schema, tableName));
 
             using (var connection = new SqlConnection(this.connectionString))
             {
@@ -86,6 +91,6 @@ namespace IntegrationTestingLibraryForSqlServer
             }
         }
 
-        private const string dropTableCommand = @"if exists (select * from sys.objects where object_id = object_id('[{0}].[{1}]') and type = (N'U')) drop table [{0}].[{1}]";
+        private const string dropTableCommand = @"if exists (select * from sys.objects where object_id = object_id('{0}') and type = (N'U')) drop table {0}";
     }
 }

@@ -17,7 +17,7 @@ namespace IntegrationTestingLibraryForSqlServer
         {
             if (definition == null) throw new ArgumentNullException("definition");
             definition.EnsureValid();
-            return string.Format(CreateTableFormat, definition.Schema, definition.Name, this.CreateCommaSeparatedColumns(definition));
+            return string.Format(CreateTableFormat, definition.Name.Qualified, this.CreateCommaSeparatedColumns(definition));
         }
 
         public string SqlWithDecimalsAsNumerics(TableDefinition definition)
@@ -25,7 +25,7 @@ namespace IntegrationTestingLibraryForSqlServer
             if (definition == null) throw new ArgumentNullException("definition");
             definition.EnsureValid();
             createWithDecimalsAsNumerics = true;
-            return string.Format(CreateTableFormat, definition.Schema, definition.Name, this.CreateCommaSeparatedColumns(definition));
+            return string.Format(CreateTableFormat, definition.Name.Qualified, this.CreateCommaSeparatedColumns(definition));
         }
 
         private string CreateCommaSeparatedColumns(TableDefinition definition)
@@ -81,6 +81,6 @@ namespace IntegrationTestingLibraryForSqlServer
             return column.AllowNulls ? "NULL" : "NOT NULL";
         }
 
-        private const string CreateTableFormat = "CREATE TABLE [{0}].[{1}] ({2})";
+        private const string CreateTableFormat = "CREATE TABLE {0} ({1})";
     }
 }

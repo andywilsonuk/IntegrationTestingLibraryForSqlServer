@@ -18,10 +18,10 @@ namespace IntegrationTestingLibraryForSqlServer
                 c.scale,
                 c.is_nullable,
                 c.is_identity,
-                IDENT_SEED('[{0}].[{1}]')
+                IDENT_SEED('{0}.{1}')
             FROM sys.columns c
             INNER JOIN sys.types t ON c.user_type_id = t.user_type_id
-            WHERE c.object_id = OBJECT_ID('[{0}].[{1}]')";
+            WHERE c.object_id = OBJECT_ID('{0}.{1}')";
 
         public SystemTablesTableDefinitionInterrogationStrategy(string connectionString)
         {
@@ -29,17 +29,17 @@ namespace IntegrationTestingLibraryForSqlServer
             this.connectionString = connectionString;
         }
 
-        public TableDefinition GetTableDefinition(string tableName, string schemaName = Constants.DEFAULT_SCHEMA)
+        public TableDefinition GetTableDefinition(string tableName, string schemaName)
         {
             var mapper = new DataRecordToColumnMapper();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                return new TableDefinition(tableName,
-                    connection.Execute<ColumnDefinition>(
+                return new TableDefinition(new DatabaseObjectName(schemaName, tableName),
+                    connection.Execute(
                         (reader) => mapper.ToColumnDefinition(reader),
                         TableDefinitionQuery,
-                        schemaName, tableName), schemaName);
+                        schemaName, tableName));
             }
         }
     }

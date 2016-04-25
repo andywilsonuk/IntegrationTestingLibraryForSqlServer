@@ -69,6 +69,7 @@
     <Compile Include="Database\DatabaseActionsTests.cs" />
     <Compile Include="Database\DomainAccountTests.cs" />
     <Compile Include="Database\SqlConnectionStringBuilderExtensionsTests.cs" />
+    <Compile Include="Database\DatabaseObjectNameTests.cs" />
     <Compile Include="Procedures\ProcedureCreateSqlGeneratorTests.cs" />
     <Compile Include="Procedures\ProcedureDefinitionTests.cs" />
     <Compile Include="Procedures\ProcedureParameterTests.cs" />

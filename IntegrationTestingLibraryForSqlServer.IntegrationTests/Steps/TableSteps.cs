@@ -57,7 +57,8 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         [Then(@"the definition of table ""(.*)"" should match")]
         public void ThenTheDefinitionOfTableShouldMatch(string tableName, Table table)
         {
-            var definition = new TableDefinition(tableName, table.CreateSet<ColumnDefinition>());
+            var definition = new TableDefinition(tableName);
+            definition.Columns.AddFromRaw(table.CreateSet<ColumnDefinitionRaw>());
             definition.VerifyMatch(database);
         }
 
@@ -79,7 +80,8 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         [Then(@"the definition of table ""(.*)"" should contain")]
         public void ThenTheDefinitionOfTableShouldContain(string tableName, Table table)
         {
-            var definition = new TableDefinition(tableName, table.CreateSet<ColumnDefinition>());
+            var definition = new TableDefinition(tableName);
+            definition.Columns.AddFromRaw(table.CreateSet<ColumnDefinitionRaw>());
             definition.VerifyMatchOrSubset(database);
         }
 
