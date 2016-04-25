@@ -21,14 +21,6 @@ namespace IntegrationTestingLibraryForSqlServer
             }
         }
 
-        public void CreateWithDecimalsAsNumerics(TableDefinition definition)
-        {
-            using (var connection = new SqlConnection(connectionString))
-            {
-                connection.Execute(new TableCreateSqlGenerator().SqlWithDecimalsAsNumerics(definition));
-            }
-        }
-
         public void Drop(string name)
         {
             Drop(DatabaseObjectName.FromName(name));
@@ -46,12 +38,6 @@ namespace IntegrationTestingLibraryForSqlServer
         {
             Drop(definition.Name);
             Create(definition);
-        }
-
-        public void CreateOrReplaceWithDecimalsAsNumerics(TableDefinition definition)
-        {
-            Drop(definition.Name);
-            CreateWithDecimalsAsNumerics(definition);
         }
 
         public void Insert(string tableName, TableData tableData)

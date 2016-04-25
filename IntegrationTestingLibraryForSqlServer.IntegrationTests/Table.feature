@@ -27,7 +27,7 @@ Scenario: Table setup and verify with numeric column
 	| Name     | Data Type | Size | Decimal Places | Allow Nulls | Identity Seed |
 	| Decimal1 | decimal   | 10   | 5              | true        |               |
 	| Decimal2 | decimal   | 18   | 0              | true        |               |
-	| Decimal3 | decimal   | 28   | 1              | false       |               |
+	| Decimal3 | numeric   | 28   | 1              | false       |               |
 	| Decimal4 | decimal   | 10   | 2              | true        |               |
 	| Decimal5 | decimal   | 11   | 0              | true        |               |
 
@@ -152,3 +152,12 @@ Scenario: Schema and table creation
 	| Name | nvarchar  | 50   |                | true        |
 	Then the table "testTable" exists in the schema "testSchema"
 
+@db
+Scenario: Table with numeric column
+	Given there is a test database
+	When the table "test" is created outside of the library
+	| Name     | Data Type | Size | Decimal Places | Allow Nulls |
+	| Decimal1 | numeric   | 10   | 5              | true        |
+	Then the definition of table "test" should match
+	| Name     | Data Type | Size | Decimal Places | Allow Nulls |
+	| Decimal1 | decimal   | 10   | 5              | true        |

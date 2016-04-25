@@ -212,7 +212,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table4.AddRow(new string[] {
                         "Decimal3",
-                        "decimal",
+                        "numeric",
                         "28",
                         "1",
                         "false",
@@ -754,6 +754,52 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the table \"testTable\" is created in schema \"testSchema\"", ((string)(null)), table22, "And ");
 #line 153
  testRunner.Then("the table \"testTable\" exists in the schema \"testSchema\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Table with numeric column")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Table")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("db")]
+        public virtual void TableWithNumericColumn()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Table with numeric column", new string[] {
+                        "db"});
+#line 156
+this.ScenarioSetup(scenarioInfo);
+#line 157
+ testRunner.Given("there is a test database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Data Type",
+                        "Size",
+                        "Decimal Places",
+                        "Allow Nulls"});
+            table23.AddRow(new string[] {
+                        "Decimal1",
+                        "numeric",
+                        "10",
+                        "5",
+                        "true"});
+#line 158
+ testRunner.When("the table \"test\" is created outside of the library", ((string)(null)), table23, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Data Type",
+                        "Size",
+                        "Decimal Places",
+                        "Allow Nulls"});
+            table24.AddRow(new string[] {
+                        "Decimal1",
+                        "decimal",
+                        "10",
+                        "5",
+                        "true"});
+#line 161
+ testRunner.Then("the definition of table \"test\" should match", ((string)(null)), table24, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

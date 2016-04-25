@@ -11,20 +11,10 @@ namespace IntegrationTestingLibraryForSqlServer
 {
     public class TableCreateSqlGenerator
     {
-        private bool createWithDecimalsAsNumerics;
-
         public string Sql(TableDefinition definition)
         {
             if (definition == null) throw new ArgumentNullException("definition");
             definition.EnsureValid();
-            return string.Format(CreateTableFormat, definition.Name.Qualified, this.CreateCommaSeparatedColumns(definition));
-        }
-
-        public string SqlWithDecimalsAsNumerics(TableDefinition definition)
-        {
-            if (definition == null) throw new ArgumentNullException("definition");
-            definition.EnsureValid();
-            createWithDecimalsAsNumerics = true;
             return string.Format(CreateTableFormat, definition.Name.Qualified, this.CreateCommaSeparatedColumns(definition));
         }
 
@@ -60,7 +50,7 @@ namespace IntegrationTestingLibraryForSqlServer
                     return string.Format("{0}({1})", column.DataType, size);
                 case SqlDbType.Decimal:
                     if (!column.Size.HasValue && !column.DecimalPlaces.HasValue) break;
-                    var colDataType = createWithDecimalsAsNumerics ? Constants.NUMERIC_COLUMN_NAME : column.DataType.ToString();
+                    var colDataType = column.DataType.ToString();
                     var colSize = column.Size ?? 0;
                     var colDecimalPlaces = column.DecimalPlaces ?? 0;
                     return string.Format("{0}({1},{2})", colDataType, colSize, colDecimalPlaces);

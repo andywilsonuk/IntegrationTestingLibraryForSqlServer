@@ -120,6 +120,22 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
             expected.VerifyMatch(actual, TableDataComparers.UnorderedRowNamedColumn);
         }
 
+        [When(@"the table ""(.*)"" is created outside of the library")]
+        public void WhenTheTableIsCreatedOutsideOfTheLibrary(string tableName, Table table)
+        {
+            var columns = string.Join(",", table.CreateSet<ColumnDefinitionRaw>().Select(x => string.Format("[{0}] {1}({2},{3}){4}", x.Name, x.DataType, x.Size, x.DecimalPlaces, x.AllowNulls ? " NULL " : " NOT NULL")));
+
+            using (SqlConnection connection = new SqlConnection(database.ConnectionString))
+            {
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = string.Format("CREATE TABLE {0} ({1})", tableName, columns);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
         private TableData LoadTableDataFromSql(string sql)
         {
             using (SqlConnection connection = new SqlConnection(database.ConnectionString))

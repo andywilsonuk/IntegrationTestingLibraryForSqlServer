@@ -13,12 +13,6 @@ namespace IntegrationTestingLibraryForSqlServer
             new TableActions(database.ConnectionString).CreateOrReplace(definition);
         }
 
-        public static void CreateOrReplaceWithDecimalsAsNumerics(this TableDefinition definition, DatabaseActions database)
-        {
-            if (database == null) throw new ArgumentNullException("database");
-            new TableActions(database.ConnectionString).CreateOrReplaceWithDecimalsAsNumerics(definition);
-        }
-
         public static void Insert(this TableDefinition definition, DatabaseActions database, TableData tableData)
         {
             if (database == null) throw new ArgumentNullException("database");
