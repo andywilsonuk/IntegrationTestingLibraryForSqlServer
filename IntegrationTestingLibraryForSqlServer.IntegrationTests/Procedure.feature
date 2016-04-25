@@ -10,13 +10,13 @@ Scenario: Procedure setup and verify
 	| Name     | nvarchar  | 50   |                | Input     |
 	| Decimal1 | decimal   | 10   | 5              | Input     |
 	| Decimal2 | decimal   | 10   |                | Input     |
-	| Decimal3 | decimal   |      |                | Input     |
+	| Decimal3 | numeric   |      |                | Input     |
 	Then the definition of procedure "test" should match
 	| Name     | Data Type | Size | Decimal Places | Direction |
 	| Id       | int       |      |                | Input     |
 	| Name     | nvarchar  | 50   |                | Input     |
 	| Decimal1 | decimal   | 10   | 5              | Input     |
-	| Decimal2 | decimal   | 10   | 0              | Input     |
+	| Decimal2 | numeric   | 10   | 0              | Input     |
 	| Decimal3 | decimal   | 18   | 0              | Input     |
 
 @db

@@ -36,10 +36,7 @@ namespace IntegrationTestingLibraryForSqlServer
         private SqlDbType GetDataType()
         {
             var dataTypeName = this.record.GetString(Columns.DataType);
-            if (dataTypeName == Constants.NUMERIC_COLUMN_NAME)
-            {
-                return SqlDbType.Decimal;
-            }
+            if (string.Equals("numeric", dataTypeName, StringComparison.CurrentCultureIgnoreCase)) return SqlDbType.Decimal;
             return (SqlDbType)Enum.Parse(typeof(SqlDbType), dataTypeName, true);
         }
 

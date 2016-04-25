@@ -48,7 +48,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants.cs" />
     <Compile Include="Database\DatabaseObjectName.cs" />
     <Compile Include="Database\DataTypeDefaults.cs" />
     <Compile Include="Database\DomainAccount.cs" />
