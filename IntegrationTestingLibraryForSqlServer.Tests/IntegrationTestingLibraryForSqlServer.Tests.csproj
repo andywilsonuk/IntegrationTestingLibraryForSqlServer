@@ -105,6 +105,7 @@
     <Compile Include="Tables\TableDefinitionTests.cs" />
     <Compile Include="Tables\TableInsertSqlGeneratorTests.cs" />
     <Compile Include="Tables\ColumnDefinitionCollectionExtensionsTests.cs" />
+    <Compile Include="Tables\TableDefinitionExtensionsCSharpBuilderTests.cs" />
     <Compile Include="Views\TableBackedViewDefinitionTests.cs" />
     <Compile Include="Views\TableBackedViewCreateSqlGeneratorTests.cs" />
     <None Include="packages.config" />

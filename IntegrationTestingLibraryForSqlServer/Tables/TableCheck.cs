@@ -20,7 +20,7 @@ namespace IntegrationTestingLibraryForSqlServer
             expected.VerifyEqualOrSubsetOf(GetDefinition(expected.Name));
         }
 
-        private TableDefinition GetDefinition(DatabaseObjectName tableName)
+        public TableDefinition GetDefinition(DatabaseObjectName tableName)
         {
             var factory = new TableDefinitionInterrogationStrategyFactory(connectionString);
             var strategy = factory.GetTableDefinitionInterrogationStrategy(TableDefinitionInterrogationStrategyType.SystemTables);
