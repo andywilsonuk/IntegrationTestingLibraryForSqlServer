@@ -23,8 +23,8 @@ namespace IntegrationTestingLibraryForSqlServer
         private TableDefinition GetDefinition(DatabaseObjectName tableName)
         {
             var factory = new TableDefinitionInterrogationStrategyFactory(connectionString);
-            var strategy = factory.GetTableDefinitionInterrogationStrategy(tableName.ObjectName, tableName.SchemaName, TableDefinitionInterrogationStrategyType.SystemTables);
-            return strategy.GetTableDefinition(tableName.ObjectName, tableName.SchemaName);
+            var strategy = factory.GetTableDefinitionInterrogationStrategy(TableDefinitionInterrogationStrategyType.SystemTables);
+            return strategy.GetTableDefinition(tableName);
         }
     }
 }

@@ -52,7 +52,7 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         public void WhenTheViewOfTheTableIsCreatedInTheSchema(string viewName, string tableName, string schemaName)
         {
             var tableActions = new TableActions(database.ConnectionString);
-            tableActions.CreateView(tableName, viewName, schemaName);
+            tableActions.CreateView(new DatabaseObjectName(schemaName, tableName), new DatabaseObjectName(schemaName, viewName));
         }
 
         [Then(@"the table ""(.*)"" exists in the schema ""(.*)""")]

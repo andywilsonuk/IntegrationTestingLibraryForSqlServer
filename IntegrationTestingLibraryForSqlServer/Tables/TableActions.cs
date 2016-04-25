@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IntegrationTestingLibraryForSqlServer
 {
@@ -19,7 +15,7 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public void Create(TableDefinition definition)
         {
-            using (var connection = new SqlConnection(this.connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 connection.Execute(new TableCreateSqlGenerator().Sql(definition));
             }
@@ -27,7 +23,7 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public void CreateWithDecimalsAsNumerics(TableDefinition definition)
         {
-            using (var connection = new SqlConnection(this.connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 connection.Execute(new TableCreateSqlGenerator().SqlWithDecimalsAsNumerics(definition));
             }
@@ -40,7 +36,7 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public void Drop(DatabaseObjectName name)
         {
-            using (var connection = new SqlConnection(this.connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 connection.Execute(dropTableCommand, name.Qualified);
             }
@@ -58,32 +54,35 @@ namespace IntegrationTestingLibraryForSqlServer
             CreateWithDecimalsAsNumerics(definition);
         }
 
-        public void Insert(string name, TableData table, string schema = Constants.DEFAULT_SCHEMA)
+        public void Insert(string tableName, TableData tableData)
         {
-            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException("name");
-            if (table == null) throw new ArgumentNullException("table");
-            if (string.IsNullOrWhiteSpace(schema)) throw new ArgumentNullException("schema");
+            Insert(DatabaseObjectName.FromName(tableName), tableData);
+        }
 
-            bool hasColumnNames = table.ColumnNames != null && !table.ColumnNames.Equals(Enumerable.Empty<string>());
+        public void Insert(DatabaseObjectName tableName, TableData tableData)
+        {
+            if (tableName == null) throw new ArgumentNullException(nameof(tableName));
+            if (tableData == null) throw new ArgumentNullException(nameof(tableData));
+
+            bool hasColumnNames = tableData.ColumnNames != null && !tableData.ColumnNames.Equals(Enumerable.Empty<string>());
             var generator = new TableInsertSqlGenerator();
             using (var connection = new SqlConnection(this.connectionString))
             {
-                foreach (var row in table.Rows)
+                foreach (var row in tableData.Rows)
                 {
-                    string command = hasColumnNames ? generator.Sql(name, table.ColumnNames, schema) : generator.Sql(name, row.Count(), schema);
+                    string command = hasColumnNames ? generator.Sql(tableName, tableData.ColumnNames) : generator.Sql(tableName, row.Count());
 
                     connection.ExecuteWithParameters(command, row);
                 }
             }
         }
 
-        public void CreateView(string tableName, string viewName, string schema = Constants.DEFAULT_SCHEMA)
+        public void CreateView(DatabaseObjectName tableName, DatabaseObjectName viewName)
         {
-            if (string.IsNullOrWhiteSpace(tableName)) throw new ArgumentNullException("tableName");
-            if (string.IsNullOrWhiteSpace(viewName)) throw new ArgumentNullException("viewName");
-            if (string.IsNullOrWhiteSpace(schema)) throw new ArgumentNullException("schema");
+            if (tableName == null) throw new ArgumentNullException(nameof(tableName));
+            if (viewName == null) throw new ArgumentNullException(nameof(viewName));
 
-            var definition = new TableBackedViewDefinition(new DatabaseObjectName(schema, viewName), new DatabaseObjectName(schema, tableName));
+            var definition = new TableBackedViewDefinition(viewName, tableName);
 
             using (var connection = new SqlConnection(this.connectionString))
             {

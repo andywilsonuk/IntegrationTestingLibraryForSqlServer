@@ -1,39 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IntegrationTestingLibraryForSqlServer
 {
     public class TableInsertSqlGenerator
     {
-        public string Sql(string name, IEnumerable<string> columnNames, string schema = Constants.DEFAULT_SCHEMA)
+        public string Sql(DatabaseObjectName name, IEnumerable<string> columnNames)
         {
-            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException("name");
-            if (string.IsNullOrWhiteSpace(schema)) throw new ArgumentNullException("schema");
+            if (name == null) throw new ArgumentNullException(nameof(name));
             if (columnNames == null || columnNames == Enumerable.Empty<string>()) throw new ArgumentNullException("columnNames");
 
             return string.Format(
                 InsertTableFormat,
-                schema,
                 name,
                 this.GetColumnNames(columnNames),
                 this.BindingMarkers(columnNames.Count()));
         }
 
-        public string Sql(string name, int columnCount, string schema = Constants.DEFAULT_SCHEMA)
+        public string Sql(DatabaseObjectName name, int columnCount)
         {
-            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException("name");
-            if (string.IsNullOrWhiteSpace(schema)) throw new ArgumentNullException("schema");
+            if (name == null) throw new ArgumentNullException(nameof(name));
             if (columnCount < 1) throw new ArgumentException("The column count must be greater than zero", "columnCount");
 
             return string.Format(
                 InsertTableFormat,
-                schema,
                 name,
                 null,
                 this.BindingMarkers(columnCount));
@@ -49,6 +41,6 @@ namespace IntegrationTestingLibraryForSqlServer
             return string.Join(",", Enumerable.Range(0, columnCount).Select(x => "@" + x));
         }
 
-        private const string InsertTableFormat = "INSERT INTO [{0}].[{1}]{2} SELECT {3}";
+        private const string InsertTableFormat = "INSERT INTO {0}{1} SELECT {2}";
     }
 }

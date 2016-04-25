@@ -35,7 +35,7 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         {
             var tableActions = new TableActions(database.ConnectionString);
             var tableData = new CollectionPopulatedTableData(table.Header, table.Rows.Select(x => x.Values));
-            tableActions.Insert(tableName, tableData);
+            tableActions.Insert(DatabaseObjectName.FromName(tableName), tableData);
         }
 
         [When(@"table ""(.*)"" is populated supporting Null values")]
@@ -44,14 +44,14 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
             var tableActions = new TableActions(database.ConnectionString);
             var tableData = new CollectionPopulatedTableData(table.Header, table.Rows.Select(x => x.Values));
             tableData.TransformData(new TableDataNullValueTransformer());
-            tableActions.Insert(tableName, tableData);
+            tableActions.Insert(DatabaseObjectName.FromName(tableName), tableData);
         }
 
         [When(@"a view called ""(.*)"" of the table ""(.*)"" is created")]
         public void WhenAViewCalledOfTheTableIsCreated(string viewName, string tableName)
         {
             var tableActions = new TableActions(database.ConnectionString);
-            tableActions.CreateView(tableName, viewName);
+            tableActions.CreateView(DatabaseObjectName.FromName(tableName), DatabaseObjectName.FromName(viewName));
         }
 
         [Then(@"the definition of table ""(.*)"" should match")]
