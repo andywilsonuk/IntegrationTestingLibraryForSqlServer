@@ -21,17 +21,17 @@ namespace IntegrationTestingLibraryForSqlServer
         public void VerifyMatch(ProcedureDefinition expected)
         {
             expected.EnsureValid(false);
-            var actual = this.GetDefinition(expected.Name);
+            var actual = GetDefinition(expected.Name);
             expected.VerifyEqual(actual);
         }
 
-        public ProcedureDefinition GetDefinition(string name)
+        public ProcedureDefinition GetDefinition(DatabaseObjectName name)
         {
-            using (var connection = new SqlConnection(this.connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 using (var command = connection.CreateCommand())
                 {
-                    command.CommandText = name;
+                    command.CommandText = name.Qualified;
                     command.CommandType = CommandType.StoredProcedure;
                     connection.Open();
                     SqlCommandBuilder.DeriveParameters(command);

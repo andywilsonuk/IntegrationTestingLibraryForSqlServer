@@ -26,6 +26,11 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public void Drop(string name)
         {
+            Drop(DatabaseObjectName.FromName(name));
+        }
+
+        public void Drop(DatabaseObjectName name)
+        {
             using (var connection = new SqlConnection(this.connectionString))
             {
                 connection.Execute(dropProcedureCommand, name);
@@ -34,10 +39,10 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public void CreateOrReplace(ProcedureDefinition parameters)
         {
-            this.Drop(parameters.Name);
-            this.Create(parameters);
+            Drop(parameters.Name);
+            Create(parameters);
         }
 
-        private const string dropProcedureCommand = @"if exists (select * from sys.objects where object_id = object_id('{0}') and type = (N'P')) drop procedure [{0}]";
+        private const string dropProcedureCommand = @"if exists (select * from sys.objects where object_id = object_id('{0}') and type = (N'P')) drop procedure {0}";
     }
 }

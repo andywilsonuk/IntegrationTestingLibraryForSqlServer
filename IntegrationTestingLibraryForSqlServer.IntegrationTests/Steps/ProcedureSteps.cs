@@ -17,7 +17,7 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         [Then(@"the definition of procedure ""(.*)"" should match")]
         public void ThenTheDefinitionOfProcedureShouldMatch(string procedureName, Table table)
         {
-            ProcedureDefinition definition = new ProcedureDefinition(procedureName, table.CreateSet<ProcedureParameter>());
+            ProcedureDefinition definition = new ProcedureDefinition(DatabaseObjectName.FromName(procedureName), table.CreateSet<ProcedureParameter>());
             definition.VerifyMatch(database);
         }
 
@@ -25,7 +25,7 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         [When(@"the procedure ""(.*)"" is created with body ""(.*)""")]
         public void GivenTheProcedureIsCreatedWithBody(string procedureName, string body, Table table)
         {
-            ProcedureDefinition definition = new ProcedureDefinition(procedureName, table.CreateSet<ProcedureParameter>())
+            ProcedureDefinition definition = new ProcedureDefinition(DatabaseObjectName.FromName(procedureName), table.CreateSet<ProcedureParameter>())
             {
                 Body = body
             };

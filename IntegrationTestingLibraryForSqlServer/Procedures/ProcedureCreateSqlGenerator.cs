@@ -15,12 +15,12 @@ namespace IntegrationTestingLibraryForSqlServer
         {
             if (definition == null) throw new ArgumentNullException("definition");
             definition.EnsureValid(true);
-            return string.Format(CreateProcedureFormat, definition.Name, this.CreateCommaSeparatedParameters(definition), definition.Body);
+            return string.Format(CreateProcedureFormat, definition.Name.Qualified, CreateCommaSeparatedParameters(definition), definition.Body);
         }
 
         private string CreateCommaSeparatedParameters(ProcedureDefinition definition)
         {
-            return string.Join(",", definition.ParametersWithoutReturnValue.Select(x => this.GetFormattedParameterLine(x)));
+            return string.Join(",", definition.ParametersWithoutReturnValue.Select(x => GetFormattedParameterLine(x)));
         }
 
         private string GetFormattedParameterLine(ProcedureParameter parameter)
@@ -28,8 +28,8 @@ namespace IntegrationTestingLibraryForSqlServer
             return string.Format(
                 "{0} {1}{2}",
                 parameter.QualifiedName,
-                this.GetFormattedDataType(parameter),
-                this.GetFormattedDirection(parameter));
+                GetFormattedDataType(parameter),
+                GetFormattedDirection(parameter));
         }
 
         private string GetFormattedDataType(ProcedureParameter parameter)
@@ -59,6 +59,6 @@ namespace IntegrationTestingLibraryForSqlServer
             return " OUTPUT";
         }
 
-        private const string CreateProcedureFormat = "create procedure [{0}] {1} as begin {2} end";
+        private const string CreateProcedureFormat = "create procedure {0} {1} as begin {2} end";
     }
 }

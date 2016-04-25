@@ -9,7 +9,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
     [TestClass]
     public class ProcedureDefinitionTests
     {
-        private const string procedureName = "testproc";
+        private readonly static DatabaseObjectName procedureName = DatabaseObjectName.FromName("testproc");
         ProcedureParameter parameter1;
         ProcedureDefinition definition;
 
@@ -24,7 +24,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
         [ExpectedException(typeof(ArgumentNullException))]
         public void ProcedureDefinitionConstructorNullName()
         {
-            var definition = new ProcedureDefinition(null);
+            var definition = new ProcedureDefinition((DatabaseObjectName)null);
         }
 
         [TestMethod]
@@ -55,9 +55,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
         [TestMethod]
         public void ProcedureDefinitionGetHashcode()
         {
-            int expected = procedureName.ToLowerInvariant().GetHashCode();
+            int expected = procedureName.GetHashCode();
 
-            Assert.AreEqual(expected, this.definition.GetHashCode());
+            Assert.AreEqual(expected, definition.GetHashCode());
         }
 
         [TestMethod]

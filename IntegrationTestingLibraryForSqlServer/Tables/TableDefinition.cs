@@ -83,7 +83,7 @@ namespace IntegrationTestingLibraryForSqlServer
 
         private bool IsMatchingHashCodes(TableDefinition other)
         {
-            return this.GetHashCode() == other.GetHashCode();
+            return GetHashCode() == other.GetHashCode();
         }
 
         private string EquivalenceDetails(TableDefinition actual)
