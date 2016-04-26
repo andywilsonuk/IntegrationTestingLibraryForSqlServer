@@ -90,17 +90,6 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void ColumnDefinitionNotEqualsIdentity()
-        {
-            definition.IdentitySeed = 5;
-            var other = new ColumnDefinition(ColumnName, SqlDbType.Int);
-
-            bool actual = definition.Equals(other);
-
-            Assert.IsFalse(actual);
-        }
-
-        [TestMethod]
         public void ColumnDefinitionGetHashCode()
         {
             int expected = ColumnName.ToLowerInvariant().GetHashCode();
@@ -113,7 +102,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void ColumnDefinitionIsValid()
         {
-            definition.DataType = SqlDbType.Decimal;
+            definition = new ColumnDefinition(ColumnName, SqlDbType.Decimal);
             definition.Size = 10;
 
             bool actual = definition.IsValid();
@@ -122,19 +111,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void ColumnDefinitionIsNotValidName()
-        {
-            definition.Name = null;
-
-            bool actual = definition.IsValid();
-
-            Assert.IsFalse(actual);
-        }
-
-        [TestMethod]
         public void ColumnDefinitionIsNotValidSize()
         {
-            definition.DataType = SqlDbType.NVarChar;
+            definition = new ColumnDefinition(ColumnName, SqlDbType.NVarChar);
             definition.Size = -10;
 
             bool actual = definition.IsValid();
@@ -145,7 +124,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void ColumnDefinitionIsValidMaximumSize()
         {
-            definition.DataType = SqlDbType.NVarChar;
+            definition = new ColumnDefinition(ColumnName, SqlDbType.NVarChar);
             definition.Size = 0;
 
             bool actual = definition.IsValid();
@@ -164,44 +143,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void ColumnDefinitionIsNotValidWhenIdentityOnWrongType()
-        {
-            definition.DataType = SqlDbType.VarChar;
-            definition.IdentitySeed = 1;
-            definition.AllowNulls = false;
-
-            bool actual = definition.IsValid();
-
-            Assert.IsFalse(actual);
-        }
-
-        [TestMethod]
-        public void ColumnDefinitionIsNotValidWhenNullIsAllowedOnIdentity()
-        {
-            definition.DataType = SqlDbType.Int;
-            definition.IdentitySeed = 1;
-
-            bool actual = definition.IsValid();
-
-            Assert.IsFalse(actual);
-        }
-
-        [TestMethod]
-        public void ColumnDefinitionIsValidIdentity()
-        {
-            definition.DataType = SqlDbType.Decimal;
-            definition.IdentitySeed = 1;
-            definition.AllowNulls = false;
-
-            bool actual = definition.IsValid();
-
-            Assert.IsTrue(actual);
-        }
-
-        [TestMethod]
         public void ColumnDefinitionEnsureValid()
         {
-            definition.DataType = SqlDbType.Decimal;
+            definition = new ColumnDefinition(ColumnName, SqlDbType.Decimal);
             definition.Size = 10;
 
             definition.EnsureValid();
@@ -211,7 +155,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [ExpectedException(typeof(ValidationException))]
         public void ColumnDefinitionEnsureValidThrowsException()
         {
-            definition.Name = null;
+            definition.Size = -1;
 
             definition.EnsureValid();
         }
@@ -221,13 +165,11 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             definition.Size = 10;
             definition.AllowNulls = false;
-            definition.IdentitySeed = 10;
             string expected = new StringBuilder()
                 .Append("Name: " + ColumnName)
                 .Append(", Type: Int")
                 .Append(", Size: 10")
                 .Append(", Allow Nulls: False")
-                .Append(", Identity Seed: 10")
                 .ToString();
 
             string actual = definition.ToString();

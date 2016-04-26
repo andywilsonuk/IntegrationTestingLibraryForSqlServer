@@ -11,7 +11,26 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
     public class ColumnDefinitionFactoryTests
     {
         [TestMethod]
-        public void FromRawInteger()
+        public void FromRawDateTime()
+        {
+            var source = new ColumnDefinitionRaw
+            {
+                Name = "C1",
+                DataType = "DateTime",
+                AllowNulls = false,
+            };
+            var factory = new ColumnDefinitionFactory();
+
+            var actual = factory.FromRaw(new[] { source }).ToList();
+
+            Assert.AreEqual(1, actual.Count);
+            Assert.AreEqual(source.Name, actual[0].Name);
+            Assert.AreEqual(SqlDbType.DateTime, actual[0].DataType);
+            Assert.AreEqual(source.AllowNulls, actual[0].AllowNulls);
+        }
+
+        [TestMethod]
+        public void FromRawIntegerWithIdentity()
         {
             var source = new ColumnDefinitionRaw
             {
@@ -25,10 +44,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             var actual = factory.FromRaw(new[] { source }).ToList();
 
             Assert.AreEqual(1, actual.Count);
-            Assert.AreEqual(source.Name, actual[0].Name);
             Assert.AreEqual(SqlDbType.Int, actual[0].DataType);
-            Assert.AreEqual(source.AllowNulls, actual[0].AllowNulls);
-            Assert.AreEqual(source.IdentitySeed, actual[0].IdentitySeed);
+            Assert.IsInstanceOfType(actual[0], typeof(IntegerColumnDefinition));
+            Assert.AreEqual(source.IdentitySeed, ((IntegerColumnDefinition)actual[0]).IdentitySeed);
         }
         [TestMethod]
         public void FromRawDecimal()

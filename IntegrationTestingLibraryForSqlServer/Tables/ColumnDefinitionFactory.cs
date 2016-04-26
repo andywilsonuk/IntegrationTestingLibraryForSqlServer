@@ -14,6 +14,7 @@ namespace IntegrationTestingLibraryForSqlServer
             foreach(var rawColumn in rawColumns)
             {
                 ColumnDefinition column = FromSqlDbType(rawColumn.DataType, rawColumn.Name);
+                column.AllowNulls = rawColumn.AllowNulls;
 
                 var decimalColumn = column as DecimalColumnDefinition;
                 if (decimalColumn != null)
@@ -21,11 +22,13 @@ namespace IntegrationTestingLibraryForSqlServer
                     if (rawColumn.Size.HasValue) decimalColumn.Precision = (byte)rawColumn.Size.Value;
                     if (rawColumn.DecimalPlaces.HasValue) decimalColumn.Scale = rawColumn.DecimalPlaces.Value;
                 }
-                
-                column.Name = rawColumn.Name;
-                column.AllowNulls = rawColumn.AllowNulls;
+                var numberColumn = column as IntegerColumnDefinition;
+                if (numberColumn != null)
+                {
+                    numberColumn.IdentitySeed = rawColumn.IdentitySeed;
+                }
+
                 column.Size = rawColumn.Size;
-                column.IdentitySeed = rawColumn.IdentitySeed;
                 column.EnsureValid();
                 yield return column;
             }
@@ -40,8 +43,18 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public ColumnDefinition FromSqlDbType(SqlDbType type, string name)
         {
-            if (type == SqlDbType.Decimal) return new DecimalColumnDefinition(name);
-            return new ColumnDefinition(name, type);
+            switch (type)
+            {
+                case SqlDbType.Decimal: return new DecimalColumnDefinition(name);
+                case SqlDbType.Int:
+                case SqlDbType.BigInt:
+                case SqlDbType.SmallInt:
+                case SqlDbType.TinyInt: return new IntegerColumnDefinition(name, type);
+
+                default: return new ColumnDefinition(name, type);
+            }
+
+            
         }
     }
 }

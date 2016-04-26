@@ -21,10 +21,8 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             mockDataRecord.Setup(x => x.GetBoolean(DataRecordToColumnMapper.Columns.IsNullable)).Returns(false);
             mockDataRecord.Setup(x => x.GetBoolean(DataRecordToColumnMapper.Columns.IsIdentity)).Returns(false);
 
-            expected = new ColumnDefinition
+            expected = new ColumnDefinition("r1", SqlDbType.Int)
             {
-                Name = "r1",
-                DataType = SqlDbType.Int,
                 AllowNulls = false,
             };
         }
@@ -54,7 +52,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             mockDataRecord.Setup(x => x.GetBoolean(DataRecordToColumnMapper.Columns.IsIdentity)).Returns(true);
             mockDataRecord.Setup(x => x.GetDecimal(DataRecordToColumnMapper.Columns.IdentitySeed)).Returns(5);
 
-            expected.IdentitySeed = 5;
+            expected = new IntegerColumnDefinition("r1", SqlDbType.Int)
+            {
+                IdentitySeed = 5,
+            };
 
             ColumnDefinition actual = mapper.ToColumnDefinition(mockDataRecord.Object);
 
@@ -66,8 +67,11 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             mockDataRecord.Setup(x => x.GetString(DataRecordToColumnMapper.Columns.DataType)).Returns("VarChar");
             mockDataRecord.Setup(x => x.GetInt16(DataRecordToColumnMapper.Columns.Size)).Returns(10);
-            expected.DataType = SqlDbType.VarChar;
-            expected.Size = 10;
+            expected = new ColumnDefinition("r1", SqlDbType.VarChar)
+            {
+                AllowNulls = false,
+                Size = 10
+            };
 
             ColumnDefinition actual = mapper.ToColumnDefinition(mockDataRecord.Object);
 
@@ -79,8 +83,11 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             mockDataRecord.Setup(x => x.GetString(DataRecordToColumnMapper.Columns.DataType)).Returns("NVarChar");
             mockDataRecord.Setup(x => x.GetInt16(DataRecordToColumnMapper.Columns.Size)).Returns(10);
-            expected.DataType = SqlDbType.NVarChar;
-            expected.Size = 5;
+            expected = new ColumnDefinition("r1", SqlDbType.NVarChar)
+            {
+                AllowNulls = false,
+                Size = 5
+            };
 
             ColumnDefinition actual = mapper.ToColumnDefinition(mockDataRecord.Object);
 

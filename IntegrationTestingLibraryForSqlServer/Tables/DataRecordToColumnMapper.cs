@@ -20,7 +20,12 @@ namespace IntegrationTestingLibraryForSqlServer
 
             this.dataTypeDefaults = new DataTypeDefaults(column.DataType);
             column.AllowNulls = GetNullable();
-            column.IdentitySeed = GetIdentitySeed();
+
+            var integerColumn = column as IntegerColumnDefinition;
+            if (integerColumn != null)
+            {
+                integerColumn.IdentitySeed = GetIdentitySeed();
+            }
 
             var decimalColumn = column as DecimalColumnDefinition;
             if (decimalColumn != null)
@@ -72,10 +77,10 @@ namespace IntegrationTestingLibraryForSqlServer
             return this.record.GetBoolean(Columns.IsNullable);
         }
 
-        private decimal? GetIdentitySeed()
+        private int? GetIdentitySeed()
         {
             if (this.record.GetBoolean(Columns.IsIdentity))
-                return this.record.GetDecimal(Columns.IdentitySeed);
+                return (int?)this.record.GetDecimal(Columns.IdentitySeed);
             return null;
         }
 

@@ -81,5 +81,11 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             Assert.AreNotEqual(objectName1.GetHashCode(), objectName2.GetHashCode());
         }
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void FromNameNull()
+        {
+            DatabaseObjectName.FromName(null);
+        }
     }
 }

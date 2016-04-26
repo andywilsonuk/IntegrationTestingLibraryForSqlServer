@@ -9,22 +9,17 @@ namespace IntegrationTestingLibraryForSqlServer
 {
     public class ColumnDefinition : IEquatable<ColumnDefinition>
     {
-        public string Name { get; set; }
-        public SqlDbType DataType { get; set; }
+        public string Name { get; private set; }
+        public SqlDbType DataType { get; private set; }
         public int? Size { get; set; }
         public bool AllowNulls { get; set; }
-        public decimal? IdentitySeed { get; set; }
-
-        public ColumnDefinition()
-        {
-            this.AllowNulls = true;
-        }
 
         public ColumnDefinition(string name, SqlDbType dataType)
-            : this()
         {
-            this.Name = name;
-            this.DataType = dataType;
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
+            Name = name;
+            DataType = dataType;
+            AllowNulls = true;
         }
 
         public virtual bool Equals(ColumnDefinition other)
@@ -35,7 +30,6 @@ namespace IntegrationTestingLibraryForSqlServer
             var dataTypeDefaults = new DataTypeDefaults(this.DataType);
             if (!dataTypeDefaults.IsSizeEqual(this.Size, other.Size)) return false;
             if (this.AllowNulls != other.AllowNulls) return false;
-            if (this.IdentitySeed != other.IdentitySeed) return false;
             return true;
         }
 
@@ -52,11 +46,9 @@ namespace IntegrationTestingLibraryForSqlServer
         public virtual bool IsValid()
         {
             var dataTypeDefaults = new DataTypeDefaults(this.DataType);
-            if (string.IsNullOrWhiteSpace(this.Name)) return false;
             if (!dataTypeDefaults.IsSizeAllowed && this.Size.HasValue) return false;
             if (this.IsMaximumSize) return true;
             if (this.Size.HasValue && this.Size.Value < -1) return false;
-            if (this.IdentitySeed.HasValue && (!dataTypeDefaults.IsIdentitySeedAllowed || this.AllowNulls)) return false;
             return true;
         }
 
@@ -85,7 +77,6 @@ namespace IntegrationTestingLibraryForSqlServer
                 .Append(", Type: " + this.DataType)
                 .Append(", Size: " + this.Size)
                 .Append(", Allow Nulls: " + this.AllowNulls)
-                .Append(", Identity Seed: " + this.IdentitySeed)
                 .ToString();
         }
     }

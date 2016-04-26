@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace IntegrationTestingLibraryForSqlServer
 {
-    public class DecimalColumnDefinition : ColumnDefinition
+    public class DecimalColumnDefinition : IntegerColumnDefinition
     {
         private byte precision = 18;
         private byte scale = 0;
@@ -56,7 +56,11 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public override string ToString()
         {
-            return base.ToString() + ", Precision: " + Precision + ", Scale: " + Scale;
+            return new StringBuilder()
+                .Append(base.ToString())
+                .Append(", Precision: " + Precision)
+                .Append(", Scale: " + Scale)
+                .ToString();
         }
     }
 }

@@ -29,6 +29,7 @@ namespace IntegrationTestingLibraryForSqlServer
         }
         public static DatabaseObjectName FromName(string name)
         {
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
             int index = name.IndexOf('.');
             if (index == -1) return new DatabaseObjectName(null, name);
             return new DatabaseObjectName(name.Substring(0, index), name.Substring(index + 1));

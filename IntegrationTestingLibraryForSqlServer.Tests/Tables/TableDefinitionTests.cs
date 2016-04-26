@@ -21,16 +21,17 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void TableDefinitionConstructorNullName()
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TableDefinitionConstructorNullTableNameString()
         {
-            new ColumnDefinition(null, SqlDbType.Int);
+            new TableDefinition((string)null);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TableDefinitionConstructorNullTableName()
         {
-            TableDefinition definition = new TableDefinition((DatabaseObjectName)null);
+            new TableDefinition((DatabaseObjectName)null);
         }
 
         [TestMethod]
@@ -52,7 +53,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [ExpectedException(typeof(ValidationException))]
         public void TableDefinitionEnsureValidInvalidColumnThrowException()
         {
-            column.Name = null;
+            column.Size = -1;
             table = new TableDefinition(tableName, new[] { column });
 
             table.EnsureValid();
@@ -154,18 +155,15 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void TableDefinitionToString()
         {
             table.Columns.Clear();
-            table.Columns.Add(new ColumnDefinition
+            table.Columns.Add(new ColumnDefinition(ColumnName, SqlDbType.NVarChar)
             {
-                Name = ColumnName,
-                DataType = SqlDbType.Int,
                 Size = 10,
                 AllowNulls = true,
-                IdentitySeed = 10
             });
 
             string expected = new StringBuilder()
                 .AppendLine("Name: [dbo].[table1]")
-                .AppendLine("Name: c1, Type: Int, Size: 10, Allow Nulls: True, Identity Seed: 10")
+                .AppendLine("Name: c1, Type: NVarChar, Size: 10, Allow Nulls: True")
                 .ToString();
 
             string actual = table.ToString();

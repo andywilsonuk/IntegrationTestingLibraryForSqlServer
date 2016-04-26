@@ -57,10 +57,9 @@ namespace IntegrationTestingLibraryForSqlServer
 
         private string GetFormattedIdentity(ColumnDefinition column)
         {
-            if (column.IdentitySeed != null)
-                return string.Format(" IDENTITY({0},1) ", column.IdentitySeed);
-
-            return " ";
+            var identityColumn = column as IntegerColumnDefinition;
+            if (identityColumn == null || !identityColumn.IdentitySeed.HasValue) return " ";
+            return string.Format(" IDENTITY({0},1) ", identityColumn.IdentitySeed.Value);
         }
 
         private string GetFormattedNullable(ColumnDefinition column)

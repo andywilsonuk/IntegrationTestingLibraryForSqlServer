@@ -13,6 +13,6 @@ namespace IntegrationTestingLibraryForSqlServer
         public int? Size { get; set; }
         public byte? DecimalPlaces { get; set; }
         public bool AllowNulls { get; set; }
-        public decimal? IdentitySeed { get; set; }
+        public int? IdentitySeed { get; set; }
     }
 }

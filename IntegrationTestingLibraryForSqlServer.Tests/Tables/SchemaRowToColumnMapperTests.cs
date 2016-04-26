@@ -31,10 +31,8 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             dataRow[SchemaRowToColumnMapper.Columns.Size] = (int)10;
             dataRow[SchemaRowToColumnMapper.Columns.IsNullable] = false;
 
-            expected = new ColumnDefinition
+            expected = new ColumnDefinition("r1", SqlDbType.Int)
             {
-                Name = "r1",
-                DataType = SqlDbType.Int,
                 AllowNulls = false,
             };
         }
@@ -82,8 +80,11 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             dataRow[SchemaRowToColumnMapper.Columns.DataType] = SqlDbType.VarChar;
             dataRow[SchemaRowToColumnMapper.Columns.Size] = (int)10;
-            expected.DataType = SqlDbType.VarChar;
-            expected.Size = 10;
+            expected = new ColumnDefinition("r1", SqlDbType.VarChar)
+            {
+                AllowNulls = false,
+                Size = 10,
+            };
 
             ColumnDefinition actual = mapper.ToColumnDefinition(dataRow);
 

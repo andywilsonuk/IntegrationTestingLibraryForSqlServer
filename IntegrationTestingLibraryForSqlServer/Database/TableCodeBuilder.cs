@@ -27,13 +27,11 @@ namespace IntegrationTestingLibraryForSqlServer
             sb.AppendLine();
             foreach (var column in table.Columns)
             {
-                sb.AppendFormat(@"    new {3} {{ {4} = ""{0}"", {5} = {7}.{1}, {6} = {2} }},",
+                sb.AppendFormat(@"    new {3}(""{0}"", {5}.{1}) {{ {4} = {2} }},",
                     column.Name,
                     column.DataType,
                     column.AllowNulls.ToString().ToLowerInvariant(),
                     nameof(ColumnDefinition),
-                    nameof(column.Name),
-                    nameof(column.DataType),
                     nameof(column.AllowNulls),
                     nameof(SqlDbType));
                 sb.AppendLine();
