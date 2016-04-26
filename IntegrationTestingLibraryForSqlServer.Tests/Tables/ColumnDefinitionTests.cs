@@ -22,12 +22,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             definition.AllowNulls = false;
             definition.Size = 10;
-            definition.DecimalPlaces = 5;
             var other = new ColumnDefinition(ColumnName, SqlDbType.Int)
             {
                 AllowNulls = false,
                 Size = 10,
-                DecimalPlaces = 5
             };
 
             bool actual = definition.Equals(other);
@@ -92,20 +90,6 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void ColumnDefinitionNotEqualsDecimalPlaces()
-        {
-            definition.DecimalPlaces = 5;
-            var other = new ColumnDefinition(ColumnName, SqlDbType.Int)
-            {
-                DecimalPlaces = 0
-            };
-
-            bool actual = definition.Equals(other);
-
-            Assert.IsFalse(actual);
-        }
-
-        [TestMethod]
         public void ColumnDefinitionNotEqualsIdentity()
         {
             definition.IdentitySeed = 5;
@@ -131,7 +115,6 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             definition.DataType = SqlDbType.Decimal;
             definition.Size = 10;
-            definition.DecimalPlaces = 5;
 
             bool actual = definition.IsValid();
 
@@ -181,16 +164,6 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void ColumnDefinitionIsNotValidWhenNotDecimalPlacesType()
-        {
-            definition.DecimalPlaces = 5;
-
-            bool actual = definition.IsValid();
-
-            Assert.IsFalse(actual);
-        }
-
-        [TestMethod]
         public void ColumnDefinitionIsNotValidWhenIdentityOnWrongType()
         {
             definition.DataType = SqlDbType.VarChar;
@@ -206,18 +179,6 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void ColumnDefinitionIsNotValidWhenNullIsAllowedOnIdentity()
         {
             definition.DataType = SqlDbType.Int;
-            definition.IdentitySeed = 1;
-
-            bool actual = definition.IsValid();
-
-            Assert.IsFalse(actual);
-        }
-
-        [TestMethod]
-        public void ColumnDefinitionIsNotValidWhenDecimalPlacesAreSet()
-        {
-            definition.DataType = SqlDbType.Decimal;
-            definition.DecimalPlaces = 5;
             definition.IdentitySeed = 1;
 
             bool actual = definition.IsValid();
@@ -242,7 +203,6 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             definition.DataType = SqlDbType.Decimal;
             definition.Size = 10;
-            definition.DecimalPlaces = 5;
 
             definition.EnsureValid();
         }
@@ -260,17 +220,14 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void ColumnDefinitionToString()
         {
             definition.Size = 10;
-            definition.DecimalPlaces = 5;
             definition.AllowNulls = false;
             definition.IdentitySeed = 10;
             string expected = new StringBuilder()
                 .Append("Name: " + ColumnName)
                 .Append(", Type: Int")
                 .Append(", Size: 10")
-                .Append(", Decimal Places: 5")
                 .Append(", Allow Nulls: False")
                 .Append(", Identity Seed: 10")
-                .AppendLine()
                 .ToString();
 
             string actual = definition.ToString();

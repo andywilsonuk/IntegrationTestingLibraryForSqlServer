@@ -13,24 +13,35 @@ namespace IntegrationTestingLibraryForSqlServer
         {
             foreach(var rawColumn in rawColumns)
             {
-                var column = new ColumnDefinition
+                ColumnDefinition column = FromSqlDbType(rawColumn.DataType, rawColumn.Name);
+
+                var decimalColumn = column as DecimalColumnDefinition;
+                if (decimalColumn != null)
                 {
-                    Name = rawColumn.Name,
-                    AllowNulls = rawColumn.AllowNulls,
-                    Size = rawColumn.Size,
-                    DecimalPlaces = rawColumn.DecimalPlaces,
-                    DataType = GetDataType(rawColumn),
-                    IdentitySeed = rawColumn.IdentitySeed,
-                };
+                    if (rawColumn.Size.HasValue) decimalColumn.Precision = (byte)rawColumn.Size.Value;
+                    if (rawColumn.DecimalPlaces.HasValue) decimalColumn.Scale = rawColumn.DecimalPlaces.Value;
+                }
+                
+                column.Name = rawColumn.Name;
+                column.AllowNulls = rawColumn.AllowNulls;
+                column.Size = rawColumn.Size;
+                column.IdentitySeed = rawColumn.IdentitySeed;
                 column.EnsureValid();
                 yield return column;
             }
         }
 
-        private static SqlDbType GetDataType(ColumnDefinitionRaw rawColumn)
+        public ColumnDefinition FromSqlDbType(string dataType, string name)
         {
-            if (string.Equals(rawColumn.DataType, "numeric", StringComparison.CurrentCultureIgnoreCase)) return SqlDbType.Decimal;
-            return (SqlDbType)Enum.Parse(typeof(SqlDbType), rawColumn.DataType, true);
+            if (dataType.ToLowerInvariant() == "numeric") dataType = "decimal";
+            SqlDbType strongDataType = (SqlDbType)Enum.Parse(typeof(SqlDbType), dataType, true);
+            return FromSqlDbType(strongDataType, name);
+        }
+
+        public ColumnDefinition FromSqlDbType(SqlDbType type, string name)
+        {
+            if (type == SqlDbType.Decimal) return new DecimalColumnDefinition(name);
+            return new ColumnDefinition(name, type);
         }
     }
 }

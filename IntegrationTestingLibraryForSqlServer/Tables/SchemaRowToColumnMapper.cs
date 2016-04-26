@@ -16,15 +16,24 @@ namespace IntegrationTestingLibraryForSqlServer
         public ColumnDefinition ToColumnDefinition(DataRow definitionRow)
         {
             this.record = definitionRow;
-            this.dataTypeDefaults = new DataTypeDefaults(this.GetDataType());
-            return new ColumnDefinition
+            var column = GetColumn();
+
+            this.dataTypeDefaults = new DataTypeDefaults(column.DataType);
+            column.AllowNulls = GetNullable();
+
+            var decimalColumn = column as DecimalColumnDefinition;
+            if (decimalColumn != null)
             {
-                Name = this.GetName(),
-                DataType = this.dataTypeDefaults.DataType,
-                Size = this.GetSize(),
-                DecimalPlaces = this.GetDecimalPlaces(),
-                AllowNulls = this.GetNullable(),
-            };
+                decimalColumn.Precision = GetPrecision();
+                decimalColumn.Scale = GetScale();
+                column.Size = decimalColumn.Precision;
+            }
+            else
+            {
+                column.Size = GetSize();
+            }
+
+            return column;
         }
 
         private string GetName()
@@ -32,34 +41,27 @@ namespace IntegrationTestingLibraryForSqlServer
             return (string)record[Columns.Name];
         }
 
-        private SqlDbType GetDataType()
+        private ColumnDefinition GetColumn()
         {
-            return (SqlDbType)record[Columns.DataType];
+            return new ColumnDefinitionFactory().FromSqlDbType((SqlDbType)record[Columns.DataType], GetName());
         }
 
         private int? GetSize()
         {
             if (this.dataTypeDefaults.IsSizeAllowed)
             {
-                if (dataTypeDefaults.DataType == SqlDbType.Decimal)
-                {
-                    return Convert.ToInt32(record[Columns.Precision]);
-                }
-                else
-                {
-                    return (int?)record[Columns.Size];
-                }
+                return (int?)record[Columns.Size];
             }
             return (int?)null;
         }
 
-        private byte? GetDecimalPlaces()
+        private byte GetScale()
         {
-            if (dataTypeDefaults.AreDecimalPlacesAllowed)
-            {
-                return Convert.ToByte(record[Columns.DecimalPlaces]);
-            }
-            return (byte?)null;
+            return Convert.ToByte(record[Columns.Scale]);
+        }
+        private byte GetPrecision()
+        {
+            return Convert.ToByte(record[Columns.Precision]);
         }
 
         private bool GetNullable()
@@ -72,7 +74,7 @@ namespace IntegrationTestingLibraryForSqlServer
             public const string Name = "ColumnName";
             public const string DataType = "ProviderType";
             public const string Size = "ColumnSize";
-            public const string DecimalPlaces = "NumericScale";
+            public const string Scale = "NumericScale";
             public const string Precision = "NumericPrecision";
             public const string IsNullable = "AllowDBNull";
         }

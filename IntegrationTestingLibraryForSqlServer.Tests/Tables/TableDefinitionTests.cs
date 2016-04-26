@@ -157,16 +157,15 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             table.Columns.Add(new ColumnDefinition
             {
                 Name = ColumnName,
-                DataType = SqlDbType.Decimal,
+                DataType = SqlDbType.Int,
                 Size = 10,
-                DecimalPlaces = 5,
                 AllowNulls = true,
                 IdentitySeed = 10
             });
 
             string expected = new StringBuilder()
                 .AppendLine("Name: [dbo].[table1]")
-                .AppendLine("Name: c1, Type: Decimal, Size: 10, Decimal Places: 5, Allow Nulls: True, Identity Seed: 10")
+                .AppendLine("Name: c1, Type: Int, Size: 10, Allow Nulls: True, Identity Seed: 10")
                 .ToString();
 
             string actual = table.ToString();

@@ -18,17 +18,6 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void CreateTable()
-        {
-            string expected = "CREATE TABLE [dbo].[t1] ([c1] Decimal(10,5) NOT NULL)";
-            definition.Columns.Add(new ColumnDefinition { Name = "c1", DataType = SqlDbType.Decimal, Size = 10, DecimalPlaces = 5, AllowNulls = false });
-
-            string actual = generator.Sql(definition);
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
         public void CreateTableNullableColumn()
         {
             string expected = "CREATE TABLE [dbo].[t1] ([c1] Int NULL)";
@@ -96,10 +85,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void CreateTableWithDecimalColumnNoSize()
+        public void CreateTableWithDecimalColumn()
         {
-            string expected = "CREATE TABLE [dbo].[t1] ([c1] Decimal NULL)";
-            definition.Columns.Add(new ColumnDefinition { Name = "c1", DataType = SqlDbType.Decimal });
+            string expected = "CREATE TABLE [dbo].[t1] ([c1] Decimal(10,5) NULL)";
+            definition.Columns.Add(new DecimalColumnDefinition("c1") { Precision = 10, Scale = 5 });
 
             string actual = generator.Sql(definition);
 

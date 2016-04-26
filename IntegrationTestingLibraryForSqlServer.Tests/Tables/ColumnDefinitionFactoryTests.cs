@@ -45,8 +45,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             var actual = factory.FromRaw(new[] { source }).ToList();
 
             Assert.AreEqual(SqlDbType.Decimal, actual[0].DataType);
-            Assert.AreEqual(source.Size, actual[0].Size);
-            Assert.AreEqual(source.DecimalPlaces, actual[0].DecimalPlaces);
+            Assert.IsInstanceOfType(actual[0], typeof(DecimalColumnDefinition));
+            Assert.AreEqual(source.Size, ((DecimalColumnDefinition)actual[0]).Precision);
+            Assert.AreEqual(source.DecimalPlaces, ((DecimalColumnDefinition)actual[0]).Scale);
         }
         [TestMethod]
         public void FromRawNumeric()

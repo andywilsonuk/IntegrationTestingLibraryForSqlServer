@@ -112,7 +112,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Input"});
             table1.AddRow(new string[] {
                         "Decimal3",
-                        "numeric",
+                        "decimal",
                         "",
                         "",
                         "Input"});
@@ -145,7 +145,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Input"});
             table2.AddRow(new string[] {
                         "Decimal2",
-                        "numeric",
+                        "decimal",
                         "10",
                         "0",
                         "Input"});

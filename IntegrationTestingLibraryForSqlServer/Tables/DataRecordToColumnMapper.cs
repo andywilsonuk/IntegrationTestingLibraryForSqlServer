@@ -16,16 +16,25 @@ namespace IntegrationTestingLibraryForSqlServer
         public ColumnDefinition ToColumnDefinition(IDataRecord record)
         {
             this.record = record;
-            this.dataTypeDefaults = new DataTypeDefaults(this.GetDataType());
-            return new ColumnDefinition
+            var column = GetColumn();
+
+            this.dataTypeDefaults = new DataTypeDefaults(column.DataType);
+            column.AllowNulls = GetNullable();
+            column.IdentitySeed = GetIdentitySeed();
+
+            var decimalColumn = column as DecimalColumnDefinition;
+            if (decimalColumn != null)
             {
-                Name = this.GetName(),
-                DataType = this.dataTypeDefaults.DataType,
-                Size = this.GetSize(),
-                DecimalPlaces = this.GetDecimalPlaces(),
-                AllowNulls = this.GetNullable(),
-                IdentitySeed = this.GetIdentitySeed()
-            };
+                decimalColumn.Precision = GetPrecision();
+                decimalColumn.Scale = GetScale();
+                column.Size = decimalColumn.Precision;
+            }
+            else
+            {
+                column.Size = GetSize();
+            }
+
+            return column;
         }
 
         private string GetName()
@@ -33,11 +42,10 @@ namespace IntegrationTestingLibraryForSqlServer
             return this.record.GetString(Columns.Name);
         }
 
-        private SqlDbType GetDataType()
+        private ColumnDefinition GetColumn()
         {
             var dataTypeName = this.record.GetString(Columns.DataType);
-            if (string.Equals("numeric", dataTypeName, StringComparison.CurrentCultureIgnoreCase)) return SqlDbType.Decimal;
-            return (SqlDbType)Enum.Parse(typeof(SqlDbType), dataTypeName, true);
+            return new ColumnDefinitionFactory().FromSqlDbType(dataTypeName, GetName());
         }
 
         private int? GetSize()
@@ -45,25 +53,18 @@ namespace IntegrationTestingLibraryForSqlServer
             if (this.dataTypeDefaults.IsUnicodeSizeAllowed) return this.record.GetInt16(Columns.Size) / 2;
             if (this.dataTypeDefaults.IsSizeAllowed)
             {
-                if (GetDataType() == SqlDbType.Decimal)
-                {
-                    return (int?)this.record.GetByte(Columns.Precision);
-                }
-                else
-                {
-                    return this.record.GetInt16(Columns.Size);
-                }
+                return this.record.GetInt16(Columns.Size);
             }
             return (int?)null;
         }
 
-        private byte? GetDecimalPlaces()
+        private byte GetScale()
         {
-            if (dataTypeDefaults.AreDecimalPlacesAllowed)
-            {
-                return this.record.GetByte(Columns.Scale);
-            }
-            return (byte?)null;
+            return record.GetByte(Columns.Scale);
+        }
+        private byte GetPrecision()
+        {
+            return record.GetByte(Columns.Precision);
         }
 
         private bool GetNullable()

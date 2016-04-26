@@ -77,7 +77,7 @@ namespace IntegrationTestingLibraryForSqlServer
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("Name: " + Name);
             foreach (var definition in Columns)
-                sb.Append(definition);
+                sb.AppendLine(definition.ToString());
             return sb.ToString();
         }
 

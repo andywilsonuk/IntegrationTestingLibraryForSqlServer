@@ -49,11 +49,8 @@ namespace IntegrationTestingLibraryForSqlServer
                     string size = column.IsMaximumSize ? "max" : column.Size.Value.ToString();
                     return string.Format("{0}({1})", column.DataType, size);
                 case SqlDbType.Decimal:
-                    if (!column.Size.HasValue && !column.DecimalPlaces.HasValue) break;
-                    var colDataType = column.DataType.ToString();
-                    var colSize = column.Size ?? 0;
-                    var colDecimalPlaces = column.DecimalPlaces ?? 0;
-                    return string.Format("{0}({1},{2})", colDataType, colSize, colDecimalPlaces);
+                    var decimalColumn = (DecimalColumnDefinition)column;
+                    return string.Format("{0}({1},{2})", column.DataType, decimalColumn.Precision, decimalColumn.Scale);
             }
             return string.Format("{0}", column.DataType);
         }

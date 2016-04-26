@@ -89,6 +89,7 @@
     <Compile Include="Tables\ColumnDefinitionFactory.cs" />
     <Compile Include="Tables\ColumnDefinitionRaw.cs" />
     <Compile Include="Tables\DataReaderSchemaTableDefinitionInterrogationStrategy.cs" />
+    <Compile Include="Tables\DecimalColumnDefinition.cs" />
     <Compile Include="Tables\SchemaRowToColumnMapper.cs" />
     <Compile Include="Tables\SystemTablesTableDefinitionInterrogationStrategy.cs" />
     <Compile Include="Database\TableCodeBuilder.cs" />

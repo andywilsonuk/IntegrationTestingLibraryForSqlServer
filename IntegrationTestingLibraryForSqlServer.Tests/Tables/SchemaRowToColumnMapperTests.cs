@@ -22,23 +22,19 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
                 new DataColumn(SchemaRowToColumnMapper.Columns.DataType, typeof(SqlDbType)),
                 new DataColumn(SchemaRowToColumnMapper.Columns.Size, typeof(int)),
                 new DataColumn(SchemaRowToColumnMapper.Columns.Precision, typeof(int)),
-                new DataColumn(SchemaRowToColumnMapper.Columns.DecimalPlaces, typeof(int)),
+                new DataColumn(SchemaRowToColumnMapper.Columns.Scale, typeof(int)),
                 new DataColumn(SchemaRowToColumnMapper.Columns.IsNullable, typeof(bool))
             });
             dataRow = table.NewRow();
             dataRow[SchemaRowToColumnMapper.Columns.Name] = "r1";
-            dataRow[SchemaRowToColumnMapper.Columns.DataType] = SqlDbType.Decimal;
+            dataRow[SchemaRowToColumnMapper.Columns.DataType] = SqlDbType.Int;
             dataRow[SchemaRowToColumnMapper.Columns.Size] = (int)10;
-            dataRow[SchemaRowToColumnMapper.Columns.Precision] = (int)10;
-            dataRow[SchemaRowToColumnMapper.Columns.DecimalPlaces] = (int)5;
             dataRow[SchemaRowToColumnMapper.Columns.IsNullable] = false;
 
             expected = new ColumnDefinition
             {
                 Name = "r1",
-                DataType = SqlDbType.Decimal,
-                Size = 10,
-                DecimalPlaces = 5,
+                DataType = SqlDbType.Int,
                 AllowNulls = false,
             };
         }
@@ -63,27 +59,18 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void SchemaRowToColumnPrecisionNonDecimal()
+        public void SchemaRowToColumnDecimal()
         {
-            dataRow[SchemaRowToColumnMapper.Columns.DataType] = SqlDbType.Int;
-            dataRow[SchemaRowToColumnMapper.Columns.Precision] = (byte)5;
-            expected.DataType = SqlDbType.Int;
-            expected.Size = null;
-            expected.DecimalPlaces = null;
-
-            ColumnDefinition actual = mapper.ToColumnDefinition(dataRow);
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void SchemaRowToColumnDecimalPlacesNonDecimal()
-        {
-            dataRow[SchemaRowToColumnMapper.Columns.DataType] = SqlDbType.Int;
-            dataRow[SchemaRowToColumnMapper.Columns.DecimalPlaces] = (byte)5;
-            expected.DataType = SqlDbType.Int;
-            expected.Size = null;
-            expected.DecimalPlaces = null;
+            dataRow[SchemaRowToColumnMapper.Columns.DataType] = SqlDbType.Decimal;
+            dataRow[SchemaRowToColumnMapper.Columns.Precision] = (int)10;
+            dataRow[SchemaRowToColumnMapper.Columns.Scale] = (int)5;
+            var expected = new DecimalColumnDefinition("r1")
+            {
+                Precision = 10,
+                Scale = 5,
+                Size = 10,
+                AllowNulls = false
+            };
 
             ColumnDefinition actual = mapper.ToColumnDefinition(dataRow);
 
@@ -97,7 +84,6 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             dataRow[SchemaRowToColumnMapper.Columns.Size] = (int)10;
             expected.DataType = SqlDbType.VarChar;
             expected.Size = 10;
-            expected.DecimalPlaces = null;
 
             ColumnDefinition actual = mapper.ToColumnDefinition(dataRow);
 

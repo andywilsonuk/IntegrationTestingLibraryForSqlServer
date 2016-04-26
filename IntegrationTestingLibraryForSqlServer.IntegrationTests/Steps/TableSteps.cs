@@ -62,21 +62,6 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
             definition.VerifyMatch(database);
         }
 
-        [Then(@"an attempt to create the table ""(.*)"" with an invalid definition should fail")]
-        public void ThenAnAttemptToCreateTheTableWithAnInvalidDefinitionShouldFail(string tableName, Table table)
-        {
-            Exception ex = null;
-            try
-            {
-                WhenTheTableIsCreatedWithANumericColumn(tableName, table);
-            }
-            catch (Exception e)
-            {
-                ex = e;
-            }
-            Assert.IsNotNull(ex, ex == null ? "Exception not thrown when expected" : ex.Message);
-        }
-
         [Then(@"the definition of table ""(.*)"" should contain")]
         public void ThenTheDefinitionOfTableShouldContain(string tableName, Table table)
         {

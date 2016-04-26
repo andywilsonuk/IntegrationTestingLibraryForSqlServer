@@ -32,20 +32,6 @@ Scenario: Table setup and verify with numeric column
 	| Decimal5 | decimal   | 11   | 0              | true        |               |
 
 @db
-Scenario: Table setup - decimal places set without size
-	Given there is a test database
-	Then an attempt to create the table "test" with an invalid definition should fail
-	| Name     | Data Type | Size | Decimal Places |
-	| Decimal4 | decimal   |      | 2              |
-
-@db
-Scenario: Table setup - decimal places greater than size
-	Given there is a test database
-	Then an attempt to create the table "test" with an invalid definition should fail
-	| Name     | Data Type | Size | Decimal Places |
-	| Decimal4 | decimal   | 10   | 11             |
-
-@db
 Scenario: Table setup and verify subset
 	Given there is a test database
 	When the table "test" is created
