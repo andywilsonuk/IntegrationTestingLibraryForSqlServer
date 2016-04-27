@@ -37,6 +37,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             Assert.IsFalse(column.AllowNulls);
         }
         [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
         public void ColumnDefinitionIsNotValidWhenNullIsAllowedOnIdentity()
         {
             var definition = new IntegerColumnDefinition(ColumnName, SqlDbType.Int)
@@ -44,20 +45,14 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
                 IdentitySeed = 1,
                 AllowNulls = true
             };
-            
-            bool actual = definition.IsValid();
-
-            Assert.IsFalse(actual);
         }
         [TestMethod]
-        public void ColumnDefinitionIsValidIdentity()
+        public void ColumnDefinitionIdentityColumnsDoNotAllowNulls()
         {
+            column.AllowNulls = true;
             column.IdentitySeed = 1;
-            column.AllowNulls = false;
 
-            bool actual = column.IsValid();
-
-            Assert.IsTrue(actual);
+            Assert.IsFalse(column.AllowNulls);
         }
         [TestMethod]
         public void ColumnDefinitionNotEqualsWrongType()

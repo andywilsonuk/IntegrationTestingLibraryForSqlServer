@@ -29,7 +29,7 @@ namespace IntegrationTestingLibraryForSqlServer
                     throw new ArgumentException("Wrong datatype passed", nameof(dataType));
             }
         }
-        public int? IdentitySeed
+        public virtual int? IdentitySeed
         {
             get { return identitySeed; }
             set
@@ -39,11 +39,14 @@ namespace IntegrationTestingLibraryForSqlServer
             }
         }
 
-        public override bool IsValid()
+        public override bool AllowNulls
         {
-            if (!base.IsValid()) return false;
-            if (IdentitySeed.HasValue && AllowNulls) return false;
-            return true;
+            get { return base.AllowNulls; }
+            set
+            {
+                if (IdentitySeed.HasValue && value) throw new ArgumentException("Identity columns cannot be nullable");
+                base.AllowNulls = value;
+            }
         }
 
         public override bool Equals(ColumnDefinition other)

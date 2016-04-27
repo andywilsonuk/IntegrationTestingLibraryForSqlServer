@@ -18,6 +18,13 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void CreateTableZeroColumnsThrowsException()
+        {
+            generator.Sql(definition);
+        }
+
+        [TestMethod]
         public void CreateTableNullableColumn()
         {
             string expected = "CREATE TABLE [dbo].[t1] ([c1] Int NULL)";

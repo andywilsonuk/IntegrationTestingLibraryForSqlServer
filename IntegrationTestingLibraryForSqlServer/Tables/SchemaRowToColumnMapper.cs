@@ -48,7 +48,7 @@ namespace IntegrationTestingLibraryForSqlServer
 
         private int GetSize()
         {
-            int size = Convert.ToInt32(record[Columns.Size])
+            int size = Convert.ToInt32(record[Columns.Size]);
             return size == -1 ? 0 : size;
         }
 

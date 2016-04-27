@@ -32,8 +32,19 @@ namespace IntegrationTestingLibraryForSqlServer
             get { return scale; }
             set
             {
+                if (IdentitySeed.HasValue && value != 0) throw new ArgumentException("Cannot set Scale when column is identity");
                 if (value > Precision) throw new ArgumentException("Scale must be between 0 and the precision");
                 scale = value;
+            }
+        }
+
+        public override int? IdentitySeed
+        {
+            get { return base.IdentitySeed; }
+            set
+            {
+                if (value.HasValue) Scale = 0;
+                base.IdentitySeed = value;
             }
         }
 
@@ -44,13 +55,6 @@ namespace IntegrationTestingLibraryForSqlServer
             if (otherDecimal == null) return false;
             if (Precision != otherDecimal.Precision) return false;
             if (Scale != otherDecimal.Scale) return false;
-            return true;
-        }
-
-        public override bool IsValid()
-        {
-            if (!base.IsValid()) return false;
-            if (IdentitySeed.HasValue && Scale > 0) return false;
             return true;
         }
 

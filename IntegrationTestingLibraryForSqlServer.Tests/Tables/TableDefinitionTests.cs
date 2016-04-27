@@ -35,35 +35,6 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void TableDefinitionEnsureValid()
-        {
-            table.EnsureValid();
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ValidationException))]
-        public void TableDefinitionEnsureValidThrowException()
-        {
-            table = new TableDefinition(tableName);
-
-            table.EnsureValid();
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ValidationException))]
-        public void TableDefinitionEnsureValidInvalidColumnThrowException()
-        {
-            var column = new IntegerColumnDefinition(ColumnName, SqlDbType.Int)
-            {
-                IdentitySeed = 1,
-                AllowNulls = true,
-            };
-            table = new TableDefinition(tableName, new[] { column });
-
-            table.EnsureValid();
-        }
-
-        [TestMethod]
         public void TableDefinitionVerifyEqual()
         {
             var other = new TableDefinition(tableName, new[] { column });

@@ -28,12 +28,6 @@ namespace IntegrationTestingLibraryForSqlServer
         public DatabaseObjectName Name { get; private set; }
         public ICollection<ColumnDefinition> Columns { get; private set; }
 
-        public void EnsureValid()
-        {
-            if (Columns.Count == 0 || !Columns.All(x => x.IsValid()))
-                throw new ValidationException("The definition is invalid " + Environment.NewLine + this.ToString());
-        }
-
         public void VerifyEqual(TableDefinition other)
         {
             if (Equals(other)) return;

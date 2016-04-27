@@ -30,7 +30,6 @@ namespace IntegrationTestingLibraryForSqlServer
                 var sizeableColumn = column as SizeableColumnDefinition;
                 if (sizeableColumn != null && rawColumn.Size.HasValue) sizeableColumn.Size = rawColumn.Size.Value;
 
-                column.EnsureValid();
                 yield return column;
             }
         }

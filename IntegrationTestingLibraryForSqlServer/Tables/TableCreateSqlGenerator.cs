@@ -13,8 +13,8 @@ namespace IntegrationTestingLibraryForSqlServer
     {
         public string Sql(TableDefinition definition)
         {
-            if (definition == null) throw new ArgumentNullException("definition");
-            definition.EnsureValid();
+            if (definition == null) throw new ArgumentNullException(nameof(definition));
+            if (definition.Columns.Count == 0) throw new ArgumentException("The Table Definition must have at least one column", nameof(definition));
             return string.Format(CreateTableFormat, definition.Name.Qualified, CreateCommaSeparatedColumns(definition));
         }
 

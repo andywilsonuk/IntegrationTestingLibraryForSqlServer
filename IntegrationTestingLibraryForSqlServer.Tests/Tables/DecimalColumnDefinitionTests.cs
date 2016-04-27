@@ -80,12 +80,11 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             column.Precision = 10;
             column.Scale = 2;
             column.AllowNulls = false;
-            column.IdentitySeed = 10;
             string expected = new StringBuilder()
                 .Append("Name: D1")
                 .Append(", Type: Decimal")
                 .Append(", Allow Nulls: False")
-                .Append(", Identity Seed: 10")
+                .Append(", Identity Seed: ")
                 .Append(", Precision: 10")
                 .Append(", Scale: 2")
                 .ToString();
@@ -95,14 +94,29 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
-        public void IsNotValidScaleSetWithIdentity()
+        public void DecimalColumnDefinitionWithIdentityToString()
+        {
+            column.Precision = 10;
+            column.IdentitySeed = 10;
+            string expected = new StringBuilder()
+                .Append("Name: D1")
+                .Append(", Type: Decimal")
+                .Append(", Allow Nulls: False")
+                .Append(", Identity Seed: 10")
+                .Append(", Precision: 10")
+                .Append(", Scale: 0")
+                .ToString();
+
+            string actual = column.ToString();
+
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ScaleCannotBeSetWithIdentity()
         {
             column.IdentitySeed = 1;
             column.Scale = 2;
-
-            bool actual = column.IsValid();
-
-            Assert.IsFalse(actual);
         }
         [TestMethod]
         public void EqualsInvalidBase()

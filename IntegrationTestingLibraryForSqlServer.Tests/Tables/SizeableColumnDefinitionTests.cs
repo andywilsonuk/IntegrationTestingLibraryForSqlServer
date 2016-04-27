@@ -66,16 +66,6 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void SizeableColumnDefinitionIsValid()
-        {
-            definition.Size = 10;
-
-            bool actual = definition.IsValid();
-
-            Assert.IsTrue(actual);
-        }
-
-        [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void SizeableDefinitionNegativeSize()
         {

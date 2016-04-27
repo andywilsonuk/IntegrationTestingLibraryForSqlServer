@@ -11,7 +11,7 @@ namespace IntegrationTestingLibraryForSqlServer
     {
         public string Name { get; private set; }
         public SqlDbType DataType { get; private set; }
-        public bool AllowNulls { get; set; }
+        public virtual bool AllowNulls { get; set; }
 
         public ColumnDefinition(string name, SqlDbType dataType)
         {
@@ -39,17 +39,6 @@ namespace IntegrationTestingLibraryForSqlServer
         public override int GetHashCode()
         {
             return this.Name.ToLowerInvariant().GetHashCode();
-        }
-
-        public virtual bool IsValid()
-        {
-            return true;
-        }
-
-        public void EnsureValid()
-        {
-            if (this.IsValid()) return;
-            throw new ValidationException("Column definition is invalid." + Environment.NewLine + this.ToString());
         }
 
         public override string ToString()
