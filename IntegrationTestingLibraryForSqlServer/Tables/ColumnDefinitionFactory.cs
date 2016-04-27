@@ -27,8 +27,9 @@ namespace IntegrationTestingLibraryForSqlServer
                 {
                     numberColumn.IdentitySeed = rawColumn.IdentitySeed;
                 }
+                var sizeableColumn = column as SizeableColumnDefinition;
+                if (sizeableColumn != null && rawColumn.Size.HasValue) sizeableColumn.Size = rawColumn.Size.Value;
 
-                column.Size = rawColumn.Size;
                 column.EnsureValid();
                 yield return column;
             }
@@ -50,7 +51,12 @@ namespace IntegrationTestingLibraryForSqlServer
                 case SqlDbType.BigInt:
                 case SqlDbType.SmallInt:
                 case SqlDbType.TinyInt: return new IntegerColumnDefinition(name, type);
-
+                case SqlDbType.Binary:
+                case SqlDbType.Char:
+                case SqlDbType.VarBinary:
+                case SqlDbType.VarChar:
+                case SqlDbType.NChar:
+                case SqlDbType.NVarChar: return new SizeableColumnDefinition(name, type);
                 default: return new ColumnDefinition(name, type);
             }
 

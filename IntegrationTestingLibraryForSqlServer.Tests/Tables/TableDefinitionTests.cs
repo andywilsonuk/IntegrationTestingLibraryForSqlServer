@@ -53,7 +53,11 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [ExpectedException(typeof(ValidationException))]
         public void TableDefinitionEnsureValidInvalidColumnThrowException()
         {
-            column.Size = -1;
+            var column = new IntegerColumnDefinition(ColumnName, SqlDbType.Int)
+            {
+                IdentitySeed = 1,
+                AllowNulls = true,
+            };
             table = new TableDefinition(tableName, new[] { column });
 
             table.EnsureValid();
@@ -155,7 +159,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void TableDefinitionToString()
         {
             table.Columns.Clear();
-            table.Columns.Add(new ColumnDefinition(ColumnName, SqlDbType.NVarChar)
+            table.Columns.Add(new SizeableColumnDefinition(ColumnName, SqlDbType.NVarChar)
             {
                 Size = 10,
                 AllowNulls = true,
@@ -163,7 +167,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             string expected = new StringBuilder()
                 .AppendLine("Name: [dbo].[table1]")
-                .AppendLine("Name: c1, Type: NVarChar, Size: 10, Allow Nulls: True")
+                .AppendLine("Name: c1, Type: NVarChar, Allow Nulls: True, Size: 10")
                 .ToString();
 
             string actual = table.ToString();

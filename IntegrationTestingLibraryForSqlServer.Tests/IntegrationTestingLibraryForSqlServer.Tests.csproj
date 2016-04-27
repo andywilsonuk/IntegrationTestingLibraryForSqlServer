@@ -108,6 +108,7 @@
     <Compile Include="Tables\TableCodeBuilderTests.cs" />
     <Compile Include="Tables\DecimalColumnDefinitionTests.cs" />
     <Compile Include="Tables\IntegerColumnDefinitionTests.cs" />
+    <Compile Include="Tables\SizeableColumnDefinitionTests.cs" />
     <Compile Include="Views\TableBackedViewDefinitionTests.cs" />
     <Compile Include="Views\TableBackedViewCreateSqlGeneratorTests.cs" />
     <None Include="packages.config" />

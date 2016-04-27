@@ -32,11 +32,11 @@ namespace IntegrationTestingLibraryForSqlServer
             {
                 decimalColumn.Precision = GetPrecision();
                 decimalColumn.Scale = GetScale();
-                column.Size = decimalColumn.Precision;
             }
-            else
+            var sizeableColumn = column as SizeableColumnDefinition;
+            if (sizeableColumn != null)
             {
-                column.Size = GetSize();
+                sizeableColumn.Size = GetSize();
             }
 
             return column;
@@ -49,18 +49,16 @@ namespace IntegrationTestingLibraryForSqlServer
 
         private ColumnDefinition GetColumn()
         {
-            var dataTypeName = this.record.GetString(Columns.DataType);
+            var dataTypeName = record.GetString(Columns.DataType);
             return new ColumnDefinitionFactory().FromSqlDbType(dataTypeName, GetName());
         }
 
-        private int? GetSize()
+        private int GetSize()
         {
-            if (this.dataTypeDefaults.IsUnicodeSizeAllowed) return this.record.GetInt16(Columns.Size) / 2;
-            if (this.dataTypeDefaults.IsSizeAllowed)
-            {
-                return this.record.GetInt16(Columns.Size);
-            }
-            return (int?)null;
+            int size = record.GetInt16(Columns.Size);
+            if (size == -1) return 0;
+            if (dataTypeDefaults.IsUnicodeSizeAllowed) return size / 2;
+            return size;
         }
 
         private byte GetScale()

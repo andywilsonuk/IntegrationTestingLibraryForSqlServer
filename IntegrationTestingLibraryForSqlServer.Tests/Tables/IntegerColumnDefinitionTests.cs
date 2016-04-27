@@ -83,13 +83,11 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void IntegerColumnDefinitionToString()
         {
-            column.Size = 10;
             column.AllowNulls = false;
             column.IdentitySeed = 10;
             string expected = new StringBuilder()
                 .Append("Name: c1")
                 .Append(", Type: Int")
-                .Append(", Size: 10")
                 .Append(", Allow Nulls: False")
                 .Append(", Identity Seed: 10")
                 .ToString();

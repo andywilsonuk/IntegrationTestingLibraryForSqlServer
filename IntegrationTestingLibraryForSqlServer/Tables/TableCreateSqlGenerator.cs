@@ -15,12 +15,12 @@ namespace IntegrationTestingLibraryForSqlServer
         {
             if (definition == null) throw new ArgumentNullException("definition");
             definition.EnsureValid();
-            return string.Format(CreateTableFormat, definition.Name.Qualified, this.CreateCommaSeparatedColumns(definition));
+            return string.Format(CreateTableFormat, definition.Name.Qualified, CreateCommaSeparatedColumns(definition));
         }
 
         private string CreateCommaSeparatedColumns(TableDefinition definition)
         {
-            return string.Join(",", definition.Columns.Select(x => this.GetFormattedColumnLine(x)));
+            return string.Join(",", definition.Columns.Select(x => GetFormattedColumnLine(x)));
         }
 
         private string GetFormattedColumnLine(ColumnDefinition column)
@@ -28,31 +28,25 @@ namespace IntegrationTestingLibraryForSqlServer
             return string.Format(
                 "[{0}] {1}{2}{3}",
                 column.Name,
-                this.GetFormattedDataType(column),
-                this.GetFormattedIdentity(column),
-                this.GetFormattedNullable(column));
+                GetFormattedDataType(column),
+                GetFormattedIdentity(column),
+                GetFormattedNullable(column));
         }
 
         private string GetFormattedDataType(ColumnDefinition column)
         {
-            switch (column.DataType)
+            var sizeableColumn = column as SizeableColumnDefinition;
+            if (sizeableColumn != null)
             {
-                case SqlDbType.Binary:
-                case SqlDbType.Char:
-                case SqlDbType.NChar:
-                    if (!column.Size.HasValue) break;
-                    return string.Format("{0}({1})", column.DataType, column.Size.Value);
-                case SqlDbType.NVarChar:
-                case SqlDbType.VarBinary:
-                case SqlDbType.VarChar:
-                    if (!column.Size.HasValue) break;
-                    string size = column.IsMaximumSize ? "max" : column.Size.Value.ToString();
-                    return string.Format("{0}({1})", column.DataType, size);
-                case SqlDbType.Decimal:
-                    var decimalColumn = (DecimalColumnDefinition)column;
-                    return string.Format("{0}({1},{2})", column.DataType, decimalColumn.Precision, decimalColumn.Scale);
+                string size = sizeableColumn.IsMaximumSize ? "max" : sizeableColumn.Size.ToString();
+                return string.Format("{0}({1})", column.DataType, size);
             }
-            return string.Format("{0}", column.DataType);
+            var decimalColumn = column as DecimalColumnDefinition;
+            if (decimalColumn != null)
+            {
+                return string.Format("{0}({1},{2})", column.DataType, decimalColumn.Precision, decimalColumn.Scale);
+            }
+            return column.DataType.ToString();
         }
 
         private string GetFormattedIdentity(ColumnDefinition column)

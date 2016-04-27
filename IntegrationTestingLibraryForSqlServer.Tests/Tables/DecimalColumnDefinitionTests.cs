@@ -79,13 +79,11 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             column.Precision = 10;
             column.Scale = 2;
-            column.Size = 10;
             column.AllowNulls = false;
             column.IdentitySeed = 10;
             string expected = new StringBuilder()
                 .Append("Name: D1")
                 .Append(", Type: Decimal")
-                .Append(", Size: 10")
                 .Append(", Allow Nulls: False")
                 .Append(", Identity Seed: 10")
                 .Append(", Precision: 10")

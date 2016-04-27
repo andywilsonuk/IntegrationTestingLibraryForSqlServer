@@ -66,7 +66,6 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             {
                 Precision = 10,
                 Scale = 5,
-                Size = 10,
                 AllowNulls = false
             };
 
@@ -80,7 +79,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             dataRow[SchemaRowToColumnMapper.Columns.DataType] = SqlDbType.VarChar;
             dataRow[SchemaRowToColumnMapper.Columns.Size] = (int)10;
-            expected = new ColumnDefinition("r1", SqlDbType.VarChar)
+            expected = new SizeableColumnDefinition("r1", SqlDbType.VarChar)
             {
                 AllowNulls = false,
                 Size = 10,

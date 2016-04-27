@@ -67,7 +67,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             mockDataRecord.Setup(x => x.GetString(DataRecordToColumnMapper.Columns.DataType)).Returns("VarChar");
             mockDataRecord.Setup(x => x.GetInt16(DataRecordToColumnMapper.Columns.Size)).Returns(10);
-            expected = new ColumnDefinition("r1", SqlDbType.VarChar)
+            expected = new SizeableColumnDefinition("r1", SqlDbType.VarChar)
             {
                 AllowNulls = false,
                 Size = 10
@@ -83,7 +83,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             mockDataRecord.Setup(x => x.GetString(DataRecordToColumnMapper.Columns.DataType)).Returns("NVarChar");
             mockDataRecord.Setup(x => x.GetInt16(DataRecordToColumnMapper.Columns.Size)).Returns(10);
-            expected = new ColumnDefinition("r1", SqlDbType.NVarChar)
+            expected = new SizeableColumnDefinition("r1", SqlDbType.NVarChar)
             {
                 AllowNulls = false,
                 Size = 5
@@ -104,7 +104,6 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
                 Precision = 10,
                 Scale = 2,
                 AllowNulls = false,
-                Size = 10
             };
 
             ColumnDefinition actual = mapper.ToColumnDefinition(mockDataRecord.Object);

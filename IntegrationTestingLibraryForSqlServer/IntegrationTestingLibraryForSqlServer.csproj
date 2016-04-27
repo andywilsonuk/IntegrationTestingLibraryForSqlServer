@@ -92,6 +92,7 @@
     <Compile Include="Tables\DecimalColumnDefinition.cs" />
     <Compile Include="Tables\IntegerColumnDefinition.cs" />
     <Compile Include="Tables\SchemaRowToColumnMapper.cs" />
+    <Compile Include="Tables\SizeableColumnDefinition.cs" />
     <Compile Include="Tables\SystemTablesTableDefinitionInterrogationStrategy.cs" />
     <Compile Include="Database\TableCodeBuilder.cs" />
     <Compile Include="Tables\TableDefinitionExtensions.cs" />
