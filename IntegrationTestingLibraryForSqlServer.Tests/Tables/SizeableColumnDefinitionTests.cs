@@ -90,6 +90,15 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
+        public void SizeableDefinitionNegativeOneAsMaxSize()
+        {
+            definition.Size = -1;
+
+            Assert.IsTrue(definition.IsMaximumSize);
+            Assert.AreEqual(0, definition.Size);
+        }
+
+        [TestMethod]
         public void SizeableColumnDefinitionSetMaximumSize()
         {
             definition.IsMaximumSize = true;

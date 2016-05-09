@@ -267,5 +267,35 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             Assert.IsFalse(actual);
         }
+
+        [TestMethod]
+        public void IsValidPrecisionTrue()
+        {
+            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Decimal);
+
+            bool actual = dataTypeDefaults.IsValidPrecision(10);
+
+            Assert.IsTrue(actual);
+        }
+
+        [TestMethod]
+        public void IsValidPrecisionFalseMinBound()
+        {
+            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.VarChar);
+
+            bool actual = dataTypeDefaults.IsValidPrecision(-1);
+
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        public void IsValidPrecisionFalseMaxBound()
+        {
+            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.VarChar);
+
+            bool actual = dataTypeDefaults.IsValidPrecision(39);
+
+            Assert.IsFalse(actual);
+        }
     }
 }

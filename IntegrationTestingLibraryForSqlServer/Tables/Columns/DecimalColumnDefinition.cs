@@ -22,7 +22,7 @@ namespace IntegrationTestingLibraryForSqlServer
             get { return precision; }
             set
             {
-                if (value < DataTypeDefaults.MinimumPrecision || value > DataTypeDefaults.MaximumPrecision) throw new ArgumentException("Precision must be between 1 and 38");
+                if (!DataType.IsValidPrecision(value)) throw new ArgumentException("Precision must be between 1 and 38");
                 precision = value;
                 if (scale > precision) scale = precision;
             }

@@ -9,11 +9,12 @@ namespace IntegrationTestingLibraryForSqlServer
     public class DataTypeDefaults : IEquatable<DataTypeDefaults>
     {
         internal const int DefaultSizeableSize = 1;
-        internal const int MaximumSizeIndicator = 0;
         internal const int DefaultPrecision = 18;
         internal const byte DefaultScale = 0;
-        internal const byte MinimumPrecision = 1;
-        internal const byte MaximumPrecision = 38;
+        internal const int MaximumSizeIndicator = 0;
+        private const int MaximumSizeIndicatorAlt = -1;
+        private const byte MinimumPrecision = 1;
+        private const byte MaximumPrecision = 38;
 
         public DataTypeDefaults(SqlDbType dataType)
         {
@@ -139,7 +140,12 @@ namespace IntegrationTestingLibraryForSqlServer
         public bool IsMaximumSizeIndicator(int? size)
         {
             if (!size.HasValue) return false;
-            return size == MaximumSizeIndicator;
+            return size == MaximumSizeIndicator || size == MaximumSizeIndicatorAlt;
+        }
+
+        public bool IsValidPrecision(int precision)
+        {
+            return precision >= MinimumPrecision && precision <= MaximumPrecision;
         }
     }
 }

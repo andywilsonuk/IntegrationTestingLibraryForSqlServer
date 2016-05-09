@@ -23,15 +23,20 @@ namespace IntegrationTestingLibraryForSqlServer
             get { return size; }
             set
             {
-                if (value < -1) throw new ArgumentException("Size must be greater than zero");
-                size = value == -1 ? 0 : value;
+                if (DataType.IsMaximumSizeIndicator(value))
+                {
+                    IsMaximumSize = true;
+                    return;
+                }
+                if (value < 1) throw new ArgumentException("Size must be greater than one");
+                size = value;
             }
         }
 
         public bool IsMaximumSize
         {
-            get { return size == 0; }
-            set { Size = 0; }
+            get { return size == DataTypeDefaults.MaximumSizeIndicator; }
+            set { size = DataTypeDefaults.MaximumSizeIndicator; }
         }
 
         public override bool Equals(ColumnDefinition other)
