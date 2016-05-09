@@ -18,7 +18,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentException))]
         public void CreateTableZeroColumnsThrowsException()
         {
             generator.Sql(definition);

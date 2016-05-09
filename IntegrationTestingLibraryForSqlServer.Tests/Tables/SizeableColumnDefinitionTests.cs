@@ -14,7 +14,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void ConstructorBasics()
         {
-            Assert.AreEqual(SqlDbType.NVarChar, definition.DataType);
+            Assert.AreEqual(SqlDbType.NVarChar, definition.DataType.SqlType);
             Assert.AreEqual(ColumnName, definition.Name);
             Assert.AreEqual(1, definition.Size);
         }
@@ -63,6 +63,14 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             bool actual = definition.Equals(other);
 
             Assert.IsTrue(actual);
+        }
+
+        [TestMethod]
+        public void SizeableColumnDefinitionNegativeOneSizeSetToZero()
+        {
+            definition.Size = -1;
+
+            Assert.AreEqual(0, definition.Size);
         }
 
         [TestMethod]

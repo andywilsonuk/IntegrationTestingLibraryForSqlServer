@@ -13,7 +13,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void ConstructorBasics()
         {
-            Assert.AreEqual(SqlDbType.Decimal, column.DataType);
+            Assert.AreEqual(SqlDbType.Decimal, column.DataType.SqlType);
             Assert.AreEqual("D1", column.Name);
             Assert.AreEqual(18, column.Precision);
             Assert.AreEqual(0, column.Scale);

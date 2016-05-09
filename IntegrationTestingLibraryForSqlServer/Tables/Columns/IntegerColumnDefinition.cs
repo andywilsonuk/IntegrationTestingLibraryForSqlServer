@@ -14,20 +14,9 @@ namespace IntegrationTestingLibraryForSqlServer
         public IntegerColumnDefinition(string name, SqlDbType dataType)
             : base(name, dataType)
         {
-            switch (dataType)
-            {
-                case SqlDbType.Int:
-                case SqlDbType.BigInt:
-                case SqlDbType.SmallInt:
-                case SqlDbType.TinyInt:
-                    return;
-                case SqlDbType.Decimal:
-                    if (!(this is DecimalColumnDefinition)) throw new ArgumentException("Wrong datatype passed", nameof(dataType));
-                    return;
-                default:
-                    if (dataType == SqlDbType.Decimal && this is DecimalColumnDefinition) return;
-                    throw new ArgumentException("Wrong datatype passed", nameof(dataType));
-            }
+            if (DataType.IsInteger) return;
+            if (DataType.IsDecimal && this is DecimalColumnDefinition) return;
+            throw new ArgumentException("Wrong datatype passed", nameof(dataType));
         }
         public virtual int? IdentitySeed
         {

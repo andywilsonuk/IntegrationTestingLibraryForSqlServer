@@ -6,27 +6,48 @@ using System.Text;
 
 namespace IntegrationTestingLibraryForSqlServer
 {
-    internal class DataTypeDefaults
+    public class DataTypeDefaults : IEquatable<DataTypeDefaults>
     {
-        internal const int DefaultStringSize = 1;
-        internal const int DefaultDecimalSize = 18;
-        internal const byte DefaultNumberOfDecimalPlaces = 0;
-
-        internal const int MaximumSizeIndicator1 = 0;
-        internal const int MaximumSizeIndicator2 = -1;
+        internal const int DefaultSizeableSize = 1;
+        internal const int MaximumSizeIndicator = 0;
+        internal const int DefaultPrecision = 18;
+        internal const byte DefaultScale = 0;
+        internal const byte MinimumPrecision = 1;
+        internal const byte MaximumPrecision = 38;
 
         public DataTypeDefaults(SqlDbType dataType)
         {
-            this.DataType = dataType;
+            SqlType = dataType;
         }
 
-        public SqlDbType DataType { get; private set; }
+        public SqlDbType SqlType { get; private set; }
+
+        public override string ToString()
+        {
+            return SqlType.ToString();
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as DataTypeDefaults);
+        }
+
+        public bool Equals(DataTypeDefaults other)
+        {
+            if (other == null) return false;
+            return SqlType == other.SqlType;
+        }
+
+        public override int GetHashCode()
+        {
+            return SqlType.GetHashCode();
+        }
 
         public int? DefaultSize
         {
             get
             {
-                switch (this.DataType)
+                switch (SqlType)
                 {
                     case SqlDbType.Binary:
                     case SqlDbType.Char:
@@ -34,19 +55,11 @@ namespace IntegrationTestingLibraryForSqlServer
                     case SqlDbType.NVarChar:
                     case SqlDbType.VarBinary:
                     case SqlDbType.VarChar:
-                        return DefaultStringSize;
+                        return DefaultSizeableSize;
                     case SqlDbType.Decimal:
-                        return DefaultDecimalSize;
+                        return DefaultPrecision;
                     default: return null;
                 }
-            }
-        }
-
-        public byte? DefaultDecimalPlaces
-        {
-            get
-            {
-                return this.DataType == SqlDbType.Decimal ? DefaultNumberOfDecimalPlaces : (byte?)null;
             }
         }
 
@@ -59,43 +72,41 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public bool AreDecimalPlacesEqual(byte? decimalPlacesLeft, byte? decimalPlacesRight)
         {
-            return (decimalPlacesLeft ?? DefaultNumberOfDecimalPlaces) == (decimalPlacesRight ?? DefaultNumberOfDecimalPlaces);
+            return (decimalPlacesLeft ?? DefaultScale) == (decimalPlacesRight ?? DefaultScale);
         }
 
         public bool AreDecimalPlacesAllowed
         {
             get
             {
-                return this.DataType == SqlDbType.Decimal;
+                return this.SqlType == SqlDbType.Decimal;
             }
         }
 
-        public bool IsIdentitySeedAllowed
+        public bool IsInteger
         {
             get
             {
-                switch (this.DataType)
+                switch (this.SqlType)
                 {
                     case SqlDbType.Int:
                     case SqlDbType.BigInt:
                     case SqlDbType.SmallInt:
                     case SqlDbType.TinyInt:
-                    case SqlDbType.Decimal:
                         return true;
                     default: return false;
                 }
             }
         }
 
-        public bool IsSizeAllowed
+        public bool IsSizeable
         {
             get 
             { 
-                switch(this.DataType)
+                switch(this.SqlType)
                 {
                     case SqlDbType.Binary:
                     case SqlDbType.Char:
-                    case SqlDbType.Decimal:
                     case SqlDbType.VarBinary:
                     case SqlDbType.VarChar:
                     case SqlDbType.NChar:
@@ -110,7 +121,7 @@ namespace IntegrationTestingLibraryForSqlServer
         {
             get
             {
-                switch (this.DataType)
+                switch (this.SqlType)
                 {
                     case SqlDbType.NChar:
                     case SqlDbType.NVarChar:
@@ -120,10 +131,15 @@ namespace IntegrationTestingLibraryForSqlServer
             }
         }
 
+        public bool IsDecimal
+        {
+            get { return SqlType == SqlDbType.Decimal; }
+        }
+
         public bool IsMaximumSizeIndicator(int? size)
         {
             if (!size.HasValue) return false;
-            return size == MaximumSizeIndicator1 || size == MaximumSizeIndicator2;
+            return size == MaximumSizeIndicator;
         }
     }
 }

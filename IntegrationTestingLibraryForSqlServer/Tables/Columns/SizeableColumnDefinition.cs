@@ -9,22 +9,13 @@ namespace IntegrationTestingLibraryForSqlServer
 {
     public class SizeableColumnDefinition : ColumnDefinition
     {
-        private int size = 1;
+        private int size = DataTypeDefaults.DefaultSizeableSize;
 
         public SizeableColumnDefinition(string name, SqlDbType dataType)
             : base(name, dataType)
         {
-            switch (dataType)
-            {
-                case SqlDbType.Binary:
-                case SqlDbType.Char:
-                case SqlDbType.VarBinary:
-                case SqlDbType.VarChar:
-                case SqlDbType.NChar:
-                case SqlDbType.NVarChar:
-                    return;
-                default: throw new ArgumentException("Wrong datatype passed", nameof(dataType));
-            }
+            if (DataType.IsSizeable) return;
+            throw new ArgumentException("Wrong datatype passed", nameof(dataType));
         }
 
         public int Size
@@ -32,8 +23,8 @@ namespace IntegrationTestingLibraryForSqlServer
             get { return size; }
             set
             {
-                if (value < 0) throw new ArgumentException("Size must be greater than zero");
-                size = value;
+                if (value < -1) throw new ArgumentException("Size must be greater than zero");
+                size = value == -1 ? 0 : value;
             }
         }
 

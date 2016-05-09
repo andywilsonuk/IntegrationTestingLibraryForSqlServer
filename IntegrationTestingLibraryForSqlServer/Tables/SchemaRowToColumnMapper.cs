@@ -11,28 +11,16 @@ namespace IntegrationTestingLibraryForSqlServer
     internal class SchemaRowToColumnMapper
     {
         private DataRow record;
-        private DataTypeDefaults dataTypeDefaults;
+        private ColumnDefinition column;
 
         public ColumnDefinition ToColumnDefinition(DataRow definitionRow)
         {
-            this.record = definitionRow;
-            var column = GetColumn();
-
-            this.dataTypeDefaults = new DataTypeDefaults(column.DataType);
-            column.AllowNulls = GetNullable();
-
-            var decimalColumn = column as DecimalColumnDefinition;
-            if (decimalColumn != null)
-            {
-                decimalColumn.Precision = GetPrecision();
-                decimalColumn.Scale = GetScale();
-            }
-            var sizeableColumn = column as SizeableColumnDefinition;
-            if (sizeableColumn != null)
-            {
-                sizeableColumn.Size = GetSize();
-            }
-
+            record = definitionRow;
+            GetColumn();
+            GetNullable();
+            GetSize();
+            GetPrecision();
+            GetScale();
             return column;
         }
 
@@ -41,29 +29,35 @@ namespace IntegrationTestingLibraryForSqlServer
             return (string)record[Columns.Name];
         }
 
-        private ColumnDefinition GetColumn()
+        private void GetColumn()
         {
-            return new ColumnDefinitionFactory().FromSqlDbType((SqlDbType)record[Columns.DataType], GetName());
+            column = new ColumnDefinitionFactory().FromSqlDbType((SqlDbType)record[Columns.DataType], GetName());
         }
 
-        private int GetSize()
+        private void GetSize()
         {
+            var sizeableColumn = column as SizeableColumnDefinition;
+            if (sizeableColumn == null) return;
             int size = Convert.ToInt32(record[Columns.Size]);
-            return size == -1 ? 0 : size;
+            sizeableColumn.Size = size == -1 ? 0 : size;
         }
 
-        private byte GetScale()
+        private void GetScale()
         {
-            return Convert.ToByte(record[Columns.Scale]);
+            var decimalColumn = column as DecimalColumnDefinition;
+            if (decimalColumn == null) return;
+            decimalColumn.Scale = Convert.ToByte(record[Columns.Scale]);
         }
-        private byte GetPrecision()
+        private void GetPrecision()
         {
-            return Convert.ToByte(record[Columns.Precision]);
+            var decimalColumn = column as DecimalColumnDefinition;
+            if (decimalColumn == null) return;
+            decimalColumn.Precision = Convert.ToByte(record[Columns.Precision]);
         }
 
-        private bool GetNullable()
+        private void GetNullable()
         {
-            return (bool)record[Columns.IsNullable];
+            column.AllowNulls = (bool)record[Columns.IsNullable];
         }
 
         internal static class Columns

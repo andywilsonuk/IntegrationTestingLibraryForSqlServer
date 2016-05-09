@@ -35,7 +35,7 @@ namespace IntegrationTestingLibraryForSqlServer
         {
             var dataTypeDefaults = new DataTypeDefaults(this.DataType);
             if (string.IsNullOrWhiteSpace(this.Name)) return false;
-            if (!dataTypeDefaults.IsSizeAllowed && this.Size.HasValue) return false;
+            if ((!dataTypeDefaults.IsSizeable && !dataTypeDefaults.IsDecimal) && this.Size.HasValue) return false;
             if (!dataTypeDefaults.AreDecimalPlacesAllowed && this.DecimalPlaces.HasValue) return false;
             if (this.IsMaximumSize) return true;
             if (this.Size.HasValue && this.Size.Value < -1) return false;
@@ -56,7 +56,7 @@ namespace IntegrationTestingLibraryForSqlServer
             }
             set
             {
-                this.Size = DataTypeDefaults.MaximumSizeIndicator1;
+                this.Size = DataTypeDefaults.MaximumSizeIndicator;
             }
         }
 

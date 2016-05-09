@@ -35,16 +35,13 @@ namespace IntegrationTestingLibraryForSqlServer
         private int? GetSize()
         {
             DataTypeDefaults dataTypeDefaults = new DataTypeDefaults(sqlParameter.SqlDbType);
-            if (dataTypeDefaults.IsSizeAllowed)
+            if (dataTypeDefaults.SqlType == SqlDbType.Decimal)
             {
-                if (dataTypeDefaults.DataType == SqlDbType.Decimal)
-                {
-                    return (int?)sqlParameter.Precision;
-                }
-                else
-                {
-                    return sqlParameter.Size;
-                }
+                return (int?)sqlParameter.Precision;
+            }
+            else if (dataTypeDefaults.IsSizeable)
+            {
+                return sqlParameter.Size == -1 ? 0 : sqlParameter.Size;
             }
             return (int?)null;
         }

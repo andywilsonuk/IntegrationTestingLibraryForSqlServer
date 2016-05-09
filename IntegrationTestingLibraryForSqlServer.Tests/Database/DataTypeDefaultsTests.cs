@@ -11,7 +11,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void DefaultSizeForStringLikeDataType()
         {
             var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
-            int? expected = DataTypeDefaults.DefaultStringSize;
+            int? expected = DataTypeDefaults.DefaultSizeableSize;
 
             int? actual = dataTypeDefaults.DefaultSize;
 
@@ -22,7 +22,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void DefaultSizeForDecimalDataType()
         {
             var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Decimal);
-            int? expected = DataTypeDefaults.DefaultDecimalSize;
+            int? expected = DataTypeDefaults.DefaultPrecision;
 
             int? actual = dataTypeDefaults.DefaultSize;
 
@@ -36,28 +36,6 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             int? expected = null;
 
             int? actual = dataTypeDefaults.DefaultSize;
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void DefaultDecimalPlacesForDecimalDataType()
-        {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Decimal);
-            int? expected = DataTypeDefaults.DefaultNumberOfDecimalPlaces;
-
-            byte? actual = dataTypeDefaults.DefaultDecimalPlaces;
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void DefaultDecimalPlacesForIntegerDataType()
-        {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Int);
-            int? expected = null;
-
-            byte? actual = dataTypeDefaults.DefaultDecimalPlaces;
 
             Assert.AreEqual(expected, actual);
         }
@@ -87,7 +65,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
 
-            bool actual = dataTypeDefaults.IsSizeEqual(null, DataTypeDefaults.DefaultStringSize);
+            bool actual = dataTypeDefaults.IsSizeEqual(null, DataTypeDefaults.DefaultSizeableSize);
 
             Assert.IsTrue(actual);
         }
@@ -97,7 +75,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
 
-            bool actual = dataTypeDefaults.IsSizeEqual(DataTypeDefaults.DefaultStringSize, null);
+            bool actual = dataTypeDefaults.IsSizeEqual(DataTypeDefaults.DefaultSizeableSize, null);
 
             Assert.IsTrue(actual);
         }
@@ -118,36 +96,6 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
 
             bool actual = dataTypeDefaults.IsSizeEqual(0, 0);
-
-            Assert.IsTrue(actual);
-        }
-
-        [TestMethod]
-        public void SizeEqualsForEqualMaximumSizeNegative1()
-        {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
-
-            bool actual = dataTypeDefaults.IsSizeEqual(-1, -1);
-
-            Assert.IsTrue(actual);
-        }
-
-        [TestMethod]
-        public void SizeEqualsForEquivalentMaximumSizeLeft0()
-        {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
-
-            bool actual = dataTypeDefaults.IsSizeEqual(0, -1);
-
-            Assert.IsTrue(actual);
-        }
-
-        [TestMethod]
-        public void SizeEqualsForEquivalentMaximumSizeRight0()
-        {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
-
-            bool actual = dataTypeDefaults.IsSizeEqual(-1, 0);
 
             Assert.IsTrue(actual);
         }
@@ -177,7 +125,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Decimal);
 
-            bool actual = dataTypeDefaults.AreDecimalPlacesEqual(null, DataTypeDefaults.DefaultNumberOfDecimalPlaces);
+            bool actual = dataTypeDefaults.AreDecimalPlacesEqual(null, DataTypeDefaults.DefaultScale);
 
             Assert.IsTrue(actual);
         }
@@ -187,7 +135,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Decimal);
 
-            bool actual = dataTypeDefaults.AreDecimalPlacesEqual(DataTypeDefaults.DefaultNumberOfDecimalPlaces, null);
+            bool actual = dataTypeDefaults.AreDecimalPlacesEqual(DataTypeDefaults.DefaultScale, null);
 
             Assert.IsTrue(actual);
         }
@@ -207,7 +155,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
 
-            Assert.IsTrue(dataTypeDefaults.IsSizeAllowed);
+            Assert.IsTrue(dataTypeDefaults.IsSizeable);
         }
 
         [TestMethod]
@@ -215,7 +163,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Int);
 
-            Assert.IsFalse(dataTypeDefaults.IsSizeAllowed);
+            Assert.IsFalse(dataTypeDefaults.IsSizeable);
         }
 
         [TestMethod]
@@ -261,16 +209,6 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void IsMaximumSizeIndicatorForNegative1()
-        {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
-
-            bool actual = dataTypeDefaults.IsMaximumSizeIndicator(-1);
-
-            Assert.IsTrue(actual);
-        }
-
-        [TestMethod]
         public void IsMaximumSizeIndicatorFor0()
         {
             var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
@@ -286,6 +224,46 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
 
             bool actual = dataTypeDefaults.IsMaximumSizeIndicator(null);
+
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        public void IsIntegerTrue()
+        {
+            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Int);
+
+            bool actual = dataTypeDefaults.IsInteger;
+
+            Assert.IsTrue(actual);
+        }
+
+        [TestMethod]
+        public void IsIntegerFalse()
+        {
+            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.VarChar);
+
+            bool actual = dataTypeDefaults.IsInteger;
+
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        public void IsDecimalTrue()
+        {
+            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Decimal);
+
+            bool actual = dataTypeDefaults.IsDecimal;
+
+            Assert.IsTrue(actual);
+        }
+
+        [TestMethod]
+        public void IsDecimalFalse()
+        {
+            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.VarChar);
+
+            bool actual = dataTypeDefaults.IsDecimal;
 
             Assert.IsFalse(actual);
         }

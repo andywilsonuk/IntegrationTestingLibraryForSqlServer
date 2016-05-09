@@ -9,8 +9,8 @@ namespace IntegrationTestingLibraryForSqlServer
 {
     public class DecimalColumnDefinition : IntegerColumnDefinition
     {
-        private byte precision = 18;
-        private byte scale = 0;
+        private byte precision = DataTypeDefaults.DefaultPrecision;
+        private byte scale = DataTypeDefaults.DefaultScale;
 
         public DecimalColumnDefinition(string name)
             : base(name, SqlDbType.Decimal)
@@ -22,7 +22,7 @@ namespace IntegrationTestingLibraryForSqlServer
             get { return precision; }
             set
             {
-                if (value == 0 || value > 38) throw new ArgumentException("Precision must be between 1 and 38");
+                if (value < DataTypeDefaults.MinimumPrecision || value > DataTypeDefaults.MaximumPrecision) throw new ArgumentException("Precision must be between 1 and 38");
                 precision = value;
                 if (scale > precision) scale = precision;
             }
@@ -32,7 +32,7 @@ namespace IntegrationTestingLibraryForSqlServer
             get { return scale; }
             set
             {
-                if (IdentitySeed.HasValue && value != 0) throw new ArgumentException("Cannot set Scale when column is identity");
+                if (IdentitySeed.HasValue && value != DataTypeDefaults.DefaultScale) throw new ArgumentException("Cannot set Scale when column is identity");
                 if (value > Precision) throw new ArgumentException("Scale must be between 0 and the precision");
                 scale = value;
             }
@@ -43,7 +43,7 @@ namespace IntegrationTestingLibraryForSqlServer
             get { return base.IdentitySeed; }
             set
             {
-                if (value.HasValue) Scale = 0;
+                if (value.HasValue) Scale = DataTypeDefaults.DefaultScale;
                 base.IdentitySeed = value;
             }
         }

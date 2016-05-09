@@ -25,7 +25,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             Assert.AreEqual(1, actual.Count);
             Assert.AreEqual(source.Name, actual[0].Name);
-            Assert.AreEqual(SqlDbType.DateTime, actual[0].DataType);
+            Assert.AreEqual(SqlDbType.DateTime, actual[0].DataType.SqlType);
             Assert.AreEqual(source.AllowNulls, actual[0].AllowNulls);
         }
 
@@ -44,7 +44,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             var actual = factory.FromRaw(new[] { source }).ToList();
 
             Assert.AreEqual(1, actual.Count);
-            Assert.AreEqual(SqlDbType.Int, actual[0].DataType);
+            Assert.AreEqual(SqlDbType.Int, actual[0].DataType.SqlType);
             Assert.IsInstanceOfType(actual[0], typeof(IntegerColumnDefinition));
             Assert.AreEqual(source.IdentitySeed, ((IntegerColumnDefinition)actual[0]).IdentitySeed);
         }
@@ -62,7 +62,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             var actual = factory.FromRaw(new[] { source }).ToList();
 
-            Assert.AreEqual(SqlDbType.Decimal, actual[0].DataType);
+            Assert.AreEqual(SqlDbType.Decimal, actual[0].DataType.SqlType);
             Assert.IsInstanceOfType(actual[0], typeof(DecimalColumnDefinition));
             Assert.AreEqual(source.Size, ((DecimalColumnDefinition)actual[0]).Precision);
             Assert.AreEqual(source.DecimalPlaces, ((DecimalColumnDefinition)actual[0]).Scale);
@@ -79,7 +79,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             var actual = factory.FromRaw(new[] { source }).ToList();
 
-            Assert.AreEqual(SqlDbType.Decimal, actual[0].DataType);
+            Assert.AreEqual(SqlDbType.Decimal, actual[0].DataType.SqlType);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void ConstructorBasics()
         {
-            Assert.AreEqual(SqlDbType.Int, column.DataType);
+            Assert.AreEqual(SqlDbType.Int, column.DataType.SqlType);
             Assert.AreEqual(ColumnName, column.Name);
         }
         [TestMethod]
