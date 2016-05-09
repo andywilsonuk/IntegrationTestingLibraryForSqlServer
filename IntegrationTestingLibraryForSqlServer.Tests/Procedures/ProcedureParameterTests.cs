@@ -61,7 +61,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void ProcedureParameterNotEqualsDataType()
         {
-            var other = new ProcedureParameter(ParameterName, SqlDbType.NVarChar, ParameterDirection.Input);
+            var other = new SizeableProcedureParameter(ParameterName, SqlDbType.NVarChar, ParameterDirection.Input);
             bool actual = parameter.Equals(other);
 
             Assert.IsFalse(actual);

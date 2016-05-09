@@ -16,7 +16,7 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
             var parameter = new SqlParameter
             {
                 ParameterName = Name.StartsWith("@") ? Name : "@" + Name,
-                SqlDbType = new DataTypeDefaults(DataType).SqlType,
+                SqlDbType = new DataType(DataType).SqlType,
                 Direction = Direction,
                 Value = Value
             };

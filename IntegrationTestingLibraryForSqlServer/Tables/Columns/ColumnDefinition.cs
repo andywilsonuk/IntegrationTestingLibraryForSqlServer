@@ -10,19 +10,20 @@ namespace IntegrationTestingLibraryForSqlServer
     public class ColumnDefinition : IEquatable<ColumnDefinition>
     {
         public string Name { get; private set; }
-        public DataTypeDefaults DataType { get; private set; }
+        public DataType DataType { get; private set; }
         public virtual bool AllowNulls { get; set; }
 
         public ColumnDefinition(string name, SqlDbType dataType)
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
             Name = name;
-            DataType = new DataTypeDefaults(dataType);
+            DataType = new DataType(dataType);
             AllowNulls = true;
 
-            if (!DataType.IsDecimal || this is DecimalColumnDefinition) return;
-            if (!DataType.IsInteger || this is IntegerColumnDefinition) return;
-            if (!DataType.IsSizeable || this is SizeableColumnDefinition) return;
+            if (!DataType.IsInteger && !DataType.IsDecimal && !DataType.IsSizeable) return;
+            if (DataType.IsDecimal && this is DecimalColumnDefinition) return;
+            if (DataType.IsInteger && this is IntegerColumnDefinition) return;
+            if (DataType.IsSizeable && this is SizeableColumnDefinition) return;
             throw new ArgumentException("Wrong datatype passed", nameof(dataType));
         }
 

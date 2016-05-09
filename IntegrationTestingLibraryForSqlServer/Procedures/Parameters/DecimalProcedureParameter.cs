@@ -9,8 +9,8 @@ namespace IntegrationTestingLibraryForSqlServer
 {
     public class DecimalProcedureParameter : ProcedureParameter
     {
-        private byte precision = DataTypeDefaults.DefaultPrecision;
-        private byte scale = DataTypeDefaults.DefaultScale;
+        private byte precision = DataType.DefaultPrecision;
+        private byte scale = DataType.DefaultScale;
 
         public DecimalProcedureParameter(string name, ParameterDirection direction) 
             : base(name, SqlDbType.Decimal, direction)

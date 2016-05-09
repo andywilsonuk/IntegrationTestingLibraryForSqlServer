@@ -9,7 +9,7 @@ namespace IntegrationTestingLibraryForSqlServer
 {
     public class SizeableColumnDefinition : ColumnDefinition
     {
-        private int size = DataTypeDefaults.DefaultSizeableSize;
+        private int size = DataType.DefaultSizeableSize;
 
         public SizeableColumnDefinition(string name, SqlDbType dataType)
             : base(name, dataType)
@@ -35,8 +35,8 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public bool IsMaximumSize
         {
-            get { return size == DataTypeDefaults.MaximumSizeIndicator; }
-            set { size = DataTypeDefaults.MaximumSizeIndicator; }
+            get { return size == DataType.MaximumSizeIndicator; }
+            set { size = DataType.MaximumSizeIndicator; }
         }
 
         public override bool Equals(ColumnDefinition other)

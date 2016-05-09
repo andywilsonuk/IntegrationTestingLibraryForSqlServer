@@ -36,7 +36,7 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public ColumnDefinition FromSqlDbType(string dataType, string name)
         {
-            return FromSqlDbType(new DataTypeDefaults(dataType).SqlType, name);
+            return FromSqlDbType(new DataType(dataType).SqlType, name);
         }
 
         public ColumnDefinition FromSqlDbType(SqlDbType type, string name)

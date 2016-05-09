@@ -28,7 +28,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void CreateTableNullableColumn()
         {
             string expected = "CREATE TABLE [dbo].[t1] ([c1] Int NULL)";
-            definition.Columns.Add(new ColumnDefinition("c1", SqlDbType.Int) { AllowNulls = true });
+            definition.Columns.Add(new IntegerColumnDefinition("c1", SqlDbType.Int) { AllowNulls = true });
 
             string actual = generator.Sql(definition);
 
@@ -38,9 +38,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void CreateTableWithMultipleColumns()
         {
-            string expected = "CREATE TABLE [dbo].[t1] ([c1] Int NULL,[c2] NVarChar NULL)";
-            definition.Columns.Add(new ColumnDefinition("c1", SqlDbType.Int));
-            definition.Columns.Add(new ColumnDefinition("c2",SqlDbType.NVarChar));
+            string expected = "CREATE TABLE [dbo].[t1] ([c1] Int NULL,[c2] NVarChar(1) NULL)";
+            definition.Columns.Add(new IntegerColumnDefinition("c1", SqlDbType.Int));
+            definition.Columns.Add(new SizeableColumnDefinition("c2",SqlDbType.NVarChar));
 
             string actual = generator.Sql(definition);
 
@@ -61,8 +61,8 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void CreateTableWithStringLikeColumnNoSize()
         {
-            string expected = "CREATE TABLE [dbo].[t1] ([c1] NVarChar NULL)";
-            definition.Columns.Add(new ColumnDefinition("c1", SqlDbType.NVarChar));
+            string expected = "CREATE TABLE [dbo].[t1] ([c1] NVarChar(1) NULL)";
+            definition.Columns.Add(new SizeableColumnDefinition("c1", SqlDbType.NVarChar));
 
             string actual = generator.Sql(definition);
 

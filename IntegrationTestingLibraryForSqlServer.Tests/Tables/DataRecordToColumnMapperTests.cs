@@ -21,7 +21,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             mockDataRecord.Setup(x => x.GetBoolean(DataRecordToColumnMapper.Columns.IsNullable)).Returns(false);
             mockDataRecord.Setup(x => x.GetBoolean(DataRecordToColumnMapper.Columns.IsIdentity)).Returns(false);
 
-            expected = new ColumnDefinition("r1", SqlDbType.Int)
+            expected = new IntegerColumnDefinition("r1", SqlDbType.Int)
             {
                 AllowNulls = false,
             };

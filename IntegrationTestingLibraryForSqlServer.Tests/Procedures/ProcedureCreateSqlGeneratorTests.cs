@@ -31,8 +31,8 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void CreateProcedureWithMultipleParameters()
         {
             procedure.Parameters.Add(new ProcedureParameter("id", SqlDbType.Int, ParameterDirection.Input));
-            procedure.Parameters.Add(new ProcedureParameter("name", SqlDbType.NVarChar, ParameterDirection.Input));
-            string expected = "create procedure [dbo].[testproc] @id Int,@name NVarChar as begin return 5 end";
+            procedure.Parameters.Add(new SizeableProcedureParameter("name", SqlDbType.NVarChar, ParameterDirection.Input));
+            string expected = "create procedure [dbo].[testproc] @id Int,@name NVarChar(1) as begin return 5 end";
 
             string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
 
@@ -53,8 +53,8 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void CreateProcedureWithNVarCharNoSizeParameter()
         {
-            procedure.Parameters.Add(new ProcedureParameter("name", SqlDbType.NVarChar, ParameterDirection.Input));
-            string expected = "create procedure [dbo].[testproc] @name NVarChar as begin return 5 end";
+            procedure.Parameters.Add(new SizeableProcedureParameter("name", SqlDbType.NVarChar, ParameterDirection.Input));
+            string expected = "create procedure [dbo].[testproc] @name NVarChar(1) as begin return 5 end";
 
             string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
 

@@ -39,7 +39,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void ColumnDefinitionNotEqualsDataType()
         {
-            var other = new ColumnDefinition(ColumnName, SqlDbType.NVarChar);
+            var other = new SizeableColumnDefinition(ColumnName, SqlDbType.NVarChar);
 
             bool actual = definition.Equals(other);
 

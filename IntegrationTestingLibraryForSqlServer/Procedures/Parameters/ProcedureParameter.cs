@@ -12,16 +12,17 @@ namespace IntegrationTestingLibraryForSqlServer
         public ProcedureParameter(string name, SqlDbType dataType, ParameterDirection direction)
         {
             Name = name;
-            DataType = new DataTypeDefaults(dataType);
+            DataType = new DataType(dataType);
             Direction = direction;
 
-            if (!DataType.IsDecimal || this is DecimalProcedureParameter) return;
-            if (!DataType.IsSizeable || this is SizeableProcedureParameter) return;
+            if (!DataType.IsDecimal && !DataType.IsSizeable) return;
+            if (DataType.IsDecimal && this is DecimalProcedureParameter) return;
+            if (DataType.IsSizeable && this is SizeableProcedureParameter) return;
             throw new ArgumentException("Wrong datatype passed", nameof(dataType));
         }
 
         public string Name { get; private set; }
-        public DataTypeDefaults DataType { get; private set; }
+        public DataType DataType { get; private set; }
         public ParameterDirection Direction { get; set; }
 
         public string QualifiedName

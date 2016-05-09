@@ -16,7 +16,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            column = new ColumnDefinition(ColumnName, SqlDbType.Int);
+            column = new IntegerColumnDefinition(ColumnName, SqlDbType.Int);
             table = new TableDefinition(tableName, new[] { column });
         }
 
@@ -55,7 +55,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [ExpectedException(typeof(EquivalenceException))]
         public void TableDefinitionVerifyNotEqualColumn()
         {
-            var other = new TableDefinition(DatabaseObjectName.FromName("other"), new[] { new ColumnDefinition(ColumnName, SqlDbType.NVarChar) });
+            var other = new TableDefinition(DatabaseObjectName.FromName("other"), new[] { new SizeableColumnDefinition(ColumnName, SqlDbType.NVarChar) });
 
             table.VerifyEqual(other);
         }
@@ -83,7 +83,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void TableDefinitionNotEqualsColumn()
         {
-            var other = new TableDefinition(tableName, new[] { new ColumnDefinition(column.Name, SqlDbType.NVarChar) });
+            var other = new TableDefinition(tableName, new[] { new SizeableColumnDefinition(column.Name, SqlDbType.NVarChar) });
 
             bool actual = table.Equals(other);
 
@@ -109,7 +109,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void TableDefinitionEqualMixedColumnOrder()
         {
-            var column2 = new ColumnDefinition("c2", SqlDbType.NVarChar);
+            var column2 = new SizeableColumnDefinition("c2", SqlDbType.NVarChar);
             table.Columns.Add(column2);
             var other = new TableDefinition(tableName, new[] { column2, column });
 
@@ -169,7 +169,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void TableDefinitionIsSubsetAdditionalColumn()
         {
-            var other = new TableDefinition(tableName, new[] { column, new ColumnDefinition("c2", SqlDbType.NVarChar) });
+            var other = new TableDefinition(tableName, new[] { column, new SizeableColumnDefinition("c2", SqlDbType.NVarChar) });
 
             bool actual = table.IsSubset(other);
 
@@ -180,7 +180,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void TableDefinitionIsNotSubsetMissingColumn()
         {
             var other = new TableDefinition(tableName, new[] { column });
-            table.Columns.Add(new ColumnDefinition("c2", SqlDbType.NVarChar));
+            table.Columns.Add(new SizeableColumnDefinition("c2", SqlDbType.NVarChar));
 
             bool actual = table.IsSubset(other);
 
@@ -190,7 +190,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void TableDefinitionIsSubsetEqualMixedOrder()
         {
-            var column2 = new ColumnDefinition("c2", SqlDbType.NVarChar);
+            var column2 = new SizeableColumnDefinition("c2", SqlDbType.NVarChar);
             table.Columns.Add(column2);
             var other = new TableDefinition(tableName, new[] { column2, column });
 
@@ -227,7 +227,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void TableDefinitionVerifySubsetAdditionalColumn()
         {
-            var other = new TableDefinition(tableName, new[] { column, new ColumnDefinition("c2", SqlDbType.NVarChar) });
+            var other = new TableDefinition(tableName, new[] { column, new SizeableColumnDefinition("c2", SqlDbType.NVarChar) });
 
             table.VerifyEqualOrSubsetOf(other);
         }
@@ -237,7 +237,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void TableDefinitionVerifyNotSubsetMissingColumn()
         {
             var other = new TableDefinition(tableName, new[] { column });
-            table.Columns.Add(new ColumnDefinition("c2", SqlDbType.NVarChar));
+            table.Columns.Add(new SizeableColumnDefinition("c2", SqlDbType.NVarChar));
 
             table.VerifyEqualOrSubsetOf(other);
         }

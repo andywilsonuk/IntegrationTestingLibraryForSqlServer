@@ -31,7 +31,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             dataRow[SchemaRowToColumnMapper.Columns.Size] = (int)10;
             dataRow[SchemaRowToColumnMapper.Columns.IsNullable] = false;
 
-            expected = new ColumnDefinition("r1", SqlDbType.Int)
+            expected = new IntegerColumnDefinition("r1", SqlDbType.Int)
             {
                 AllowNulls = false,
             };

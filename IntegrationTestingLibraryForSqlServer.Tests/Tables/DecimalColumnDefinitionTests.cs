@@ -130,7 +130,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void EqualsWrongTypeCompare()
         {
-            ColumnDefinition other = new ColumnDefinition("D1", SqlDbType.Decimal);
+            ColumnDefinition other = new ColumnDefinition("D1", SqlDbType.DateTime);
 
             bool actual = column.Equals(other);
 

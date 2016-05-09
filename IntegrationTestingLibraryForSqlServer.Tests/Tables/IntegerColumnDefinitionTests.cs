@@ -57,7 +57,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void ColumnDefinitionNotEqualsWrongType()
         {
-            var other = new ColumnDefinition(ColumnName, SqlDbType.VarChar);
+            var other = new SizeableColumnDefinition(ColumnName, SqlDbType.VarChar);
 
             bool actual = column.Equals(other);
 
@@ -69,7 +69,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             column.IdentitySeed = 1;
 
-            var other = new ColumnDefinition(ColumnName, SqlDbType.Int);
+            var other = new IntegerColumnDefinition(ColumnName, SqlDbType.Int);
 
             bool actual = column.Equals(other);
 

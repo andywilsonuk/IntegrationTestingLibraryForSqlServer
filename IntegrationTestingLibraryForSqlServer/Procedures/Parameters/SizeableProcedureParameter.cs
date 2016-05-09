@@ -9,7 +9,7 @@ namespace IntegrationTestingLibraryForSqlServer
 {
     public class SizeableProcedureParameter : ProcedureParameter
     {
-        private int size = DataTypeDefaults.DefaultSizeableSize;
+        private int size = DataType.DefaultSizeableSize;
 
         public SizeableProcedureParameter(string name, SqlDbType dataType, ParameterDirection direction) 
             : base(name, dataType, direction)
@@ -35,8 +35,8 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public bool IsMaximumSize
         {
-            get { return size == DataTypeDefaults.MaximumSizeIndicator; }
-            set { size = DataTypeDefaults.MaximumSizeIndicator; }
+            get { return size == DataType.MaximumSizeIndicator; }
+            set { size = DataType.MaximumSizeIndicator; }
         }
 
         public override bool Equals(ProcedureParameter other)

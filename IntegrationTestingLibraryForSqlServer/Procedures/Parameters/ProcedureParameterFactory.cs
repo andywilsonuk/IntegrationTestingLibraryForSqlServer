@@ -30,7 +30,7 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public ProcedureParameter FromSqlDbType(string dataType, string name, ParameterDirection direction)
         {
-            return FromSqlDbType(new DataTypeDefaults(dataType).SqlType, name, direction);
+            return FromSqlDbType(new DataType(dataType).SqlType, name, direction);
         }
 
         public ProcedureParameter FromSqlDbType(SqlDbType type, string name, ParameterDirection direction)

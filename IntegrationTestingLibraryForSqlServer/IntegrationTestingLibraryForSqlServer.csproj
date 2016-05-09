@@ -49,7 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\DatabaseObjectName.cs" />
-    <Compile Include="Database\DataTypeDefaults.cs" />
+    <Compile Include="Database\DataType.cs" />
     <Compile Include="Database\DomainAccount.cs" />
     <Compile Include="Database\SqlConnectionStringBuilderExtensions.cs" />
     <Compile Include="Procedures\Parameters\ProcedureParameterCollectionExtensions.cs" />

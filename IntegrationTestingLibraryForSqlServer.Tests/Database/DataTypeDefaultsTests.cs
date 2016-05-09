@@ -10,8 +10,8 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void DefaultSizeForStringLikeDataType()
         {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
-            int? expected = DataTypeDefaults.DefaultSizeableSize;
+            var dataTypeDefaults = new DataType(SqlDbType.NVarChar);
+            int? expected = DataType.DefaultSizeableSize;
 
             int? actual = dataTypeDefaults.DefaultSize;
 
@@ -21,8 +21,8 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void DefaultSizeForDecimalDataType()
         {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Decimal);
-            int? expected = DataTypeDefaults.DefaultPrecision;
+            var dataTypeDefaults = new DataType(SqlDbType.Decimal);
+            int? expected = DataType.DefaultPrecision;
 
             int? actual = dataTypeDefaults.DefaultSize;
 
@@ -32,7 +32,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void DefaultSizeForIntegerDataType()
         {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Int);
+            var dataTypeDefaults = new DataType(SqlDbType.Int);
             int? expected = null;
 
             int? actual = dataTypeDefaults.DefaultSize;
@@ -41,119 +41,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void SizeEqualsForEquivalentStringLikeDataType()
-        {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
-
-            bool actual = dataTypeDefaults.IsSizeEqual(5, 5);
-
-            Assert.IsTrue(actual);
-        }
-
-        [TestMethod]
-        public void SizeEqualsForNonEquivalentStringLikeDataType()
-        {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
-
-            bool actual = dataTypeDefaults.IsSizeEqual(5, 3);
-
-            Assert.IsFalse(actual);
-        }
-
-        [TestMethod]
-        public void SizeEqualsForEquivalentLeftDefaultedStringLikeDataType()
-        {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
-
-            bool actual = dataTypeDefaults.IsSizeEqual(null, DataTypeDefaults.DefaultSizeableSize);
-
-            Assert.IsTrue(actual);
-        }
-
-        [TestMethod]
-        public void SizeEqualsForEquivalentRightDefaultedStringLikeDataType()
-        {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
-
-            bool actual = dataTypeDefaults.IsSizeEqual(DataTypeDefaults.DefaultSizeableSize, null);
-
-            Assert.IsTrue(actual);
-        }
-
-        [TestMethod]
-        public void SizeEqualsForEquivalentBothDefaultedStringLikeDataType()
-        {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
-
-            bool actual = dataTypeDefaults.IsSizeEqual(null, null);
-
-            Assert.IsTrue(actual);
-        }
-
-        [TestMethod]
-        public void SizeEqualsForEqualMaximumSize0()
-        {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
-
-            bool actual = dataTypeDefaults.IsSizeEqual(0, 0);
-
-            Assert.IsTrue(actual);
-        }
-
-        [TestMethod]
-        public void DecimalPlacesEqualsForEquivalentDecimalDataType()
-        {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Decimal);
-
-            bool actual = dataTypeDefaults.AreDecimalPlacesEqual(5, 5);
-
-            Assert.IsTrue(actual);
-        }
-
-        [TestMethod]
-        public void DecimalPlacesEqualsForNonEquivalentDecimalDataType()
-        {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Decimal);
-
-            bool actual = dataTypeDefaults.AreDecimalPlacesEqual(5, 3);
-
-            Assert.IsFalse(actual);
-        }
-
-        [TestMethod]
-        public void DecimalPlacesEqualsForLeftDefaultedEquivalentDecimalDataType()
-        {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Decimal);
-
-            bool actual = dataTypeDefaults.AreDecimalPlacesEqual(null, DataTypeDefaults.DefaultScale);
-
-            Assert.IsTrue(actual);
-        }
-
-        [TestMethod]
-        public void DecimalPlacesEqualsForRightDefaultedEquivalentDecimalDataType()
-        {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Decimal);
-
-            bool actual = dataTypeDefaults.AreDecimalPlacesEqual(DataTypeDefaults.DefaultScale, null);
-
-            Assert.IsTrue(actual);
-        }
-
-        [TestMethod]
-        public void DecimalPlacesEqualsForBothDefaultedEquivalentDecimalDataType()
-        {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Decimal);
-
-            bool actual = dataTypeDefaults.AreDecimalPlacesEqual(null, null);
-
-            Assert.IsTrue(actual);
-        }
-
-        [TestMethod]
         public void IsSizeAllowedForStringLikeDataType()
         {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
+            var dataTypeDefaults = new DataType(SqlDbType.NVarChar);
 
             Assert.IsTrue(dataTypeDefaults.IsSizeable);
         }
@@ -161,7 +51,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void IsSizeAllowedForIntegerDataType()
         {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Int);
+            var dataTypeDefaults = new DataType(SqlDbType.Int);
 
             Assert.IsFalse(dataTypeDefaults.IsSizeable);
         }
@@ -169,7 +59,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void IsUnicodeSizeAllowedForStringLikeDataType()
         {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
+            var dataTypeDefaults = new DataType(SqlDbType.NVarChar);
 
             Assert.IsTrue(dataTypeDefaults.IsUnicodeSizeAllowed);
         }
@@ -177,31 +67,15 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void IsUnicodeSizeAllowedForCharDataType()
         {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Char);
+            var dataTypeDefaults = new DataType(SqlDbType.Char);
 
             Assert.IsFalse(dataTypeDefaults.IsUnicodeSizeAllowed);
         }
 
         [TestMethod]
-        public void AreDecimalPlacesAllowedForStringLikeDataType()
-        {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
-
-            Assert.IsFalse(dataTypeDefaults.AreDecimalPlacesAllowed);
-        }
-
-        [TestMethod]
-        public void AreDecimalPlacesAllowedForDecimalDataType()
-        {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Decimal);
-
-            Assert.IsTrue(dataTypeDefaults.AreDecimalPlacesAllowed);
-        }
-
-        [TestMethod]
         public void IsMaximumSizeIndicatorFor1()
         {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
+            var dataTypeDefaults = new DataType(SqlDbType.NVarChar);
 
             bool actual = dataTypeDefaults.IsMaximumSizeIndicator(1);
 
@@ -211,7 +85,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void IsMaximumSizeIndicatorFor0()
         {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
+            var dataTypeDefaults = new DataType(SqlDbType.NVarChar);
 
             bool actual = dataTypeDefaults.IsMaximumSizeIndicator(0);
 
@@ -221,7 +95,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void IsMaximumSizeIndicatorForNull()
         {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.NVarChar);
+            var dataTypeDefaults = new DataType(SqlDbType.NVarChar);
 
             bool actual = dataTypeDefaults.IsMaximumSizeIndicator(null);
 
@@ -231,7 +105,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void IsIntegerTrue()
         {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Int);
+            var dataTypeDefaults = new DataType(SqlDbType.Int);
 
             bool actual = dataTypeDefaults.IsInteger;
 
@@ -241,7 +115,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void IsIntegerFalse()
         {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.VarChar);
+            var dataTypeDefaults = new DataType(SqlDbType.VarChar);
 
             bool actual = dataTypeDefaults.IsInteger;
 
@@ -251,7 +125,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void IsDecimalTrue()
         {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Decimal);
+            var dataTypeDefaults = new DataType(SqlDbType.Decimal);
 
             bool actual = dataTypeDefaults.IsDecimal;
 
@@ -261,7 +135,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void IsDecimalFalse()
         {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.VarChar);
+            var dataTypeDefaults = new DataType(SqlDbType.VarChar);
 
             bool actual = dataTypeDefaults.IsDecimal;
 
@@ -271,7 +145,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void IsValidPrecisionTrue()
         {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.Decimal);
+            var dataTypeDefaults = new DataType(SqlDbType.Decimal);
 
             bool actual = dataTypeDefaults.IsValidPrecision(10);
 
@@ -281,7 +155,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void IsValidPrecisionFalseMinBound()
         {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.VarChar);
+            var dataTypeDefaults = new DataType(SqlDbType.VarChar);
 
             bool actual = dataTypeDefaults.IsValidPrecision(-1);
 
@@ -291,7 +165,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void IsValidPrecisionFalseMaxBound()
         {
-            var dataTypeDefaults = new DataTypeDefaults(SqlDbType.VarChar);
+            var dataTypeDefaults = new DataType(SqlDbType.VarChar);
 
             bool actual = dataTypeDefaults.IsValidPrecision(39);
 
@@ -301,7 +175,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void ConstructorStringDataType()
         {
-            var dataTypeDefaults = new DataTypeDefaults("VarChar");
+            var dataTypeDefaults = new DataType("VarChar");
 
             Assert.AreEqual(SqlDbType.VarChar, dataTypeDefaults.SqlType);
         }
@@ -310,12 +184,12 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [ExpectedException(typeof(ArgumentException))]
         public void ConstructorStringDataTypeBadType()
         {
-            var dataTypeDefaults = new DataTypeDefaults("aaVarChar");
+            var dataTypeDefaults = new DataType("aaVarChar");
         }
         [TestMethod]
         public void ConstructorStringDataTypeNumericAsDecimal()
         {
-            var dataTypeDefaults = new DataTypeDefaults("Numeric");
+            var dataTypeDefaults = new DataType("Numeric");
 
             Assert.AreEqual(SqlDbType.Decimal, dataTypeDefaults.SqlType);
         }
