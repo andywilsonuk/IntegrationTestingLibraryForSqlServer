@@ -10,51 +10,36 @@ namespace IntegrationTestingLibraryForSqlServer
     internal class SqlParameterToProcedureParameterMapper
     {
         private SqlParameter sqlParameter;
-        private DataTypeDefaults dataTypeDefaults;
+        private ProcedureParameter parameter;
 
-        public ProcedureParameter FromSqlParameter(SqlParameter parameter)
+        public ProcedureParameter FromSqlParameter(SqlParameter sqlParameter)
         {
-            this.sqlParameter = parameter;
-            this.dataTypeDefaults = new DataTypeDefaults(this.GetDataType());
-
-            return new ProcedureParameter
-            {
-                Name = parameter.ParameterName,
-                DataType = GetDataType(),
-                Size = GetSize(),
-                DecimalPlaces = GetDecimalPlaces(),
-                Direction = parameter.Direction
-            };
+            this.sqlParameter = sqlParameter;
+            parameter = new ProcedureParameterFactory().FromSqlDbType(this.sqlParameter.SqlDbType, sqlParameter.ParameterName, sqlParameter.Direction);
+            GetSize();
+            GetPrecision();
+            GetScale();
+            return parameter;
         }
 
-        private SqlDbType GetDataType()
+        private void GetSize()
         {
-            return sqlParameter.SqlDbType;
+            var sizeableParameter = parameter as SizeableProcedureParameter;
+            if (sizeableParameter == null) return;
+            sizeableParameter.Size = sqlParameter.Size;
         }
 
-        private int? GetSize()
+        private void GetScale()
         {
-            DataTypeDefaults dataTypeDefaults = new DataTypeDefaults(sqlParameter.SqlDbType);
-            if (dataTypeDefaults.SqlType == SqlDbType.Decimal)
-            {
-                return (int?)sqlParameter.Precision;
-            }
-            else if (dataTypeDefaults.IsSizeable)
-            {
-                return sqlParameter.Size == -1 ? 0 : sqlParameter.Size;
-            }
-            return (int?)null;
+            var decimalParameter = parameter as DecimalProcedureParameter;
+            if (decimalParameter == null) return;
+            decimalParameter.Scale = sqlParameter.Scale;
         }
-
-        private byte? GetDecimalPlaces()
+        private void GetPrecision()
         {
-            DataTypeDefaults dataTypeDefaults = new DataTypeDefaults(sqlParameter.SqlDbType);
-            if (dataTypeDefaults.AreDecimalPlacesAllowed)
-            {
-                var decimalPlaces = sqlParameter.Scale;
-                return Convert.ToByte(decimalPlaces);
-            }
-            return (byte?)null;
+            var decimalParameter = parameter as DecimalProcedureParameter;
+            if (decimalParameter == null) return;
+            decimalParameter.Precision = sqlParameter.Precision;
         }
     }
 }

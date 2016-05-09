@@ -17,16 +17,6 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ValidationException))]
-        public void CreateProcedureWithInvalidParametersThrowsException()
-        {
-            procedure.Parameters.Add(
-                new ProcedureParameter("id", SqlDbType.Int, ParameterDirection.Input) { Name = null });
-
-            new ProcedureCreateSqlGenerator().Sql(procedure);
-        }
-
-        [TestMethod]
         public void CreateProcedureWithSingleParameter()
         {
             procedure.Parameters.Add(new ProcedureParameter("id", SqlDbType.Int, ParameterDirection.Input));
@@ -52,7 +42,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void CreateProcedureWithNVarCharParameter()
         {
-            procedure.Parameters.Add(new ProcedureParameter("name", SqlDbType.NVarChar, ParameterDirection.Input) { Size = 100 });
+            procedure.Parameters.Add(new SizeableProcedureParameter("name", SqlDbType.NVarChar, ParameterDirection.Input) { Size = 100 });
             string expected = "create procedure [dbo].[testproc] @name NVarChar(100) as begin return 5 end";
 
             string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
@@ -74,22 +64,8 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void CreateProcedureWithDecimalParameter()
         {
-            procedure.Parameters.Add(new ProcedureParameter("money", SqlDbType.Decimal, ParameterDirection.Input) { Size = 10, DecimalPlaces = 5 });
+            procedure.Parameters.Add(new DecimalProcedureParameter("money", ParameterDirection.Input) { Precision = 10, Scale = 5 });
             string expected = "create procedure [dbo].[testproc] @money Decimal(10,5) as begin return 5 end";
-
-            string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void CreateProcedureWithDecimalNoSizeParameter()
-        {
-            procedure.Parameters.Add(new ProcedureParameter("money", SqlDbType.Decimal, ParameterDirection.Input) { DecimalPlaces = 5 });
-            string expected = "create procedure [dbo].[testproc] @money Decimal(0,5) as begin return 5 end";
-            // Note this would fail when run.
-            // This then forces the user to provide a valid combination of Size and Decimal Places.
-            // SQL requires Precision (represented by ProcedureParameter.Size) to be >= Scale (represented by ProcedureParameter.DecimalPlaces)
 
             string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
 

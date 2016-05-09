@@ -52,9 +52,14 @@
     <Compile Include="Database\DataTypeDefaults.cs" />
     <Compile Include="Database\DomainAccount.cs" />
     <Compile Include="Database\SqlConnectionStringBuilderExtensions.cs" />
+    <Compile Include="Procedures\Parameters\ProcedureParameterCollectionExtensions.cs" />
+    <Compile Include="Procedures\Parameters\ProcedureParameterRaw.cs" />
+    <Compile Include="Procedures\Parameters\ProcedureParameterFactory.cs" />
+    <Compile Include="Procedures\Parameters\DecimalProcedureParameter.cs" />
+    <Compile Include="Procedures\Parameters\SizeableProcedureParameter.cs" />
     <Compile Include="Procedures\ProcedureCreateSqlGenerator.cs" />
     <Compile Include="Procedures\ProcedureDefinitionExtensions.cs" />
-    <Compile Include="Procedures\ProcedureParameter.cs" />
+    <Compile Include="Procedures\Parameters\ProcedureParameter.cs" />
     <Compile Include="Procedures\SqlParameterToProcedureParameterMapper.cs" />
     <Compile Include="TableData\CollectionPopulatedTableData.cs" />
     <Compile Include="TableData\TableDataComparison\TableDataComparer.cs" />

@@ -16,7 +16,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
         [TestInitialize]
         public void TestInitialize()
         {
-            this.parameter1 = new ProcedureParameter("p1", SqlDbType.Int, ParameterDirection.Input);
+            this.parameter1 = new ProcedureParameter("p1", SqlDbType.DateTime, ParameterDirection.Input);
             this.definition = new ProcedureDefinition(procedureName, new[] { parameter1 });
         }
 
@@ -66,7 +66,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
             this.definition.Body = "return 5";
             string expected = new StringBuilder()
                 .AppendLine("Name: " + procedureName)
-                .AppendLine("Name: p1, Data type: Int, Direction: Input, Size: , Decimal Places: ")
+                .AppendLine("Name: p1, Data type: DateTime, Direction: Input")
                 .AppendLine("Body: " + "return 5")
                 .ToString();
 
@@ -160,24 +160,19 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
         }
 
         [TestMethod]
-        public void ProcedureDefinitionEnsureValid()
+        public void ProcedureDefinitionHasBodyFalse()
         {
-            this.definition.EnsureValid();
+            definition.Body = null;
+
+            Assert.IsFalse(definition.HasBody);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ValidationException))]
-        public void ProcedureDefinitionEnsureValidMissingBodyThrowsException()
+        public void ProcedureDefinitionHasBodyTrue()
         {
-            this.definition.EnsureValid(true);
-        }
+            definition.Body = "return 10";
 
-        [TestMethod]
-        [ExpectedException(typeof(ValidationException))]
-        public void ProcedureDefinitionEnsureValidMissingInvalidParameterThrowsException()
-        {
-            this.definition.Parameters.First().Name = null;
-            this.definition.EnsureValid(true);
+            Assert.IsTrue(definition.HasBody);
         }
     }
 }

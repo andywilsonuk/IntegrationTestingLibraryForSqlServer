@@ -297,5 +297,27 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             Assert.IsFalse(actual);
         }
+
+        [TestMethod]
+        public void ConstructorStringDataType()
+        {
+            var dataTypeDefaults = new DataTypeDefaults("VarChar");
+
+            Assert.AreEqual(SqlDbType.VarChar, dataTypeDefaults.SqlType);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ConstructorStringDataTypeBadType()
+        {
+            var dataTypeDefaults = new DataTypeDefaults("aaVarChar");
+        }
+        [TestMethod]
+        public void ConstructorStringDataTypeNumericAsDecimal()
+        {
+            var dataTypeDefaults = new DataTypeDefaults("Numeric");
+
+            Assert.AreEqual(SqlDbType.Decimal, dataTypeDefaults.SqlType);
+        }
     }
 }

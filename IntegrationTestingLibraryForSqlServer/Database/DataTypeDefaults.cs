@@ -21,6 +21,12 @@ namespace IntegrationTestingLibraryForSqlServer
             SqlType = dataType;
         }
 
+        public DataTypeDefaults(string dataType)
+        {
+            if (dataType.ToLowerInvariant() == "numeric") dataType = "decimal";
+            SqlType = (SqlDbType)Enum.Parse(typeof(SqlDbType), dataType, true);
+        }
+
         public SqlDbType SqlType { get; private set; }
 
         public override string ToString()

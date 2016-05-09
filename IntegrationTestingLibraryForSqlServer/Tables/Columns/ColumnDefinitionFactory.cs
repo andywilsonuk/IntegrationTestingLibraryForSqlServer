@@ -36,9 +36,7 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public ColumnDefinition FromSqlDbType(string dataType, string name)
         {
-            if (dataType.ToLowerInvariant() == "numeric") dataType = "decimal";
-            SqlDbType strongDataType = (SqlDbType)Enum.Parse(typeof(SqlDbType), dataType, true);
-            return FromSqlDbType(strongDataType, name);
+            return FromSqlDbType(new DataTypeDefaults(dataType).SqlType, name);
         }
 
         public ColumnDefinition FromSqlDbType(SqlDbType type, string name)

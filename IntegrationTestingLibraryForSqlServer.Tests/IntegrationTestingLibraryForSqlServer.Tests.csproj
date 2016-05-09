@@ -70,10 +70,13 @@
     <Compile Include="Database\DomainAccountTests.cs" />
     <Compile Include="Database\SqlConnectionStringBuilderExtensionsTests.cs" />
     <Compile Include="Database\DatabaseObjectNameTests.cs" />
+    <Compile Include="Procedures\ProcedureParameterCollectionExtensionsTests.cs" />
+    <Compile Include="Procedures\SizeableProcedureParametersTests.cs" />
     <Compile Include="Procedures\ProcedureCreateSqlGeneratorTests.cs" />
     <Compile Include="Procedures\ProcedureDefinitionTests.cs" />
     <Compile Include="Procedures\ProcedureParameterTests.cs" />
     <Compile Include="Procedures\SqlParameterToProcedureParameterMapperTests.cs" />
+    <Compile Include="Procedures\DecimalProcedureParametersTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TableData\ColumnCompare\TableDataMatchSubsetColumnComparerTests.cs" />
     <Compile Include="TableData\ColumnCompare\TableDataMatchEqualColumnComparerTests.cs" />

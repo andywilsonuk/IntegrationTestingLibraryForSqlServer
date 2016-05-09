@@ -8,14 +8,14 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
     [TestClass]
     public class ProcedureParameterTests
     {
-        private ProcedureParameter parameter = new ProcedureParameter(ParameterName, SqlDbType.Int, ParameterDirection.Input);
         private const string ParameterName = "p1";
+        private ProcedureParameter parameter = new ProcedureParameter(ParameterName, SqlDbType.DateTime, ParameterDirection.Input);
 
         [TestMethod]
         public void ProcedureParameterConstructor()
         {
             Assert.AreEqual(ParameterName, parameter.Name);
-            Assert.AreEqual(SqlDbType.Int, parameter.DataType);
+            Assert.AreEqual(SqlDbType.DateTime, parameter.DataType.SqlType);
             Assert.AreEqual(ParameterDirection.Input, parameter.Direction);
         }
 
@@ -28,99 +28,14 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void ProcedureParameterQualifiedNameAlreadyQualified()
         {
-            this.parameter = new ProcedureParameter("@" + ParameterName, SqlDbType.Int, ParameterDirection.Input);
             Assert.AreEqual("@" + ParameterName, parameter.QualifiedName);
-        }
-
-        [TestMethod]
-        public void ProcedureParameterIsValid()
-        {
-            bool actual = parameter.IsValid();
-
-            Assert.IsTrue(actual);
-        }
-
-        [TestMethod]
-        public void ProcedureParameterIsNotValidName()
-        {
-            parameter.Name = null;
-
-            bool actual = parameter.IsValid();
-
-            Assert.IsFalse(actual);
-        }
-
-        [TestMethod]
-        public void ProcedureParameterIsNotValidSize()
-        {
-            parameter.Size = -10;
-            parameter.DataType = SqlDbType.NVarChar;
-
-            bool actual = parameter.IsValid();
-
-            Assert.IsFalse(actual);
-        }
-
-
-        [TestMethod]
-        public void ProcedureParameterIsValidMaximumSize()
-        {
-            parameter.DataType = SqlDbType.NVarChar;
-            parameter.Size = 0;
-
-            bool actual = parameter.IsValid();
-
-            Assert.IsTrue(actual);
-        }
-
-        [TestMethod]
-        public void ProcedureParameterIsNotValidWhenNotSizeType()
-        {
-            parameter.Size = 10;
-
-            bool actual = parameter.IsValid();
-
-            Assert.IsFalse(actual);
-        }
-
-        [TestMethod]
-        public void ProcedureParameterIsNotValidWhenNotDecimalPlacesType()
-        {
-            parameter.DecimalPlaces = 5;
-
-            bool actual = parameter.IsValid();
-
-            Assert.IsFalse(actual);
-        }
-
-        [TestMethod]
-        public void ProcedureParameterEnsureValid()
-        {
-            parameter.EnsureValid();
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ValidationException))]
-        public void ProcedureParameterEnsureValidThrowsException()
-        {
-            parameter.Name = null;
-            
-            parameter.EnsureValid();
         }
 
         [TestMethod]
         public void ProcedureParameterEquals()
         {
-            parameter.Size = 10;
-            parameter.DecimalPlaces = 2;
-            var other = new ProcedureParameter 
-            { 
-                Name = ParameterName, 
-                DataType = SqlDbType.Int, 
-                Direction = ParameterDirection.Input,
-                Size = 10,
-                DecimalPlaces = 2,
-            };
+            var other = new ProcedureParameter(ParameterName, SqlDbType.DateTime, ParameterDirection.Input);
+
             bool actual = parameter.Equals(parameter);
 
             Assert.IsTrue(actual);
@@ -129,7 +44,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void ProcedureParameterNotEqualsNull()
         {
-            bool actual = parameter.Equals((ProcedureParameter)null);
+            bool actual = parameter.Equals(null);
 
             Assert.IsFalse(actual);
         }
@@ -137,7 +52,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void ProcedureParameterNotEqualsName()
         {
-            var other = new ProcedureParameter { Name = "other", DataType = SqlDbType.Int, Direction = ParameterDirection.Input};
+            var other = new ProcedureParameter("other", SqlDbType.Int, ParameterDirection.Input);
             bool actual = parameter.Equals(other);
 
             Assert.IsFalse(actual);
@@ -146,7 +61,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void ProcedureParameterNotEqualsDataType()
         {
-            var other = new ProcedureParameter { Name = ParameterName, DataType = SqlDbType.NVarChar, Direction = ParameterDirection.Input };
+            var other = new ProcedureParameter(ParameterName, SqlDbType.NVarChar, ParameterDirection.Input);
             bool actual = parameter.Equals(other);
 
             Assert.IsFalse(actual);
@@ -155,7 +70,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void ProcedureParameterNotEqualsDirection()
         {
-            var other = new ProcedureParameter { Name = ParameterName, DataType = SqlDbType.Int, Direction = ParameterDirection.Output };
+            var other = new ProcedureParameter(ParameterName, SqlDbType.DateTime, ParameterDirection.Output);
             bool actual = parameter.Equals(other);
 
             Assert.IsFalse(actual);
@@ -165,7 +80,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void ProcedureParameterEqualsOutputDirection()
         {
             parameter.Direction = ParameterDirection.Output;
-            var other = new ProcedureParameter { Name = ParameterName, DataType = SqlDbType.Int, Direction = ParameterDirection.InputOutput };
+            var other = new ProcedureParameter(ParameterName, SqlDbType.DateTime, ParameterDirection.InputOutput);
             bool actual = parameter.Equals(other);
 
             Assert.IsTrue(actual);
@@ -175,42 +90,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void ProcedureParameterEqualsInputOutputDirection()
         {
             parameter.Direction = ParameterDirection.InputOutput;
-            var other = new ProcedureParameter { Name = ParameterName, DataType = SqlDbType.Int, Direction = ParameterDirection.Output };
+            var other = new ProcedureParameter(ParameterName, SqlDbType.DateTime, ParameterDirection.Output);
             bool actual = parameter.Equals(other);
 
             Assert.IsTrue(actual);
-        }
-
-        [TestMethod]
-        public void ProcedureParameterNotEqualsSize()
-        {
-            parameter.Size = 10;
-            var other = new ProcedureParameter 
-            { 
-                Name = ParameterName, 
-                DataType = SqlDbType.Int, 
-                Direction = ParameterDirection.Input,
-                Size = 50 
-            };
-            bool actual = parameter.Equals(other);
-
-            Assert.IsFalse(actual);
-        }
-
-        [TestMethod]
-        public void ProcedureParameterNotEqualsPrecision()
-        {
-            parameter.DecimalPlaces = 10;
-            var other = new ProcedureParameter
-            {
-                Name = ParameterName,
-                DataType = SqlDbType.Int,
-                Direction = ParameterDirection.Input,
-                DecimalPlaces = 20
-            };
-            bool actual = parameter.Equals(other);
-
-            Assert.IsFalse(actual);
         }
 
         [TestMethod]
@@ -224,29 +107,11 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void ProcedureParameterToString()
         {
-            parameter.Size = 10;
-            parameter.DecimalPlaces = 5;
-            string expected = "Name: " + ParameterName + ", Data type: Int, Direction: Input, Size: 10, Decimal Places: 5";
+            string expected = "Name: " + ParameterName + ", Data type: DateTime, Direction: Input";
 
             string actual = parameter.ToString();
 
             Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void ProcedureParameterGetMaximumSize0()
-        {
-            parameter.Size = 0;
-
-            Assert.IsTrue(parameter.IsMaximumSize);
-        }
-
-        [TestMethod]
-        public void ProcedureParameterSetMaximumSize()
-        {
-            parameter.IsMaximumSize = true;
-
-            Assert.AreEqual(0, parameter.Size);
         }
     }
 }

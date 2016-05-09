@@ -20,7 +20,6 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public void VerifyMatch(ProcedureDefinition expected)
         {
-            expected.EnsureValid(false);
             var actual = GetDefinition(expected.Name);
             expected.VerifyEqual(actual);
         }

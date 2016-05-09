@@ -19,6 +19,11 @@ namespace IntegrationTestingLibraryForSqlServer
             Name = name;
             DataType = new DataTypeDefaults(dataType);
             AllowNulls = true;
+
+            if (!DataType.IsDecimal || this is DecimalColumnDefinition) return;
+            if (!DataType.IsInteger || this is IntegerColumnDefinition) return;
+            if (!DataType.IsSizeable || this is SizeableColumnDefinition) return;
+            throw new ArgumentException("Wrong datatype passed", nameof(dataType));
         }
 
         public virtual bool Equals(ColumnDefinition other)

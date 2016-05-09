@@ -13,8 +13,8 @@ namespace IntegrationTestingLibraryForSqlServer
     {
         public string Sql(ProcedureDefinition definition)
         {
-            if (definition == null) throw new ArgumentNullException("definition");
-            definition.EnsureValid(true);
+            if (definition == null) throw new ArgumentNullException(nameof(definition));
+            if (!definition.HasBody) throw new ArgumentException("Body text is required", nameof(definition));
             return string.Format(CreateProcedureFormat, definition.Name.Qualified, CreateCommaSeparatedParameters(definition), definition.Body);
         }
 
@@ -34,23 +34,18 @@ namespace IntegrationTestingLibraryForSqlServer
 
         private string GetFormattedDataType(ProcedureParameter parameter)
         {
-            switch (parameter.DataType)
+            var sizeableColumn = parameter as SizeableProcedureParameter;
+            if (sizeableColumn != null)
             {
-                case SqlDbType.Binary:
-                case SqlDbType.Char:
-                case SqlDbType.NChar:
-                case SqlDbType.NVarChar:
-                case SqlDbType.VarBinary:
-                case SqlDbType.VarChar:
-                    if (!parameter.Size.HasValue) break;
-                    return string.Format("{0}({1})", parameter.DataType, parameter.Size.Value);
-                case SqlDbType.Decimal:
-                    if (!parameter.Size.HasValue && !parameter.DecimalPlaces.HasValue) break;
-                    var parameterSize = parameter.Size ?? 0;
-                    var parameterDecimalPlaces = parameter.DecimalPlaces ?? 0;
-                    return string.Format("{0}({1},{2})", parameter.DataType, parameterSize, parameterDecimalPlaces);
+                string size = sizeableColumn.IsMaximumSize ? "max" : sizeableColumn.Size.ToString();
+                return string.Format("{0}({1})", parameter.DataType, size);
             }
-            return string.Format("{0}", parameter.DataType);
+            var decimalColumn = parameter as DecimalProcedureParameter;
+            if (decimalColumn != null)
+            {
+                return string.Format("{0}({1},{2})", parameter.DataType, decimalColumn.Precision, decimalColumn.Scale);
+            }
+            return parameter.DataType.ToString();
         }
 
         private string GetFormattedDirection(ProcedureParameter parameter)

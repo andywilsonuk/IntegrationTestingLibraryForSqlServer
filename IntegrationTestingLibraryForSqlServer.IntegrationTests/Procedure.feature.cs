@@ -262,66 +262,6 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Procedure setup - decimal places set without size")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Procedure")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("db")]
-        public virtual void ProcedureSetup_DecimalPlacesSetWithoutSize()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Procedure setup - decimal places set without size", new string[] {
-                        "db"});
-#line 42
-this.ScenarioSetup(scenarioInfo);
-#line 43
- testRunner.Given("there is a test database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name",
-                        "Data Type",
-                        "Size",
-                        "Decimal Places"});
-            table5.AddRow(new string[] {
-                        "Decimal4",
-                        "decimal",
-                        "",
-                        "2"});
-#line 44
- testRunner.Then("an attempt to create the procedure \"test\" with body \"return 5\" and an invalid par" +
-                    "ameter definition should fail", ((string)(null)), table5, "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Procedure setup - decimal places greater than size")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Procedure")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("db")]
-        public virtual void ProcedureSetup_DecimalPlacesGreaterThanSize()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Procedure setup - decimal places greater than size", new string[] {
-                        "db"});
-#line 49
-this.ScenarioSetup(scenarioInfo);
-#line 50
- testRunner.Given("there is a test database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name",
-                        "Data Type",
-                        "Size",
-                        "Decimal Places"});
-            table6.AddRow(new string[] {
-                        "Decimal4",
-                        "decimal",
-                        "10",
-                        "11"});
-#line 51
- testRunner.Then("an attempt to create the procedure \"test\" with body \"return 5\" and an invalid par" +
-                    "ameter definition should fail", ((string)(null)), table6, "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
     }
 }
 #pragma warning restore

@@ -34,18 +34,9 @@ namespace IntegrationTestingLibraryForSqlServer
         {
             get { return this.Parameters.Where(x => x.Direction != ParameterDirection.ReturnValue); }
         }
-
-        public void EnsureValid()
+        public bool HasBody
         {
-            EnsureValid(false);
-        }
-
-        public void EnsureValid(bool bodyRequired)
-        {
-            bool isValid = bodyRequired ? !string.IsNullOrWhiteSpace(Body) : true;
-            if (isValid) isValid = ParametersWithoutReturnValue.All(x => x.IsValid());
-            if (!isValid) 
-                throw new ValidationException("The definition is invalid " + Environment.NewLine + this.ToString());
+            get { return !string.IsNullOrWhiteSpace(Body); }
         }
 
         public void VerifyEqual(ProcedureDefinition actual)
