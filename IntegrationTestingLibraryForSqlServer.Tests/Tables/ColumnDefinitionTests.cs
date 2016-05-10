@@ -17,6 +17,13 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             new StandardColumnDefinition(ColumnName, SqlDbType.DateTime);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ColumnDefinitionConstructorNullName()
+        {
+            new StandardColumnDefinition(null, SqlDbType.DateTime);
+        }
+
 
         [TestMethod]
         public void ColumnDefinitionNotEqualsNull()

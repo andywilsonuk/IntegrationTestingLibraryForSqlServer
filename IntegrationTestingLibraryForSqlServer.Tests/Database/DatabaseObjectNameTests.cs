@@ -87,5 +87,12 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             DatabaseObjectName.FromName(null);
         }
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ConstructorNullObjectName()
+        {
+            new DatabaseObjectName("dbo", null);
+        }
     }
 }
+

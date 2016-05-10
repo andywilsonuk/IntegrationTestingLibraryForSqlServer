@@ -58,6 +58,20 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
+        public void DecimalProcedureParameterNotEqualsName()
+        {
+            var other = new DecimalProcedureParameter("P2", ParameterDirection.Input)
+            {
+                Precision = 10,
+                Scale = 2,
+            };
+
+            bool actual = parameter.Equals(other);
+
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
         public void ProcedureParameterToString()
         {
             string expected = "Name: " + ParameterName + ", Data type: Decimal, Direction: Input, Precision: 10, Scale: 2";
@@ -65,6 +79,24 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             string actual = parameter.ToString();
 
             Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ProcedureParameterInvalidPrecisionThrowsException()
+        {
+            parameter.Precision = 0;
+        }
+
+        [TestMethod]
+        public void ProcedureParameterPrecisionReducesScale()
+        {
+            parameter.Precision = 10;
+            parameter.Scale = 5;
+            parameter.Precision = 3;
+
+            Assert.AreEqual(3, parameter.Scale);
+            Assert.AreEqual(3, parameter.Precision);
         }
     }
 }

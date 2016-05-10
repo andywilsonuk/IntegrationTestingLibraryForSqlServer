@@ -41,8 +41,7 @@ namespace IntegrationTestingLibraryForSqlServer
         public override bool Equals(ColumnDefinition other)
         {
             if (!base.Equals(other)) return false;
-            var otherInteger = other as IntegerColumnDefinition;
-            if (otherInteger == null) return false;
+            var otherInteger = (IntegerColumnDefinition)other;
             if (IdentitySeed != otherInteger.IdentitySeed) return false;
             return true;
         }

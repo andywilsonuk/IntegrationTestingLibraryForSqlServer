@@ -129,7 +129,7 @@ namespace IntegrationTestingLibraryForSqlServer
             return size == MaximumSizeIndicator || size == MaximumSizeIndicatorAlt;
         }
 
-        internal bool IsValidPrecision(int precision)
+        internal bool IsValidPrecision(byte precision)
         {
             return precision >= MinimumPrecision && precision <= MaximumPrecision;
         }

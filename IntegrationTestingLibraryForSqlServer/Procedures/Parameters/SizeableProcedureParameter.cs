@@ -42,8 +42,7 @@ namespace IntegrationTestingLibraryForSqlServer
         public override bool Equals(ProcedureParameter other)
         {
             if (!base.Equals(other)) return false;
-            var otherSizeable = other as SizeableProcedureParameter;
-            if (otherSizeable == null) return false;
+            var otherSizeable = (SizeableProcedureParameter)other;
             if (IsMaximumSize && otherSizeable.IsMaximumSize) return true;
             if (Size != otherSizeable.Size) return false;
             return true;

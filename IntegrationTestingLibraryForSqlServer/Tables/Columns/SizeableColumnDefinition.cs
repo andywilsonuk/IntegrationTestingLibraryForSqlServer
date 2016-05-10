@@ -42,8 +42,7 @@ namespace IntegrationTestingLibraryForSqlServer
         public override bool Equals(ColumnDefinition other)
         {
             if (!base.Equals(other)) return false;
-            var otherSizeable = other as SizeableColumnDefinition;
-            if (otherSizeable == null) return false;
+            var otherSizeable = (SizeableColumnDefinition)other;
             if (IsMaximumSize && otherSizeable.IsMaximumSize) return true;
             if (Size != otherSizeable.Size) return false;
             return true;

@@ -26,6 +26,13 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ValidationException))]
+        public void QualifiedConstructorBlankQualified()
+        {
+            new DomainAccount(accountName);
+        }
+
+        [TestMethod]
         public void SplitConstructor()
         {
             DomainAccount account = new DomainAccount(domainName, accountName);

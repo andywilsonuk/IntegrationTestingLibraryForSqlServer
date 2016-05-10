@@ -65,7 +65,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Database\DataTypeDefaultsTests.cs" />
+    <Compile Include="Database\DataTypeTests.cs" />
     <Compile Include="Database\DatabaseActionsTests.cs" />
     <Compile Include="Database\DomainAccountTests.cs" />
     <Compile Include="Database\SqlConnectionStringBuilderExtensionsTests.cs" />

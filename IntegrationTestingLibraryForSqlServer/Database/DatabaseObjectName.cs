@@ -24,7 +24,7 @@ namespace IntegrationTestingLibraryForSqlServer
         private string NormalisedName(string name)
         {
             string trimmed = name == null ? string.Empty : name.TrimStart('[').TrimEnd(']');
-            if (string.IsNullOrWhiteSpace(trimmed)) throw new ValidationException($"The name '{name}' is invalid");
+            if (string.IsNullOrWhiteSpace(trimmed)) throw new ArgumentException($"The name '{name}' is invalid");
             return $"[{trimmed}]";
         }
         public static DatabaseObjectName FromName(string name)

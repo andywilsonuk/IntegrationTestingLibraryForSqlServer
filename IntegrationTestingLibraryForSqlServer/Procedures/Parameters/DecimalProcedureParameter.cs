@@ -40,8 +40,7 @@ namespace IntegrationTestingLibraryForSqlServer
         public override bool Equals(ProcedureParameter other)
         {
             if (!base.Equals(other)) return false;
-            var otherDecimal = other as DecimalProcedureParameter;
-            if (otherDecimal == null) return false;
+            var otherDecimal = (DecimalProcedureParameter)other;
             if (Precision != otherDecimal.Precision) return false;
             if (Scale != otherDecimal.Scale) return false;
             return true;

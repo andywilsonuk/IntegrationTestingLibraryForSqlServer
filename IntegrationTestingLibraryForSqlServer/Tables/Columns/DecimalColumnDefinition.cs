@@ -51,8 +51,7 @@ namespace IntegrationTestingLibraryForSqlServer
         public override bool Equals(ColumnDefinition other)
         {
             if (!base.Equals(other)) return false;
-            var otherDecimal = other as DecimalColumnDefinition;
-            if (otherDecimal == null) return false;
+            var otherDecimal = (DecimalColumnDefinition)other;
             if (Precision != otherDecimal.Precision) return false;
             if (Scale != otherDecimal.Scale) return false;
             return true;

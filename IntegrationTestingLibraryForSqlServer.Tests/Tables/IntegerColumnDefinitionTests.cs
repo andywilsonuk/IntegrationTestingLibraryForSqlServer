@@ -70,6 +70,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             column.IdentitySeed = 1;
 
             var other = new IntegerColumnDefinition(ColumnName, SqlDbType.Int);
+            other.AllowNulls = false;
 
             bool actual = column.Equals(other);
 

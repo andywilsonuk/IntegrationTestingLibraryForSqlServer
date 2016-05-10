@@ -94,6 +94,38 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
+        public void DataRecordToColumnMaxSizeVarChar()
+        {
+            mockDataRecord.Setup(x => x.GetString(DataRecordToColumnMapper.Columns.DataType)).Returns("VarChar");
+            mockDataRecord.Setup(x => x.GetInt16(DataRecordToColumnMapper.Columns.Size)).Returns(0);
+            expected = new SizeableColumnDefinition("r1", SqlDbType.VarChar)
+            {
+                AllowNulls = false,
+                Size = 0,
+                IsMaximumSize = true
+            };
+
+            ColumnDefinition actual = mapper.ToColumnDefinition(mockDataRecord.Object);
+
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void DataRecordToColumnMaxAltSizeVarChar()
+        {
+            mockDataRecord.Setup(x => x.GetString(DataRecordToColumnMapper.Columns.DataType)).Returns("VarChar");
+            mockDataRecord.Setup(x => x.GetInt16(DataRecordToColumnMapper.Columns.Size)).Returns(-1);
+            expected = new SizeableColumnDefinition("r1", SqlDbType.VarChar)
+            {
+                AllowNulls = false,
+                Size = -1,
+                IsMaximumSize = true
+            };
+
+            ColumnDefinition actual = mapper.ToColumnDefinition(mockDataRecord.Object);
+
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
         public void DataRecordToColumnDecimal()
         {
             mockDataRecord.Setup(x => x.GetString(DataRecordToColumnMapper.Columns.DataType)).Returns("Decimal");

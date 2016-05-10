@@ -19,12 +19,6 @@ namespace IntegrationTestingLibraryForSqlServer
             Name = name;
             DataType = new DataType(dataType);
             AllowNulls = true;
-
-            if (!DataType.IsInteger && !DataType.IsDecimal && !DataType.IsSizeable) return;
-            if (DataType.IsDecimal && this is DecimalColumnDefinition) return;
-            if (DataType.IsInteger && this is IntegerColumnDefinition) return;
-            if (DataType.IsSizeable && this is SizeableColumnDefinition) return;
-            throw new ArgumentException("Wrong datatype passed", nameof(dataType));
         }
 
         public virtual bool Equals(ColumnDefinition other)
