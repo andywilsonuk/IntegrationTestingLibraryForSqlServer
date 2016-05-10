@@ -54,7 +54,7 @@ namespace IntegrationTestingLibraryForSqlServer
                 case SqlDbType.VarChar:
                 case SqlDbType.NChar:
                 case SqlDbType.NVarChar: return new SizeableColumnDefinition(name, type);
-                default: return new ColumnDefinition(name, type);
+                default: return new StandardColumnDefinition(name, type);
             }
 
             

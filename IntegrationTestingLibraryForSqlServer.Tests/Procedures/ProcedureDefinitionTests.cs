@@ -16,7 +16,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
         [TestInitialize]
         public void TestInitialize()
         {
-            this.parameter1 = new ProcedureParameter("p1", SqlDbType.DateTime, ParameterDirection.Input);
+            this.parameter1 = new StandardProcedureParameter("p1", SqlDbType.DateTime, ParameterDirection.Input);
             this.definition = new ProcedureDefinition(procedureName, new[] { parameter1 });
         }
 
@@ -46,7 +46,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
         [TestMethod]
         public void ProcedureDefinitionParametersWithoutReturn()
         {
-            this.definition.Parameters.Add(new ProcedureParameter("retVal", SqlDbType.Int, ParameterDirection.ReturnValue));
+            this.definition.Parameters.Add(new StandardProcedureParameter("retVal", SqlDbType.Int, ParameterDirection.ReturnValue));
 
             Assert.AreEqual(2, this.definition.Parameters.Count);
             Assert.AreEqual(1, this.definition.ParametersWithoutReturnValue.Count());
@@ -125,7 +125,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
         [TestMethod]
         public void ProcedureDefinitionNotEqualsParameters()
         {
-            var parameter2 = new ProcedureParameter("p2", SqlDbType.Int, ParameterDirection.Input);
+            var parameter2 = new StandardProcedureParameter("p2", SqlDbType.Int, ParameterDirection.Input);
             var other = new ProcedureDefinition(procedureName, new[] { parameter1, parameter2 });
             bool actual = this.definition.Equals(other);
 
@@ -135,7 +135,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
         [TestMethod]
         public void ProcedureDefinitionEqualsWithReturnValue()
         {
-            var parameter2 = new ProcedureParameter("retVal", SqlDbType.Int, ParameterDirection.ReturnValue);
+            var parameter2 = new StandardProcedureParameter("retVal", SqlDbType.Int, ParameterDirection.ReturnValue);
             var other = new ProcedureDefinition(procedureName, new[] { parameter1, parameter2 });
 
             bool actual = this.definition.Equals(other);

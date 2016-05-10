@@ -44,7 +44,7 @@ namespace IntegrationTestingLibraryForSqlServer
                 case SqlDbType.VarChar:
                 case SqlDbType.NChar:
                 case SqlDbType.NVarChar: return new SizeableProcedureParameter(name, type, direction);
-                default: return new ProcedureParameter(name, type, direction);
+                default: return new StandardProcedureParameter(name, type, direction);
             }
 
             

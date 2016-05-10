@@ -9,7 +9,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
     public class ProcedureParameterTests
     {
         private const string ParameterName = "p1";
-        private ProcedureParameter parameter = new ProcedureParameter(ParameterName, SqlDbType.DateTime, ParameterDirection.Input);
+        private ProcedureParameter parameter = new StandardProcedureParameter(ParameterName, SqlDbType.DateTime, ParameterDirection.Input);
 
         [TestMethod]
         public void ProcedureParameterConstructor()
@@ -34,7 +34,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void ProcedureParameterEquals()
         {
-            var other = new ProcedureParameter(ParameterName, SqlDbType.DateTime, ParameterDirection.Input);
+            var other = new StandardProcedureParameter(ParameterName, SqlDbType.DateTime, ParameterDirection.Input);
 
             bool actual = parameter.Equals(parameter);
 
@@ -52,7 +52,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void ProcedureParameterNotEqualsName()
         {
-            var other = new ProcedureParameter("other", SqlDbType.Int, ParameterDirection.Input);
+            var other = new StandardProcedureParameter("other", SqlDbType.Int, ParameterDirection.Input);
             bool actual = parameter.Equals(other);
 
             Assert.IsFalse(actual);
@@ -70,7 +70,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void ProcedureParameterNotEqualsDirection()
         {
-            var other = new ProcedureParameter(ParameterName, SqlDbType.DateTime, ParameterDirection.Output);
+            var other = new StandardProcedureParameter(ParameterName, SqlDbType.DateTime, ParameterDirection.Output);
             bool actual = parameter.Equals(other);
 
             Assert.IsFalse(actual);
@@ -80,7 +80,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void ProcedureParameterEqualsOutputDirection()
         {
             parameter.Direction = ParameterDirection.Output;
-            var other = new ProcedureParameter(ParameterName, SqlDbType.DateTime, ParameterDirection.InputOutput);
+            var other = new StandardProcedureParameter(ParameterName, SqlDbType.DateTime, ParameterDirection.InputOutput);
             bool actual = parameter.Equals(other);
 
             Assert.IsTrue(actual);
@@ -90,7 +90,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void ProcedureParameterEqualsInputOutputDirection()
         {
             parameter.Direction = ParameterDirection.InputOutput;
-            var other = new ProcedureParameter(ParameterName, SqlDbType.DateTime, ParameterDirection.Output);
+            var other = new StandardProcedureParameter(ParameterName, SqlDbType.DateTime, ParameterDirection.Output);
             bool actual = parameter.Equals(other);
 
             Assert.IsTrue(actual);

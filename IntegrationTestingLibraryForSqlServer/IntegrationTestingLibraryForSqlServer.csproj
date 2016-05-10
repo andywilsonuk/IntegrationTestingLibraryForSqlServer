@@ -57,6 +57,7 @@
     <Compile Include="Procedures\Parameters\ProcedureParameterFactory.cs" />
     <Compile Include="Procedures\Parameters\DecimalProcedureParameter.cs" />
     <Compile Include="Procedures\Parameters\SizeableProcedureParameter.cs" />
+    <Compile Include="Procedures\Parameters\StandardProcedureParameter.cs" />
     <Compile Include="Procedures\ProcedureCreateSqlGenerator.cs" />
     <Compile Include="Procedures\ProcedureDefinitionExtensions.cs" />
     <Compile Include="Procedures\Parameters\ProcedureParameter.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Tables\Columns\ColumnDefinitionCollectionExtensions.cs" />
     <Compile Include="Tables\Columns\ColumnDefinitionFactory.cs" />
     <Compile Include="Tables\Columns\ColumnDefinitionRaw.cs" />
+    <Compile Include="Tables\Columns\StandardColumnDefinition.cs" />
     <Compile Include="Tables\DataReaderSchemaTableDefinitionInterrogationStrategy.cs" />
     <Compile Include="Tables\Columns\DecimalColumnDefinition.cs" />
     <Compile Include="Tables\Columns\IntegerColumnDefinition.cs" />

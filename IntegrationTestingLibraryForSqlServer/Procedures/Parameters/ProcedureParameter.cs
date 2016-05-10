@@ -7,18 +7,13 @@ using System.Text;
 
 namespace IntegrationTestingLibraryForSqlServer
 {
-    public class ProcedureParameter : IEquatable<ProcedureParameter>
+    public abstract class ProcedureParameter : IEquatable<ProcedureParameter>
     {
         public ProcedureParameter(string name, SqlDbType dataType, ParameterDirection direction)
         {
             Name = name;
             DataType = new DataType(dataType);
             Direction = direction;
-
-            if (!DataType.IsDecimal && !DataType.IsSizeable) return;
-            if (DataType.IsDecimal && this is DecimalProcedureParameter) return;
-            if (DataType.IsSizeable && this is SizeableProcedureParameter) return;
-            throw new ArgumentException("Wrong datatype passed", nameof(dataType));
         }
 
         public string Name { get; private set; }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace IntegrationTestingLibraryForSqlServer
 {
-    public class ColumnDefinition : IEquatable<ColumnDefinition>
+    public abstract class ColumnDefinition : IEquatable<ColumnDefinition>
     {
         public string Name { get; private set; }
         public DataType DataType { get; private set; }

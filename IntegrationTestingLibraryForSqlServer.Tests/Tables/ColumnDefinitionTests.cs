@@ -9,12 +9,12 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
     public class ColumnDefinitionTests
     {
         private const string ColumnName = "c1";
-        private ColumnDefinition definition = new ColumnDefinition(ColumnName, SqlDbType.DateTime);
+        private ColumnDefinition definition = new StandardColumnDefinition(ColumnName, SqlDbType.DateTime);
 
         [TestMethod]
         public void ColumnDefinitionConstructor()
         {
-            new ColumnDefinition(ColumnName, SqlDbType.DateTime);
+            new StandardColumnDefinition(ColumnName, SqlDbType.DateTime);
         }
 
 
@@ -29,7 +29,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void ColumnDefinitionNotEqualsName()
         {
-            var other = new ColumnDefinition("other", SqlDbType.DateTime);
+            var other = new StandardColumnDefinition("other", SqlDbType.DateTime);
 
             bool actual = definition.Equals(other);
 
@@ -50,7 +50,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void ColumnDefinitionNotEqualsAllowNulls()
         {
             definition.AllowNulls = false;
-            var other = new ColumnDefinition(ColumnName, SqlDbType.DateTime)
+            var other = new StandardColumnDefinition(ColumnName, SqlDbType.DateTime)
             {
                 AllowNulls = true,
             };
