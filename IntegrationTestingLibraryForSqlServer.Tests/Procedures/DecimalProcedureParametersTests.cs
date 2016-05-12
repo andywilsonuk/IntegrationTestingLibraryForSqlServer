@@ -98,5 +98,13 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             Assert.AreEqual(3, parameter.Scale);
             Assert.AreEqual(3, parameter.Precision);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ScaleExceedsPrecision()
+        {
+            parameter.Precision = 5;
+            parameter.Scale = 6;
+        }
     }
 }

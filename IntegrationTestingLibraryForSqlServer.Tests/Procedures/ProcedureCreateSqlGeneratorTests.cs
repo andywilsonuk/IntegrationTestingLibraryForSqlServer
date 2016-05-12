@@ -17,6 +17,14 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void CreateProcedureWithoutBodyThrowsException()
+        {
+            procedure.Body = null;
+            new ProcedureCreateSqlGenerator().Sql(procedure);
+        }
+
+        [TestMethod]
         public void CreateProcedureWithSingleParameter()
         {
             procedure.Parameters.Add(new StandardProcedureParameter("id", SqlDbType.Int, ParameterDirection.Input));
@@ -55,6 +63,17 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             procedure.Parameters.Add(new SizeableProcedureParameter("name", SqlDbType.NVarChar, ParameterDirection.Input));
             string expected = "create procedure [dbo].[testproc] @name NVarChar(1) as begin return 5 end";
+
+            string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CreateProcedureWithMaxSizeNVarCharParameter()
+        {
+            procedure.Parameters.Add(new SizeableProcedureParameter("name", SqlDbType.NVarChar, ParameterDirection.Input) { IsMaximumSize = true });
+            string expected = "create procedure [dbo].[testproc] @name NVarChar(max) as begin return 5 end";
 
             string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
 

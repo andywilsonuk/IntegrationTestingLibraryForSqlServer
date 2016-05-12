@@ -29,7 +29,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [ExpectedException(typeof(ValidationException))]
         public void QualifiedConstructorBlankQualified()
         {
-            new DomainAccount(accountName);
+            new DomainAccount(null);
         }
 
         [TestMethod]
