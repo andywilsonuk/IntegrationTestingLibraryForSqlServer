@@ -35,6 +35,14 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
+        public void TableDefinitionConstructorTableName()
+        {
+            var definition = new TableDefinition(tableName);
+
+            Assert.AreEqual(tableName, definition.Name);
+        }
+
+        [TestMethod]
         public void TableDefinitionVerifyEqual()
         {
             var other = new TableDefinition(tableName, new[] { column });

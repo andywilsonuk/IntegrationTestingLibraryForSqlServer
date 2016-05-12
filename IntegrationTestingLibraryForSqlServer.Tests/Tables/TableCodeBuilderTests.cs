@@ -16,6 +16,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
                 new StandardColumnDefinition("c2", SqlDbType.DateTime2) { AllowNulls = false },
                 new SizeableColumnDefinition("c3", SqlDbType.VarChar) { AllowNulls = false, Size = 100 },
                 new DecimalColumnDefinition("c4") { AllowNulls = false, Precision = 10, Scale = 2 },
+                new IntegerColumnDefinition("c1", SqlDbType.Int) { IdentitySeed = 1 },
             });
 
             string actual = table.ToCSharp();
@@ -26,6 +27,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
     new StandardColumnDefinition(""c2"", SqlDbType.DateTime2) { AllowNulls = false },
     new SizeableColumnDefinition(""c3"", SqlDbType.VarChar) { AllowNulls = false, Size = 100 },
     new DecimalColumnDefinition(""c4"") { AllowNulls = false, Precision = 10, Scale = 2 },
+    new IntegerColumnDefinition(""c1"", SqlDbType.Int) { AllowNulls = false, IdentitySeed = 1 },
 });";
             Assert.AreEqual(expected, actual);
         }

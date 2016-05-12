@@ -78,6 +78,7 @@
     <Compile Include="Procedures\ProcedureParameterTests.cs" />
     <Compile Include="Procedures\SqlParameterToProcedureParameterMapperTests.cs" />
     <Compile Include="Procedures\DecimalProcedureParametersTests.cs" />
+    <Compile Include="Procedures\StandardProcedureParameterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TableData\ColumnCompare\TableDataMatchSubsetColumnComparerTests.cs" />
     <Compile Include="TableData\ColumnCompare\TableDataMatchEqualColumnComparerTests.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="TableData\ValueCompare\TableDataCaseSensitiveStringValueComparerTests.cs" />
     <Compile Include="Tables\ColumnDefinitionFactoryTests.cs" />
     <Compile Include="Tables\ColumnDefinitionTests.cs" />
+    <Compile Include="Tables\StandardColumnDefinitionTests.cs" />
     <Compile Include="Tables\SchemaRowToColumnMapperTests.cs" />
     <Compile Include="Tables\DataRecordToColumnMapperTests.cs" />
     <Compile Include="Tables\TableCreateSqlGeneratorTests.cs" />
