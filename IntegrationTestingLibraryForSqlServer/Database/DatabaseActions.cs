@@ -51,7 +51,7 @@ namespace IntegrationTestingLibraryForSqlServer
             Create();
         }
 
-        public void GrantDomainUserAccess(DomainAccount account)
+        public void GrantUserAccess(DomainAccount account)
         {
             if (account == null) throw new ArgumentNullException("account");
             if (new DomainAccount(Environment.UserDomainName, Environment.UserName).Equals(account)) return;

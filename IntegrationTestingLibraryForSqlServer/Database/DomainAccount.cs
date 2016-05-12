@@ -9,6 +9,8 @@ namespace IntegrationTestingLibraryForSqlServer
 {
     public class DomainAccount : IEquatable<DomainAccount>
     {
+        private const char Seperator = '\\';
+
         public DomainAccount(string domain, string account)
             : this($"{domain}\\{account}")
         {
@@ -25,9 +27,18 @@ namespace IntegrationTestingLibraryForSqlServer
         {
             if (string.IsNullOrWhiteSpace(Qualified)) throw new ValidationException("Account name is blank");
             string validationText = $"Account name {Qualified} is invalid";
-            if (Qualified.Count(x => x == '\\') != 1 || 
-                Qualified.Substring(0, Qualified.IndexOf('\\')).Length == 0 ||
-                Qualified.Substring(Qualified.IndexOf('\\') + 1).Length == 0)
+
+            int separatorIndex = Qualified.IndexOf(Seperator);
+
+            if (Qualified.IndexOf('\\') == -1)
+            {
+                Qualified = Environment.UserDomainName + Seperator + Qualified;
+                separatorIndex = Environment.UserDomainName.Length;
+            }
+
+            if (Qualified.Count(x => x == Seperator) != 1 || 
+                Qualified.Substring(0, separatorIndex).Length == 0 ||
+                Qualified.Substring(separatorIndex + 1).Length == 0)
                 throw new ValidationException($"Account name {Qualified} is invalid");
         }
 

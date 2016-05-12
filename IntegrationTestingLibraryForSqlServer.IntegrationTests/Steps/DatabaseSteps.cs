@@ -30,7 +30,7 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         [When(@"the user '(.*)' is granted access to the database")]
         public void WhenTheUserIsGrantedAccessToTheDatabase(string username)
         {
-            database.GrantDomainUserAccess(new DomainAccount(Environment.UserDomainName, username));
+            database.GrantUserAccess(new DomainAccount(username));
         }
 
         [Then(@"the permissions for '(.*)' should be")]

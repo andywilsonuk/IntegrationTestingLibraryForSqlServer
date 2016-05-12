@@ -12,11 +12,15 @@ using IntegrationTestingLibraryForSqlServer;
 ###Setting up and tearing down databases
 SQL Server databases can be created and dropped.
 Windows Authentication access can be given to the user that the system under test will be running as (a website or web service for example).
+
 ```C#
 var database = new DatabaseActions(connectionString);
 database.CreateOrReplace();
-database.GrantDomainUserAccess(Environment.UserDomainName, username);
+database.GrantUserAccess(new DomainAccount(username));
 database.Drop();
+####General notes
+* DomainAccount can include a Domain however if none is specified the domain of the account running the test is assumed
+* SQL Authentication is not currently supported
 ```
 ##Schemas
 
@@ -27,31 +31,52 @@ database.CreateSchema("schemaName");
 ```
 
 ###Using schemas
-Tables and views can be created in schemas other than dbo (the dault schema) by creating a schema and then using the table and view creations methods below.
-
-If a TableDefinition object has it's Schema property set then any tables or views created using that TableDefinition object will be created in that schema. If the Schema property is not set then the default dbo schema will be used. If a non dbo schema is specified then it must already exist, eg by calling ```database.CreateSchema("schemaName")``` as above.
-
-All operations on tables and views which take a table name or view name parameter also accept an optional schema parameter which defaults to “dbo” if not provided.
+Objects can be created in schemas other than dbo (the default schema) by creating a schema and then passing DatabaseObjectName instead of a string.
+The most convenient way to create columns of the correct type is to use the ```ColumnDefinitionFactory``` factory
 
 ##Tables
 ###Creating tables
 Tables can be created with the same structure as the 'real' table.
 ```C#
-var column = new ColumnDefinition("c1", SqlDbType.Int);
-var definition = new TableDefinition(tableName, new[] { column }, optionalSchemaName);
+var column = new IntegerColumnDefinition("c1", SqlDbType.Int);
+var definition = new TableDefinition(tableName, new[] { column });
 definition.CreateOrReplace(database);
 ```
-An optional schema name may be provided in the TableDefinition constructor (or via the Schema property). If a schema is not provided then the table will be created in the dbo schema.
-The schema must already exist before a table can be created using a TableDefinition with a schema other than dbo set.
-Use DatabaseActions.CreateSchema to create a new schema (see Schemas).
 
-####General notes
-* Some data types such as nvarchar can have sizes set; whilst a null value will give you the default size for that type a size of zero will give the maximum size. The property ```IsMaximumSize``` on ```ColumnDefinition``` is a convenient way to set the maximum size.
+####Standard columns
+Most columns have no special properties. 
+```C#
+var column = new StandardColumnDefinition("c1", SqlDbType.DateTime);
+```
 
-####Notes on Numeric/Decimal types
-* The data type Decimal must be used for the SQL data type Numeric
-* The SQL "Precision" (total number of digits) and "Scale" (number of digits after the decimal point) properties of the Decimal/Numeric data types must be mapped to the "Size" and "DecimalPlaces" properties of the ColumnDefinition class.
-* If no value is set for Size then the default value of 18 is used. If no value is set for "Decimal Places" then the default value of 0 is used - see [decimal and numeric (Transact-SQL)](https://msdn.microsoft.com/en-us/library/ms187746.aspx). Note that Size must be greater than or equal to Decimal Places. Setting Decimal Places without setting Size will result in an error.
+####Integer columns
+Integer columns, that is with a SqlDbType of Int, BigInt, SmallInt, TinyInt can be used as an Identity column.
+```C#
+var column = new IntegerColumnDefinition("c1", SqlDbType.Int)
+{
+    IdentitySeed = 1
+};
+```
+
+####Decimal columns
+Decimal columns, that is with a SqlDbType of Decimal (and also can shown in SQL Server as Numeric) can include Precision and Scale. See [decimal and numeric (Transact-SQL)]https://msdn.microsoft.com/en-us/library/ms187746.aspx for more details on usage.
+```C#
+var column = new DecimalColumnDefinition("c1")
+{
+    Precision = 18,
+	Scale = 0
+};
+```
+
+####Sizeable columns
+Sizeable columns, that is with a SqlDbType of Binary, Char, VarBinary, VarChar, NChar, NVarChar can include Size.
+The property ```IsMaximumSize``` is a convenient way to set the column to the maximum size.
+```C#
+var column = new SizeableColumnDefinition("c1", SqlDbType.NVarChar)
+{
+    Size = 100
+};
+```
 
 ###Populating tables with data
 Tables can be loaded with initial data.
@@ -85,9 +110,9 @@ tableDefinition.CreateView(database, "v1", optionalSchemaName);
 ###Verifying table structures
 Dependency tests can be created that will compare the expected table structure with that of the 'real' table to ensure that it has not changed structure (and therefore invalidating the primary test cases). ```VerifyMatch``` will throw an exception if the two structures don't match.
 ```C#
-var column1 = new ColumnDefinition("c1", SqlDbType.Int);
-var column2 = new ColumnDefinition("c2", SqlDbType.NVarChar);
-var definition = new TableDefinition(tableName, new[] { column1, column2 }, optionalSchemaName);
+var column1 = new IntegerColumnDefinition("c1", SqlDbType.Int);
+var column2 = new SizeableColumnDefinition("c2", SqlDbType.NVarChar) { Size = 100 };
+var definition = new TableDefinition(tableName, new[] { column1, column2 });
 definition.VerifyMatch(database);
 ```
 ###Verifying table data
@@ -130,8 +155,8 @@ Custom comparers can be built using the classes in the TableComparision namespac
 ###Verifying view structures
 As for table structures, views can be tested to ensure that the 'real' view matches an expected structure. The method of retrieving the structure of a view differs from that of a table in that for a view the first row is selected and the resulting data reader is used for the comparision. ```VerifyMatch``` will throw an exception if the two structures don't match.
 ```C#
-var column1 = new ColumnDefinition("c1", SqlDbType.Int);
-var column2 = new ColumnDefinition("c2", SqlDbType.NVarChar);
+var column1 = new IntegerColumnDefinition("c1", SqlDbType.Int);
+var column2 = new SizeableColumnDefinition("c2", SqlDbType.NVarChar) { Size = 100 };
 var viewDefinition = new TableDefinition(viewName, new[] { column1, column2 });
 var checker = new ViewCheck(this.database.ConnectionString);
 checker.VerifyMatch(viewDefinition);
@@ -140,10 +165,11 @@ checker.VerifyMatch(viewDefinition);
 ##Procedures
 ###Creating procedures
 Procedures can be created with the same definition as the 'real' stored procedure but with predictable return values.
+The most convenient way to create parameters of the correct type is to use the ```ProcedureParameterFactory``` factory
 ```C#
 List<ProcedureParameter> parameters = new List<ProcedureParameter>();
-parameters.Add(new ProcedureParameter("@p1", SqlDbType.Int, ParameterDirection.Input));
-parameters.Add(new ProcedureParameter("@p2", SqlDbType.NVarChar, ParameterDirection.InputOutput));
+parameters.Add(new StandardProcedureParameter("@p1", SqlDbType.Int, ParameterDirection.Input));
+parameters.Add(new SizeableProcedureParameter("@p2", SqlDbType.NVarChar, ParameterDirection.InputOutput));
 ProcedureDefinition definition = new ProcedureDefinition(procedureName, parameters)
 {
     Body = @"set @p2 = 'ok'
@@ -151,10 +177,37 @@ ProcedureDefinition definition = new ProcedureDefinition(procedureName, paramete
 };
 definition.CreateOrReplace(database);
 ```
+
+####Standard parameters
+Most parameters have no special properties. 
+```C#
+var parameter = new StandardProcedureParameter("c1", SqlDbType.DateTime, ParameterDirection.InputOutput);
+```
+
+####Decimal parameters
+Decimal parameters, that is with a SqlDbType of Decimal (and also can shown in SQL Server as Numeric) can include Precision and Scale. See [decimal and numeric (Transact-SQL)]https://msdn.microsoft.com/en-us/library/ms187746.aspx for more details on usage.
+```C#
+var parameter = new DecimalProcedureParameter("c1", ParameterDirection.InputOutput)
+{
+    Precision = 18,
+	Scale = 0
+};
+```
+
+####Sizeable parameters
+Sizeable parameters, that is with a SqlDbType of Binary, Char, VarBinary, VarChar, NChar, NVarChar can include Size.
+The property ```IsMaximumSize``` is a convenient way to set the column to the maximum size.
+```C#
+var parameter = new SizeableProcedureParameter("c1", SqlDbType.NVarChar, ParameterDirection.InputOutput)
+{
+    Size = 100
+};
+```
+
 ###Verifying stored procedure structures
 Dependency tests can be created that will compare the expected stored procedure definition with that of the 'real' procedure to ensure that it has not changed definition (and therefore invalidating the primary test cases). ```VerifyMatch``` will throw an exception if the two definitions don't match.
 ```C#
-var column1 = new ColumnDefinition("c1", SqlDbType.Int);
+var column1 = new StandardProcedureParameter("c1", SqlDbType.Int);
 ProcedureDefinition definition = new ProcedureDefinition(procedureName, new[] { column1 });
 definition.VerifyMatch(database);
 ```
@@ -172,7 +225,8 @@ Given the table "test" is created
 [Given(@"the table ""(.*)"" is created")]
 public void GivenTheTableIsCreated(string tableName, Table table)
 {
-    var definition = new TableDefinition(tableName, table.CreateSet<ColumnDefinition>());
+    var definition = new TableDefinition(tableName);
+    definition.Columns.AddFromRaw(table.CreateSet<ColumnDefinitionRaw>());
     definition.CreateOrReplace(database);
 }
 ```
@@ -188,7 +242,8 @@ Then the definition of table "test" should match
 [Then(@"the definition of table ""(.*)"" should match")]
 public void ThenTheDefinitionOfTableShouldMatch(string tableName, Table table)
 {
-    var definition = new TableDefinition(tableName, table.CreateSet<ColumnDefinition>());
+    var definition = new TableDefinition(tableName);
+    definition.Columns.AddFromRaw(table.CreateSet<ColumnDefinitionRaw>());
     definition.VerifyMatch(database);
 }
 ```
@@ -220,7 +275,8 @@ Then the definition of view "test" should match
 [Then(@"the definition of view ""(.*)"" should match")]
 public void ThenTheDefinitionOfViewShouldMatch(string viewName, Table table)
 {
-    var definition = new TableDefinition(viewName, table.CreateSet<ColumnDefinition>());
+    var definition = new TableDefinition(tableName);
+    definition.Columns.AddFromRaw(table.CreateSet<ColumnDefinitionRaw>());
     var checker = new ViewCheck(this.database.ConnectionString);
     checker.VerifyMatch(definition);
 }
@@ -237,10 +293,9 @@ Given the procedure "test" is created with body "return 0"
 [Given(@"the procedure ""(.*)"" is created with body ""(.*)""")]
 public void GivenTheProcedureIsCreatedWithBody(string procedureName, string body, Table table)
 {
-    var definition = new ProcedureDefinition(procedureName, table.CreateSet<ProcedureParameter>())
-    {
-        Body = body
-    };
+    ProcedureDefinition definition = new ProcedureDefinition(procedureName);
+    definition.Parameters.AddFromRaw(table.CreateSet<ProcedureParameterRaw>());
+	definition.Body = body;
     definition.CreateOrReplace(database);
 }
 ```
@@ -256,7 +311,8 @@ Then the definition of procedure "test" should match
 [Then(@"the definition of procedure ""(.*)"" should match")]
 public void ThenTheDefinitionOfProcedureShouldMatch(string procedureName, Table table)
 {
-    var definition = new ProcedureDefinition(procedureName, table.CreateSet<ProcedureParameter>());
+    ProcedureDefinition definition = new ProcedureDefinition(procedureName);
+    definition.Parameters.AddFromRaw(table.CreateSet<ProcedureParameterRaw>());
     definition.VerifyMatch(database);
 }
 ```

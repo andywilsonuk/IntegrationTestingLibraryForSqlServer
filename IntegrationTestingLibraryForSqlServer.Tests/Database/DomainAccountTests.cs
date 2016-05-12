@@ -19,10 +19,11 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ValidationException))]
         public void QualifiedConstructorMissingDomain()
         {
-            new DomainAccount(accountName);
+            DomainAccount account = new DomainAccount(accountName);
+
+            Assert.AreEqual(Environment.UserDomainName + '\\' + accountName, account.Qualified);
         }
 
         [TestMethod]
