@@ -83,13 +83,12 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             Assert.AreEqual(SqlDbType.Decimal, actual[0].DataType.SqlType);
         }
         [TestMethod]
-        public void FromRawStringWithIdentity()
+        public void FromRawStringWithSize()
         {
             var source = new ColumnDefinitionRaw
             {
                 Name = "C1",
                 DataType = "VarChar",
-                AllowNulls = false,
                 Size = 10
             };
             var factory = new ColumnDefinitionFactory();

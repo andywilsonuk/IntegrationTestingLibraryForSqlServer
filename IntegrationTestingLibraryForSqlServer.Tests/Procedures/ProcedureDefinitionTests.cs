@@ -92,6 +92,14 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
         }
 
         [TestMethod]
+        public void ProcedureDefinitionEqualsAsObject()
+        {
+            bool actual = definition.Equals((object)definition);
+
+            Assert.IsTrue(actual);
+        }
+
+        [TestMethod]
         public void ProcedureDefinitionEqualsWithBody()
         {
             this.definition.Body = "return 5";
@@ -144,9 +152,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
         }
 
         [TestMethod]
-        public void ProcedureDefinitionVerifyEquals()
+        public void ProcedureDefinitionVerifyEqual()
         {
-            this.definition.Equals(this.definition);
+
+            this.definition.VerifyEqual(this.definition);
         }
 
         [TestMethod]
@@ -158,6 +167,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
 
             this.definition.VerifyEqual(other);
         }
+
 
         [TestMethod]
         public void ProcedureDefinitionHasBodyFalse()

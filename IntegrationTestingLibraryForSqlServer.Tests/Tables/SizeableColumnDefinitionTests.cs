@@ -18,6 +18,13 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             Assert.AreEqual(ColumnName, definition.Name);
             Assert.AreEqual(1, definition.Size);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ConstructorWithWrongDataTypeThrowException()
+        {
+            definition = new SizeableColumnDefinition(ColumnName, SqlDbType.Int);
+        }
         [TestMethod]
         public void SizeableColumnDefinitionEquals()
         {

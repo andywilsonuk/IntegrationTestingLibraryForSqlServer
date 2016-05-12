@@ -28,7 +28,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             dataRow = table.NewRow();
             dataRow[SchemaRowToColumnMapper.Columns.Name] = "r1";
             dataRow[SchemaRowToColumnMapper.Columns.DataType] = SqlDbType.Int;
-            dataRow[SchemaRowToColumnMapper.Columns.Size] = (int)10;
+            dataRow[SchemaRowToColumnMapper.Columns.Size] = 10;
             dataRow[SchemaRowToColumnMapper.Columns.IsNullable] = false;
 
             expected = new IntegerColumnDefinition("r1", SqlDbType.Int)
@@ -60,8 +60,8 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void SchemaRowToColumnDecimal()
         {
             dataRow[SchemaRowToColumnMapper.Columns.DataType] = SqlDbType.Decimal;
-            dataRow[SchemaRowToColumnMapper.Columns.Precision] = (int)10;
-            dataRow[SchemaRowToColumnMapper.Columns.Scale] = (int)5;
+            dataRow[SchemaRowToColumnMapper.Columns.Precision] = 10;
+            dataRow[SchemaRowToColumnMapper.Columns.Scale] = 5;
             var expected = new DecimalColumnDefinition("r1")
             {
                 Precision = 10,
@@ -78,11 +78,43 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void SchemaRowToColumnSizeVarChar()
         {
             dataRow[SchemaRowToColumnMapper.Columns.DataType] = SqlDbType.VarChar;
-            dataRow[SchemaRowToColumnMapper.Columns.Size] = (int)10;
+            dataRow[SchemaRowToColumnMapper.Columns.Size] = 10;
             expected = new SizeableColumnDefinition("r1", SqlDbType.VarChar)
             {
                 AllowNulls = false,
                 Size = 10,
+            };
+
+            ColumnDefinition actual = mapper.ToColumnDefinition(dataRow);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void SchemaRowToColumnMaxSizeVarChar()
+        {
+            dataRow[SchemaRowToColumnMapper.Columns.DataType] = SqlDbType.VarChar;
+            dataRow[SchemaRowToColumnMapper.Columns.Size] = 0;
+            expected = new SizeableColumnDefinition("r1", SqlDbType.VarChar)
+            {
+                AllowNulls = false,
+                IsMaximumSize = true
+            };
+
+            ColumnDefinition actual = mapper.ToColumnDefinition(dataRow);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void SchemaRowToColumnMaxSizeAltVarChar()
+        {
+            dataRow[SchemaRowToColumnMapper.Columns.DataType] = SqlDbType.VarChar;
+            dataRow[SchemaRowToColumnMapper.Columns.Size] = -1;
+            expected = new SizeableColumnDefinition("r1", SqlDbType.VarChar)
+            {
+                AllowNulls = false,
+                IsMaximumSize = true
             };
 
             ColumnDefinition actual = mapper.ToColumnDefinition(dataRow);

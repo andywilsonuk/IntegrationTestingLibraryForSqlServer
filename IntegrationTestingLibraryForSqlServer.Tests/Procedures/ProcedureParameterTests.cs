@@ -28,6 +28,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void ProcedureParameterQualifiedNameAlreadyQualified()
         {
+            parameter = new StandardProcedureParameter("@" + ParameterName, SqlDbType.DateTime, ParameterDirection.Input);
             Assert.AreEqual("@" + ParameterName, parameter.QualifiedName);
         }
 
