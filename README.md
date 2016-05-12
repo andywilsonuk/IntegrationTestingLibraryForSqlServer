@@ -39,7 +39,7 @@ The most convenient way to create columns of the correct type is to use the ```C
 ###Creating tables
 Tables can be created with the same structure as the 'real' table.
 
-A create ```TableDefinition``` statement can be generated from a 'real' table using the [C# code generator](#Code-generation).
+A create ```TableDefinition``` statement can be generated from a 'real' table using the [C# code generator](#code-generation).
 ```C#
 var column = new IntegerColumnDefinition("c1", SqlDbType.Int);
 var definition = new TableDefinition(tableName, new[] { column });
@@ -115,7 +115,7 @@ Dependency tests can be created that will compare the expected table structure w
 to ensure that it has not changed structure (and therefore invalidating the primary test cases). ```VerifyMatch``` 
 will throw an exception if the two structures don't match.
 
-A create ```TableDefinition``` statement can be generated from a 'real' table using the [C# code generator](#Code-generation).
+A create ```TableDefinition``` statement can be generated from a 'real' table using the [C# code generator](#code-generation).
 
 ```C#
 var column1 = new IntegerColumnDefinition("c1", SqlDbType.Int);
@@ -327,7 +327,7 @@ public void ThenTheDefinitionOfProcedureShouldMatch(string procedureName, Table 
 ##Code generation
 To make creating tests easier, the code snippet below can be adapted and pasted into the C# Interactive window to 
 generate a ```TableDefinition``` code blob for an existing table. This code can then used as a 'fake' table or in a dependency 
-test to [verify](#Verifying-table-structures) the captured structure matches the current table structure.
+test to [verify](#verifying-table-structures) the captured structure matches the current table structure.
 ```C#
 #r "IntegrationTestingLibraryForSqlServer.dll"
 using IntegrationTestingLibraryForSqlServer;
