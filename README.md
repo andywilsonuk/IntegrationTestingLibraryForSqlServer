@@ -186,7 +186,7 @@ var parameter = new StandardProcedureParameter("c1", SqlDbType.DateTime, Paramet
 ```
 
 ####Decimal parameters
-Parameters with a SqlDbType of Decimal (and also can shown in SQL Server as Numeric) can include Precision and Scale. See [decimal and numeric (Transact-SQL)](https://msdn.microsoft.com/en-us/library/ms187746.aspx) for more details on usage.
+Parameters with a ```SqlDbType``` of ```Decimal``` (and also can shown in SQL Server as Numeric) can include ```Precision``` and ```Scale```. See [decimal and numeric (Transact-SQL)](https://msdn.microsoft.com/en-us/library/ms187746.aspx) for more details on usage.
 ```C#
 var parameter = new DecimalProcedureParameter("c1", ParameterDirection.InputOutput)
 {
@@ -196,7 +196,7 @@ var parameter = new DecimalProcedureParameter("c1", ParameterDirection.InputOutp
 ```
 
 ####Sizeable parameters
-Variable size parameters, that is with a SqlDbType of Binary, Char, VarBinary, VarChar, NChar, NVarChar can include Size.
+Variable size parameters, that is with a ```SqlDbType``` of ```Binary```, ```Char```, ```VarBinary```, ```VarChar```, ```NChar```, ```NVarChar``` can include ```Size```.
 The property ```IsMaximumSize``` is a convenient way to set the column to the maximum size.
 ```C#
 var parameter = new SizeableProcedureParameter("c1", SqlDbType.NVarChar, ParameterDirection.InputOutput)
