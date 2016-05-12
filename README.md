@@ -20,7 +20,7 @@ database.GrantUserAccess(new DomainAccount(username));
 database.Drop();
 ```
 ####General notes
-* DomainAccount can include a Domain however if none is specified the domain of the account running the test is assumed
+* ```DomainAccount``` can include a Domain however if none is specified the domain of the account running the test is assumed
 * SQL Authentication is not currently supported
 ```
 ##Schemas
@@ -51,7 +51,7 @@ var column = new StandardColumnDefinition("c1", SqlDbType.DateTime);
 ```
 
 ####Integer columns
-Integer columns, that is with a ```SqlDbType``` of ```Int```, ```BigInt```, ```SmallInt```, ```TinyInt``` can be used as an ```Identity``` column.
+Columns that can be used as Identity columns have a ```SqlDbType``` of ```Int```, ```BigInt```, ```SmallInt```, ```TinyInt``` and provide an ```IdentitySeed``` column.
 ```C#
 var column = new IntegerColumnDefinition("c1", SqlDbType.Int)
 {
@@ -60,7 +60,7 @@ var column = new IntegerColumnDefinition("c1", SqlDbType.Int)
 ```
 
 ####Decimal columns
-Decimal columns, that is with a ```SqlDbType``` of ```Decimal``` (and also can shown in SQL Server as Numeric) can include ```Precision``` and ```Scale```. See [decimal and numeric (Transact-SQL)](https://msdn.microsoft.com/en-us/library/ms187746.aspx) for more details on usage.
+Columns with a ```SqlDbType``` of ```Decimal``` (also shown in SQL Server as Numeric) can include ```Precision``` and ```Scale```. See [decimal and numeric (Transact-SQL)](https://msdn.microsoft.com/en-us/library/ms187746.aspx) for more details on usage.
 ```C#
 var column = new DecimalColumnDefinition("c1")
 {
@@ -70,7 +70,7 @@ var column = new DecimalColumnDefinition("c1")
 ```
 
 ####Sizeable columns
-Sizeable columns, that is with a SqlDbType of Binary, Char, VarBinary, VarChar, NChar, NVarChar can include Size.
+Variable size columns, that is with a ```SqlDbType``` of ```Binary```, ```Char```, ```VarBinary```, ```VarChar```, ```NChar```, ```NVarChar``` can include ```Size```.
 The property ```IsMaximumSize``` is a convenient way to set the column to the maximum size.
 ```C#
 var column = new SizeableColumnDefinition("c1", SqlDbType.NVarChar)
@@ -186,7 +186,7 @@ var parameter = new StandardProcedureParameter("c1", SqlDbType.DateTime, Paramet
 ```
 
 ####Decimal parameters
-Decimal parameters, that is with a SqlDbType of Decimal (and also can shown in SQL Server as Numeric) can include Precision and Scale. See [decimal and numeric (Transact-SQL)](https://msdn.microsoft.com/en-us/library/ms187746.aspx) for more details on usage.
+Parameters with a SqlDbType of Decimal (and also can shown in SQL Server as Numeric) can include Precision and Scale. See [decimal and numeric (Transact-SQL)](https://msdn.microsoft.com/en-us/library/ms187746.aspx) for more details on usage.
 ```C#
 var parameter = new DecimalProcedureParameter("c1", ParameterDirection.InputOutput)
 {
@@ -196,7 +196,7 @@ var parameter = new DecimalProcedureParameter("c1", ParameterDirection.InputOutp
 ```
 
 ####Sizeable parameters
-Sizeable parameters, that is with a SqlDbType of Binary, Char, VarBinary, VarChar, NChar, NVarChar can include Size.
+Variable size parameters, that is with a SqlDbType of Binary, Char, VarBinary, VarChar, NChar, NVarChar can include Size.
 The property ```IsMaximumSize``` is a convenient way to set the column to the maximum size.
 ```C#
 var parameter = new SizeableProcedureParameter("c1", SqlDbType.NVarChar, ParameterDirection.InputOutput)
