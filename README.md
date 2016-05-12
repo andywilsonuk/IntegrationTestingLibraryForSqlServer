@@ -18,6 +18,7 @@ var database = new DatabaseActions(connectionString);
 database.CreateOrReplace();
 database.GrantUserAccess(new DomainAccount(username));
 database.Drop();
+```
 ####General notes
 * DomainAccount can include a Domain however if none is specified the domain of the account running the test is assumed
 * SQL Authentication is not currently supported
@@ -50,7 +51,7 @@ var column = new StandardColumnDefinition("c1", SqlDbType.DateTime);
 ```
 
 ####Integer columns
-Integer columns, that is with a SqlDbType of Int, BigInt, SmallInt, TinyInt can be used as an Identity column.
+Integer columns, that is with a ```SqlDbType``` of ```Int```, ```BigInt```, ```SmallInt```, ```TinyInt``` can be used as an ```Identity``` column.
 ```C#
 var column = new IntegerColumnDefinition("c1", SqlDbType.Int)
 {
@@ -59,7 +60,7 @@ var column = new IntegerColumnDefinition("c1", SqlDbType.Int)
 ```
 
 ####Decimal columns
-Decimal columns, that is with a SqlDbType of Decimal (and also can shown in SQL Server as Numeric) can include Precision and Scale. See [decimal and numeric (Transact-SQL)]https://msdn.microsoft.com/en-us/library/ms187746.aspx for more details on usage.
+Decimal columns, that is with a ```SqlDbType``` of ```Decimal``` (and also can shown in SQL Server as Numeric) can include ```Precision``` and ```Scale```. See [decimal and numeric (Transact-SQL)](https://msdn.microsoft.com/en-us/library/ms187746.aspx) for more details on usage.
 ```C#
 var column = new DecimalColumnDefinition("c1")
 {
@@ -93,7 +94,7 @@ var tableData = new TableData
 };
 tableActions.Insert(tableName, tableData, optionalSchemaName);
 ```
-or, if you have a TableDefinition object:
+or, if you have a ```TableDefinition``` object:
 ```C#
 tableDefinition.Insert(database, tableData);
 ```
@@ -141,16 +142,16 @@ using (SqlConnection connection = new SqlConnection(database.ConnectionString))
 expected.VerifyMatch(actual, TableDataComparers.UnorderedRowNamedColumn);
 ```
 There are a number of different matching strategies depending on how strict you want to be, how your system will access the real data, and what changes to the 'real' table are tolerable. the built-in comparers allow for combinations of:
-Columns: by ordinal, by name, by name as a subset of the returned columns
-Rows: by ordinal, by any sequence, by any sequence as a subset of the returned rows
-Values: currently the only matcher for values is by ToString()
+* Columns: by ordinal, by name, by name as a subset of the returned columns
+* Rows: by ordinal, by any sequence, by any sequence as a subset of the returned rows
+* Values: currently the only matcher for values is by ```ToString()```
 
 Custom comparers can be built using the classes in the TableComparision namespace.
 ####Notes
-* If your system is executing a SELECT * you'll probably want the ordinal column comparer
+* If your system is executing a ```SELECT *``` you'll probably want the ordinal column comparer
 * If your system can tolerate new columns to a table or view you can use the subset column comparer
 * If you're inserting rows, you probably want your test to fail if new columns are added so match equals column comparer would be best
-* If you're not selecting with an ORDER BY you'll probably want the unordered rows comparer as the order is not guaranteed subset rows is probably only useful for checking against a 'real' table with known values
+* If you're not selecting with an ```ORDER BY``` you'll probably want the unordered rows comparer as the order is not guaranteed subset rows is probably only useful for checking against a 'real' table with known values
 
 ###Verifying view structures
 As for table structures, views can be tested to ensure that the 'real' view matches an expected structure. The method of retrieving the structure of a view differs from that of a table in that for a view the first row is selected and the resulting data reader is used for the comparision. ```VerifyMatch``` will throw an exception if the two structures don't match.
@@ -185,7 +186,7 @@ var parameter = new StandardProcedureParameter("c1", SqlDbType.DateTime, Paramet
 ```
 
 ####Decimal parameters
-Decimal parameters, that is with a SqlDbType of Decimal (and also can shown in SQL Server as Numeric) can include Precision and Scale. See [decimal and numeric (Transact-SQL)]https://msdn.microsoft.com/en-us/library/ms187746.aspx for more details on usage.
+Decimal parameters, that is with a SqlDbType of Decimal (and also can shown in SQL Server as Numeric) can include Precision and Scale. See [decimal and numeric (Transact-SQL)](https://msdn.microsoft.com/en-us/library/ms187746.aspx) for more details on usage.
 ```C#
 var parameter = new DecimalProcedureParameter("c1", ParameterDirection.InputOutput)
 {
