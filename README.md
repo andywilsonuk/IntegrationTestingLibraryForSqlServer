@@ -22,7 +22,7 @@ database.Drop();
 ####General notes
 * ```DomainAccount``` can include a Domain however if none is specified the domain of the account running the test is assumed
 * SQL Authentication is not currently supported
-```
+
 ##Schemas
 
 ###Creating a schema
