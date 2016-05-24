@@ -202,10 +202,10 @@ Most parameters have no special properties.
 var parameter = new StandardProcedureParameter("c1", SqlDbType.DateTime, ParameterDirection.InputOutput);
 ```
 
-####Integer columns
-Columns that can be used as Identity columns have a ```SqlDbType``` of ```Int```, ```BigInt```, ```SmallInt```, ```TinyInt``` and provide an ```IdentitySeed``` column.
+####Integer parameters
+Parameter for ```SqlDbType``` with values ```Int```, ```BigInt```, ```SmallInt``` and ```TinyInt```.
 ```C#
-var column = new IntegerColumnDefinition("c1", SqlDbType.Int)
+var parameter = new IntegerProcedureParameter("c1", SqlDbType.Int, ParameterDirection.InputOutput)
 {
     IdentitySeed = 1
 };
