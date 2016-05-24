@@ -5,7 +5,7 @@ using System.Data;
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
     [TestClass]
-    public class DecimalProcedureParametersTests
+    public class DecimalProcedureParameterTests
     {
         private const string ParameterName = "p1";
         private DecimalProcedureParameter parameter = new DecimalProcedureParameter(ParameterName, ParameterDirection.Input)

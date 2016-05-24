@@ -17,6 +17,8 @@ namespace IntegrationTestingLibraryForSqlServer
         {
         }
 
+        protected override bool IsDataTypeAllowed => DataType.IsDecimal;
+
         public byte Precision
         {
             get { return precision; }

@@ -19,7 +19,11 @@ namespace IntegrationTestingLibraryForSqlServer
             Name = name;
             DataType = new DataType(dataType);
             AllowNulls = true;
+
+            if (!IsDataTypeAllowed) throw new ArgumentException("Wrong datatype passed", nameof(dataType));
         }
+
+        protected abstract bool IsDataTypeAllowed { get; }
 
         public virtual bool Equals(ColumnDefinition other)
         {

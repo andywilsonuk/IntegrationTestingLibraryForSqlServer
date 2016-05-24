@@ -67,7 +67,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             mockDataRecord.Setup(x => x.GetString(DataRecordToColumnMapper.Columns.DataType)).Returns("VarChar");
             mockDataRecord.Setup(x => x.GetInt16(DataRecordToColumnMapper.Columns.Size)).Returns(10);
-            expected = new SizeableColumnDefinition("r1", SqlDbType.VarChar)
+            expected = new StringColumnDefinition("r1", SqlDbType.VarChar)
             {
                 AllowNulls = false,
                 Size = 10
@@ -83,7 +83,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             mockDataRecord.Setup(x => x.GetString(DataRecordToColumnMapper.Columns.DataType)).Returns("NVarChar");
             mockDataRecord.Setup(x => x.GetInt16(DataRecordToColumnMapper.Columns.Size)).Returns(10);
-            expected = new SizeableColumnDefinition("r1", SqlDbType.NVarChar)
+            expected = new StringColumnDefinition("r1", SqlDbType.NVarChar)
             {
                 AllowNulls = false,
                 Size = 5
@@ -98,7 +98,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             mockDataRecord.Setup(x => x.GetString(DataRecordToColumnMapper.Columns.DataType)).Returns("VarChar");
             mockDataRecord.Setup(x => x.GetInt16(DataRecordToColumnMapper.Columns.Size)).Returns(0);
-            expected = new SizeableColumnDefinition("r1", SqlDbType.VarChar)
+            expected = new StringColumnDefinition("r1", SqlDbType.VarChar)
             {
                 AllowNulls = false,
                 Size = 0,
@@ -114,7 +114,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             mockDataRecord.Setup(x => x.GetString(DataRecordToColumnMapper.Columns.DataType)).Returns("VarChar");
             mockDataRecord.Setup(x => x.GetInt16(DataRecordToColumnMapper.Columns.Size)).Returns(-1);
-            expected = new SizeableColumnDefinition("r1", SqlDbType.VarChar)
+            expected = new StringColumnDefinition("r1", SqlDbType.VarChar)
             {
                 AllowNulls = false,
                 Size = -1,

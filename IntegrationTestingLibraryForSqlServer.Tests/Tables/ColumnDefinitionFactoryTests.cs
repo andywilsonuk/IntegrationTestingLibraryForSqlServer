@@ -97,8 +97,63 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             Assert.AreEqual(1, actual.Count);
             Assert.AreEqual(SqlDbType.VarChar, actual[0].DataType.SqlType);
-            Assert.IsInstanceOfType(actual[0], typeof(SizeableColumnDefinition));
-            Assert.AreEqual(source.Size, ((SizeableColumnDefinition)actual[0]).Size);
+            Assert.IsInstanceOfType(actual[0], typeof(StringColumnDefinition));
+            Assert.AreEqual(source.Size, ((StringColumnDefinition)actual[0]).Size);
+        }
+
+        [TestMethod]
+        public void FromDataTypeBinary()
+        {
+            var factory = new ColumnDefinitionFactory();
+            DataType dataType = new DataType(SqlDbType.Binary);
+
+            ColumnDefinition actual = factory.FromDataType(dataType, "n1");
+
+            Assert.IsInstanceOfType(actual, typeof(BinaryColumnDefinition));
+        }
+
+        [TestMethod]
+        public void FromDataTypeString()
+        {
+            var factory = new ColumnDefinitionFactory();
+            DataType dataType = new DataType(SqlDbType.VarChar);
+
+            ColumnDefinition actual = factory.FromDataType(dataType, "n1");
+
+            Assert.IsInstanceOfType(actual, typeof(StringColumnDefinition));
+        }
+
+        [TestMethod]
+        public void FromDataTypeDecimal()
+        {
+            var factory = new ColumnDefinitionFactory();
+            DataType dataType = new DataType(SqlDbType.Decimal);
+
+            ColumnDefinition actual = factory.FromDataType(dataType, "n1");
+
+            Assert.IsInstanceOfType(actual, typeof(DecimalColumnDefinition));
+        }
+
+        [TestMethod]
+        public void FromDataTypeInteger()
+        {
+            var factory = new ColumnDefinitionFactory();
+            DataType dataType = new DataType(SqlDbType.Int);
+
+            ColumnDefinition actual = factory.FromDataType(dataType, "n1");
+
+            Assert.IsInstanceOfType(actual, typeof(IntegerColumnDefinition));
+        }
+
+        [TestMethod]
+        public void FromDataTypeDateTime()
+        {
+            var factory = new ColumnDefinitionFactory();
+            DataType dataType = new DataType(SqlDbType.DateTime);
+
+            ColumnDefinition actual = factory.FromDataType(dataType, "n1");
+
+            Assert.IsInstanceOfType(actual, typeof(StandardColumnDefinition));
         }
     }
 }

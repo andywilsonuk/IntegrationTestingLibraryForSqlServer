@@ -79,7 +79,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             dataRow[SchemaRowToColumnMapper.Columns.DataType] = SqlDbType.VarChar;
             dataRow[SchemaRowToColumnMapper.Columns.Size] = 10;
-            expected = new SizeableColumnDefinition("r1", SqlDbType.VarChar)
+            expected = new StringColumnDefinition("r1", SqlDbType.VarChar)
             {
                 AllowNulls = false,
                 Size = 10,
@@ -95,7 +95,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             dataRow[SchemaRowToColumnMapper.Columns.DataType] = SqlDbType.VarChar;
             dataRow[SchemaRowToColumnMapper.Columns.Size] = 0;
-            expected = new SizeableColumnDefinition("r1", SqlDbType.VarChar)
+            expected = new StringColumnDefinition("r1", SqlDbType.VarChar)
             {
                 AllowNulls = false,
                 IsMaximumSize = true
@@ -111,7 +111,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             dataRow[SchemaRowToColumnMapper.Columns.DataType] = SqlDbType.VarChar;
             dataRow[SchemaRowToColumnMapper.Columns.Size] = -1;
-            expected = new SizeableColumnDefinition("r1", SqlDbType.VarChar)
+            expected = new StringColumnDefinition("r1", SqlDbType.VarChar)
             {
                 AllowNulls = false,
                 IsMaximumSize = true

@@ -14,9 +14,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             {
                 new IntegerColumnDefinition("c1", SqlDbType.Int) { AllowNulls = true },
                 new StandardColumnDefinition("c2", SqlDbType.DateTime2) { AllowNulls = false },
-                new SizeableColumnDefinition("c3", SqlDbType.VarChar) { AllowNulls = false, Size = 100 },
+                new StringColumnDefinition("c3", SqlDbType.VarChar) { AllowNulls = false, Size = 100 },
                 new DecimalColumnDefinition("c4") { AllowNulls = false, Precision = 10, Scale = 2 },
-                new IntegerColumnDefinition("c1", SqlDbType.Int) { IdentitySeed = 1 },
+                new IntegerColumnDefinition("c5", SqlDbType.Int) { IdentitySeed = 1 },
+                new BinaryColumnDefinition("c6", SqlDbType.VarBinary) { AllowNulls = true, Size = 1000 },
             });
 
             string actual = table.ToCSharp();
@@ -25,9 +26,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 @"var table = new TableDefinition(new DatabaseObjectName(""[dbo].[table1]""), new [] {
     new IntegerColumnDefinition(""c1"", SqlDbType.Int) { AllowNulls = true },
     new StandardColumnDefinition(""c2"", SqlDbType.DateTime2) { AllowNulls = false },
-    new SizeableColumnDefinition(""c3"", SqlDbType.VarChar) { AllowNulls = false, Size = 100 },
+    new StringColumnDefinition(""c3"", SqlDbType.VarChar) { AllowNulls = false, Size = 100 },
     new DecimalColumnDefinition(""c4"") { AllowNulls = false, Precision = 10, Scale = 2 },
-    new IntegerColumnDefinition(""c1"", SqlDbType.Int) { AllowNulls = false, IdentitySeed = 1 },
+    new IntegerColumnDefinition(""c5"", SqlDbType.Int) { AllowNulls = false, IdentitySeed = 1 },
+    new BinaryColumnDefinition(""c6"", SqlDbType.VarBinary) { AllowNulls = true, Size = 1000 },
 });";
             Assert.AreEqual(expected, actual);
         }

@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 
 namespace IntegrationTestingLibraryForSqlServer
 {
-    public class StandardColumnDefinition : ColumnDefinition
+    public class BinaryColumnDefinition : VariableSizeColumnDefinition
     {
-        public StandardColumnDefinition(string name, SqlDbType dataType) 
+        public BinaryColumnDefinition(string name, SqlDbType dataType) 
             : base(name, dataType)
         {
         }
-        protected override bool IsDataTypeAllowed => DataType.IsStandard;
+
+        protected override bool IsDataTypeAllowed => DataType.IsBinary;
     }
 }

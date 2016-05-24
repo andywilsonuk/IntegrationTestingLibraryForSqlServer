@@ -8,35 +8,35 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
     public class DataTypeTests
     {
         [TestMethod]
-        public void IsSizeAllowedForStringLikeDataType()
+        public void IsStringForStringLikeDataType()
         {
             var dataType = new DataType(SqlDbType.NVarChar);
 
-            Assert.IsTrue(dataType.IsSizeable);
+            Assert.IsTrue(dataType.IsString);
         }
 
         [TestMethod]
-        public void IsSizeAllowedForIntegerDataType()
+        public void IsStringForIntegerDataType()
         {
             var dataType = new DataType(SqlDbType.Int);
 
-            Assert.IsFalse(dataType.IsSizeable);
+            Assert.IsFalse(dataType.IsString);
         }
 
         [TestMethod]
-        public void IsUnicodeSizeAllowedForStringLikeDataType()
+        public void IsUnicodeStringForStringLikeDataType()
         {
             var dataType = new DataType(SqlDbType.NVarChar);
 
-            Assert.IsTrue(dataType.IsUnicodeSizeAllowed);
+            Assert.IsTrue(dataType.IsUnicodeString);
         }
 
         [TestMethod]
-        public void IsUnicodeSizeAllowedForCharDataType()
+        public void IsUnicodeStringForCharDataType()
         {
             var dataType = new DataType(SqlDbType.Char);
 
-            Assert.IsFalse(dataType.IsUnicodeSizeAllowed);
+            Assert.IsFalse(dataType.IsUnicodeString);
         }
 
         [TestMethod]
@@ -105,6 +105,26 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             var dataType = new DataType(SqlDbType.VarChar);
 
             bool actual = dataType.IsDecimal;
+
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        public void IsBinaryTrue()
+        {
+            var dataType = new DataType(SqlDbType.Binary);
+
+            bool actual = dataType.IsBinary;
+
+            Assert.IsTrue(actual);
+        }
+
+        [TestMethod]
+        public void IsBinaryFalse()
+        {
+            var dataType = new DataType(SqlDbType.VarChar);
+
+            bool actual = dataType.IsBinary;
 
             Assert.IsFalse(actual);
         }

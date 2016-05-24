@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace IntegrationTestingLibraryForSqlServer
 {
-    public class StandardProcedureParameter : ProcedureParameter
+    public class StringProcedureParameter : VariableSizeProcedureParameter
     {
-        public StandardProcedureParameter(string name, SqlDbType dataType, ParameterDirection direction) 
+        public StringProcedureParameter(string name, SqlDbType dataType, ParameterDirection direction) 
             : base(name, dataType, direction)
         {
         }
 
-        protected override bool IsDataTypeAllowed => DataType.IsStandard;
+        protected override bool IsDataTypeAllowed => DataType.IsString;
     }
 }

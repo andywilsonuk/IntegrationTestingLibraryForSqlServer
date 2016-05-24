@@ -32,13 +32,13 @@ namespace IntegrationTestingLibraryForSqlServer
 
         private void GetColumn()
         {
-            var dataTypeName = record.GetString(Columns.DataType);
-            column = new ColumnDefinitionFactory().FromSqlDbType(dataTypeName, GetName());
+            var dataType = new DataType(record.GetString(Columns.DataType));
+            column = new ColumnDefinitionFactory().FromDataType(dataType, GetName());
         }
 
         private void GetSize()
         {
-            var sizeableColumn = column as SizeableColumnDefinition;
+            var sizeableColumn = column as VariableSizeColumnDefinition;
             if (sizeableColumn == null) return;
 
             int size = record.GetInt16(Columns.Size);
@@ -47,7 +47,7 @@ namespace IntegrationTestingLibraryForSqlServer
                 sizeableColumn.Size = 0;
                 return;
             }
-            sizeableColumn.Size = column.DataType.IsUnicodeSizeAllowed ? size / 2 : size;
+            sizeableColumn.Size = column.DataType.IsUnicodeString ? size / 2 : size;
         }
 
         private void GetScale()

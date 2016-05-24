@@ -36,7 +36,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             var mapper = new SqlParameterToProcedureParameterMapper();
 
             // Act
-            var parameter = mapper.FromSqlParameter(sqlParameter) as SizeableProcedureParameter;
+            var parameter = mapper.FromSqlParameter(sqlParameter) as VariableSizeProcedureParameter;
 
             // Assert
             Assert.IsNotNull(parameter);

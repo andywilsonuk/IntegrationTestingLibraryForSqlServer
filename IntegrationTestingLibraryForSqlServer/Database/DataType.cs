@@ -8,7 +8,7 @@ namespace IntegrationTestingLibraryForSqlServer
 {
     public class DataType : IEquatable<DataType>
     {
-        internal const int DefaultSizeableSize = 1;
+        internal const int DefaultSize = 1;
         internal const int DefaultPrecision = 18;
         internal const byte DefaultScale = 0;
         internal const int MaximumSizeIndicator = 0;
@@ -50,11 +50,19 @@ namespace IntegrationTestingLibraryForSqlServer
             return SqlType.GetHashCode();
         }
 
+        internal bool IsStandard
+        {
+            get
+            {
+                return !IsInteger && !IsDecimal && !IsString && !IsBinary;
+            }
+        }
+
         internal bool IsInteger
         {
             get
             {
-                switch (this.SqlType)
+                switch (SqlType)
                 {
                     case SqlDbType.Int:
                     case SqlDbType.BigInt:
@@ -66,15 +74,27 @@ namespace IntegrationTestingLibraryForSqlServer
             }
         }
 
-        internal bool IsSizeable
+        internal bool IsBinary
+        {
+            get
+            {
+                switch (SqlType)
+                {
+                    case SqlDbType.Binary:
+                    case SqlDbType.VarBinary:
+                        return true;
+                    default: return false;
+                }
+            }
+        }
+
+        internal bool IsString
         {
             get 
             { 
-                switch(this.SqlType)
+                switch(SqlType)
                 {
-                    case SqlDbType.Binary:
                     case SqlDbType.Char:
-                    case SqlDbType.VarBinary:
                     case SqlDbType.VarChar:
                     case SqlDbType.NChar:
                     case SqlDbType.NVarChar:
@@ -84,11 +104,11 @@ namespace IntegrationTestingLibraryForSqlServer
             }
         }
 
-        internal bool IsUnicodeSizeAllowed
+        internal bool IsUnicodeString
         {
             get
             {
-                switch (this.SqlType)
+                switch (SqlType)
                 {
                     case SqlDbType.NChar:
                     case SqlDbType.NVarChar:

@@ -7,15 +7,13 @@ using System.Threading.Tasks;
 
 namespace IntegrationTestingLibraryForSqlServer
 {
-    public class SizeableColumnDefinition : ColumnDefinition
+    public abstract class VariableSizeColumnDefinition : ColumnDefinition
     {
-        private int size = DataType.DefaultSizeableSize;
+        private int size = DataType.DefaultSize;
 
-        public SizeableColumnDefinition(string name, SqlDbType dataType)
+        public VariableSizeColumnDefinition(string name, SqlDbType dataType)
             : base(name, dataType)
         {
-            if (DataType.IsSizeable) return;
-            throw new ArgumentException("Wrong datatype passed", nameof(dataType));
         }
 
         public int Size
@@ -42,7 +40,7 @@ namespace IntegrationTestingLibraryForSqlServer
         public override bool Equals(ColumnDefinition other)
         {
             if (!base.Equals(other)) return false;
-            var otherSizeable = (SizeableColumnDefinition)other;
+            var otherSizeable = (VariableSizeColumnDefinition)other;
             if (IsMaximumSize && otherSizeable.IsMaximumSize) return true;
             if (Size != otherSizeable.Size) return false;
             return true;

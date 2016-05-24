@@ -14,10 +14,10 @@ namespace IntegrationTestingLibraryForSqlServer
         public IntegerColumnDefinition(string name, SqlDbType dataType)
             : base(name, dataType)
         {
-            if (DataType.IsInteger) return;
-            if (DataType.IsDecimal && this is DecimalColumnDefinition) return;
-            throw new ArgumentException("Wrong datatype passed", nameof(dataType));
         }
+
+        protected override bool IsDataTypeAllowed => DataType.IsInteger;
+
         public virtual int? IdentitySeed
         {
             get { return identitySeed; }

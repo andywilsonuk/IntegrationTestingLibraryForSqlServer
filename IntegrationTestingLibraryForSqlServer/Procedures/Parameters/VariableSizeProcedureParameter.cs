@@ -7,15 +7,13 @@ using System.Threading.Tasks;
 
 namespace IntegrationTestingLibraryForSqlServer
 {
-    public class SizeableProcedureParameter : ProcedureParameter
+    public abstract class VariableSizeProcedureParameter : ProcedureParameter
     {
-        private int size = DataType.DefaultSizeableSize;
+        private int size = DataType.DefaultSize;
 
-        public SizeableProcedureParameter(string name, SqlDbType dataType, ParameterDirection direction) 
+        public VariableSizeProcedureParameter(string name, SqlDbType dataType, ParameterDirection direction) 
             : base(name, dataType, direction)
         {
-            if (DataType.IsSizeable) return;
-            throw new ArgumentException("Wrong datatype passed", nameof(dataType));
         }
 
         public int Size
@@ -42,7 +40,7 @@ namespace IntegrationTestingLibraryForSqlServer
         public override bool Equals(ProcedureParameter other)
         {
             if (!base.Equals(other)) return false;
-            var otherSizeable = (SizeableProcedureParameter)other;
+            var otherSizeable = (VariableSizeProcedureParameter)other;
             if (IsMaximumSize && otherSizeable.IsMaximumSize) return true;
             if (Size != otherSizeable.Size) return false;
             return true;

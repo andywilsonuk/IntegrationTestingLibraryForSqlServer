@@ -14,7 +14,11 @@ namespace IntegrationTestingLibraryForSqlServer
             Name = name;
             DataType = new DataType(dataType);
             Direction = direction;
+
+            if (!IsDataTypeAllowed) throw new ArgumentException("Wrong datatype passed", nameof(dataType));
         }
+
+        protected abstract bool IsDataTypeAllowed { get; }
 
         public string Name { get; private set; }
         public DataType DataType { get; private set; }

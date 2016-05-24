@@ -11,11 +11,13 @@ namespace IntegrationTestingLibraryForSqlServer
     {
         private SqlParameter sqlParameter;
         private ProcedureParameter parameter;
+        private ProcedureParameterFactory factory = new ProcedureParameterFactory();
 
         public ProcedureParameter FromSqlParameter(SqlParameter sqlParameter)
         {
             this.sqlParameter = sqlParameter;
-            parameter = new ProcedureParameterFactory().FromSqlDbType(this.sqlParameter.SqlDbType, sqlParameter.ParameterName, sqlParameter.Direction);
+            DataType dataType = new DataType(this.sqlParameter.SqlDbType);
+            parameter = factory.FromDataType(dataType, sqlParameter.ParameterName, sqlParameter.Direction);
             GetSize();
             GetPrecision();
             GetScale();
@@ -24,7 +26,7 @@ namespace IntegrationTestingLibraryForSqlServer
 
         private void GetSize()
         {
-            var sizeableParameter = parameter as SizeableProcedureParameter;
+            var sizeableParameter = parameter as VariableSizeProcedureParameter;
             if (sizeableParameter == null) return;
             sizeableParameter.Size = sqlParameter.Size;
         }

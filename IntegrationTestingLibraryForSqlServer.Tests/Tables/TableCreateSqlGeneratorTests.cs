@@ -40,7 +40,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             string expected = "CREATE TABLE [dbo].[t1] ([c1] Int NULL,[c2] NVarChar(1) NULL)";
             definition.Columns.Add(new IntegerColumnDefinition("c1", SqlDbType.Int));
-            definition.Columns.Add(new SizeableColumnDefinition("c2",SqlDbType.NVarChar));
+            definition.Columns.Add(new StringColumnDefinition("c2",SqlDbType.NVarChar));
 
             string actual = generator.Sql(definition);
 
@@ -51,7 +51,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void CreateTableWithStringLikeColumn()
         {
             string expected = "CREATE TABLE [dbo].[t1] ([c1] NVarChar(100) NULL)";
-            definition.Columns.Add(new SizeableColumnDefinition("c1", SqlDbType.NVarChar) { Size = 100 });
+            definition.Columns.Add(new StringColumnDefinition("c1", SqlDbType.NVarChar) { Size = 100 });
 
             string actual = generator.Sql(definition);
 
@@ -62,7 +62,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void CreateTableWithStringLikeColumnNoSize()
         {
             string expected = "CREATE TABLE [dbo].[t1] ([c1] NVarChar(1) NULL)";
-            definition.Columns.Add(new SizeableColumnDefinition("c1", SqlDbType.NVarChar));
+            definition.Columns.Add(new StringColumnDefinition("c1", SqlDbType.NVarChar));
 
             string actual = generator.Sql(definition);
 
@@ -73,7 +73,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void CreateTableWithStringLikeColumnMaxSize()
         {
             string expected = "CREATE TABLE [dbo].[t1] ([c1] NVarChar(max) NULL)";
-            definition.Columns.Add(new SizeableColumnDefinition("c1", SqlDbType.NVarChar) { IsMaximumSize = true });
+            definition.Columns.Add(new StringColumnDefinition("c1", SqlDbType.NVarChar) { IsMaximumSize = true });
 
             string actual = generator.Sql(definition);
 
@@ -84,7 +84,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void CreateTableWithBinaryColumn()
         {
             string expected = "CREATE TABLE [dbo].[t1] ([c1] Binary(10) NULL)";
-            definition.Columns.Add(new SizeableColumnDefinition("c1", SqlDbType.Binary) { Size = 10 });
+            definition.Columns.Add(new BinaryColumnDefinition("c1", SqlDbType.Binary) { Size = 10 });
 
             string actual = generator.Sql(definition);
 

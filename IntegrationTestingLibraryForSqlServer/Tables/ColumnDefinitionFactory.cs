@@ -13,7 +13,7 @@ namespace IntegrationTestingLibraryForSqlServer
         {
             foreach(var rawColumn in rawColumns)
             {
-                ColumnDefinition column = FromSqlDbType(rawColumn.DataType, rawColumn.Name);
+                ColumnDefinition column = FromDataType(new DataType(rawColumn.DataType), rawColumn.Name);
                 column.AllowNulls = rawColumn.AllowNulls;
 
                 var decimalColumn = column as DecimalColumnDefinition;
@@ -27,37 +27,20 @@ namespace IntegrationTestingLibraryForSqlServer
                 {
                     numberColumn.IdentitySeed = rawColumn.IdentitySeed;
                 }
-                var sizeableColumn = column as SizeableColumnDefinition;
+                var sizeableColumn = column as VariableSizeColumnDefinition;
                 if (sizeableColumn != null && rawColumn.Size.HasValue) sizeableColumn.Size = rawColumn.Size.Value;
 
                 yield return column;
             }
         }
 
-        public ColumnDefinition FromSqlDbType(string dataType, string name)
+        public ColumnDefinition FromDataType(DataType dataType, string name)
         {
-            return FromSqlDbType(new DataType(dataType).SqlType, name);
-        }
-
-        public ColumnDefinition FromSqlDbType(SqlDbType type, string name)
-        {
-            switch (type)
-            {
-                case SqlDbType.Decimal: return new DecimalColumnDefinition(name);
-                case SqlDbType.Int:
-                case SqlDbType.BigInt:
-                case SqlDbType.SmallInt:
-                case SqlDbType.TinyInt: return new IntegerColumnDefinition(name, type);
-                case SqlDbType.Binary:
-                case SqlDbType.Char:
-                case SqlDbType.VarBinary:
-                case SqlDbType.VarChar:
-                case SqlDbType.NChar:
-                case SqlDbType.NVarChar: return new SizeableColumnDefinition(name, type);
-                default: return new StandardColumnDefinition(name, type);
-            }
-
-            
+            if (dataType.IsDecimal) return new DecimalColumnDefinition(name);
+            if (dataType.IsBinary) return new BinaryColumnDefinition(name, dataType.SqlType);
+            if (dataType.IsString) return new StringColumnDefinition(name, dataType.SqlType);
+            if (dataType.IsInteger) return new IntegerColumnDefinition(name, dataType.SqlType);
+            return new StandardColumnDefinition(name, dataType.SqlType);
         }
     }
 }

@@ -35,7 +35,7 @@ namespace IntegrationTestingLibraryForSqlServer
 
         private string GetFormattedDataType(ColumnDefinition column)
         {
-            var sizeableColumn = column as SizeableColumnDefinition;
+            var sizeableColumn = column as VariableSizeColumnDefinition;
             if (sizeableColumn != null)
             {
                 string size = sizeableColumn.IsMaximumSize ? "max" : sizeableColumn.Size.ToString();

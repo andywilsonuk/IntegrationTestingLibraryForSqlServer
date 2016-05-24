@@ -6,31 +6,17 @@ using System.Text;
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
     [TestClass]
-    public class SizeableColumnDefinitionTests
+    public class VariableSizeColumnDefinitionTests
     {
         private const string ColumnName = "c1";
-        private SizeableColumnDefinition definition = new SizeableColumnDefinition(ColumnName, SqlDbType.NVarChar);
+        private MockVariableSizeColumnDefinition definition = new MockVariableSizeColumnDefinition(ColumnName, SqlDbType.NVarChar);
 
         [TestMethod]
-        public void ConstructorBasics()
-        {
-            Assert.AreEqual(SqlDbType.NVarChar, definition.DataType.SqlType);
-            Assert.AreEqual(ColumnName, definition.Name);
-            Assert.AreEqual(1, definition.Size);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void ConstructorWithWrongDataTypeThrowException()
-        {
-            definition = new SizeableColumnDefinition(ColumnName, SqlDbType.Int);
-        }
-        [TestMethod]
-        public void SizeableColumnDefinitionEquals()
+        public void VariableSizeColumnDefinitionEquals()
         {
             definition.AllowNulls = false;
             definition.Size = 10;
-            var other = new SizeableColumnDefinition(ColumnName, SqlDbType.NVarChar)
+            var other = new MockVariableSizeColumnDefinition(ColumnName, SqlDbType.NVarChar)
             {
                 AllowNulls = false,
                 Size = 10,
@@ -42,11 +28,11 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void SizeableColumnDefinitionNotEqualsSize()
+        public void VariableSizeColumnDefinitionNotEqualsSize()
         {
             definition.AllowNulls = false;
             definition.Size = 10;
-            var other = new SizeableColumnDefinition(ColumnName, SqlDbType.NVarChar)
+            var other = new MockVariableSizeColumnDefinition(ColumnName, SqlDbType.NVarChar)
             {
                 AllowNulls = false,
                 Size = 20,
@@ -57,11 +43,11 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             Assert.IsFalse(actual);
         }
         [TestMethod]
-        public void SizeableColumnDefinitionEqualsMaxSize()
+        public void VariableSizeColumnDefinitionEqualsMaxSize()
         {
             definition.AllowNulls = false;
             definition.IsMaximumSize = true;
-            var other = new SizeableColumnDefinition(ColumnName, SqlDbType.NVarChar)
+            var other = new MockVariableSizeColumnDefinition(ColumnName, SqlDbType.NVarChar)
             {
                 AllowNulls = false,
                 IsMaximumSize = true,
@@ -73,7 +59,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void SizeableColumnDefinitionNegativeOneSizeSetToZero()
+        public void VariableSizeColumnDefinitionNegativeOneSizeSetToZero()
         {
             definition.Size = -1;
 
@@ -82,13 +68,13 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void SizeableDefinitionNegativeSize()
+        public void VariableSizeColumnDefinitionNegativeSize()
         {
             definition.Size = -10;
         }
 
         [TestMethod]
-        public void SizeableDefinitionZeroAsMaxSize()
+        public void VariableSizeColumnDefinitionZeroAsMaxSize()
         {
             definition.Size = 0;
 
@@ -97,7 +83,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void SizeableDefinitionNegativeOneAsMaxSize()
+        public void VariableSizeColumnDefinitionNegativeOneAsMaxSize()
         {
             definition.Size = -1;
 
@@ -106,7 +92,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void SizeableColumnDefinitionSetMaximumSize()
+        public void VariableSizeColumnColumnDefinitionSetMaximumSize()
         {
             definition.IsMaximumSize = true;
 
@@ -114,7 +100,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void SizeableColumnDefinitionToString()
+        public void VariableSizeColumnColumnDefinitionToString()
         {
             definition.Size = 10;
             definition.AllowNulls = false;

@@ -71,13 +71,23 @@ var column = new DecimalColumnDefinition("c1")
 };
 ```
 
-####Sizeable columns
-Variable size columns, that is with a ```SqlDbType``` of ```Binary```, ```Char```, ```VarBinary```, ```VarChar```, ```NChar```, ```NVarChar``` can include ```Size```.
+####String columns
+String-like columns, that is with a ```SqlDbType``` of ```Char```, ```VarChar```, ```NChar```, ```NVarChar``` can include ```Size```.
 The property ```IsMaximumSize``` is a convenient way to set the column to the maximum size.
 ```C#
-var column = new SizeableColumnDefinition("c1", SqlDbType.NVarChar)
+var column = new StringColumnDefinition("c1", SqlDbType.NVarChar)
 {
     Size = 100
+};
+```
+
+####Binary columns
+Variable length binary columns (```SqlDbType``` of ```Binary``` or ```VarBinary```) can include ```Size```.
+The property ```IsMaximumSize``` is a convenient way to set the column to the maximum size.
+```C#
+var column = new BinaryColumnDefinition("c1", SqlDbType.Binary)
+{
+    Size = 1000
 };
 ```
 
@@ -119,7 +129,7 @@ A create ```TableDefinition``` statement can be generated from a 'real' table us
 
 ```C#
 var column1 = new IntegerColumnDefinition("c1", SqlDbType.Int);
-var column2 = new SizeableColumnDefinition("c2", SqlDbType.NVarChar) { Size = 100 };
+var column2 = new StringColumnDefinition("c2", SqlDbType.NVarChar) { Size = 100 };
 var definition = new TableDefinition(tableName, new[] { column1, column2 });
 definition.VerifyMatch(database);
 ```
@@ -164,7 +174,7 @@ Custom comparers can be built using the classes in the TableComparision namespac
 As for table structures, views can be tested to ensure that the 'real' view matches an expected structure. The method of retrieving the structure of a view differs from that of a table in that for a view the first row is selected and the resulting data reader is used for the comparision. ```VerifyMatch``` will throw an exception if the two structures don't match.
 ```C#
 var column1 = new IntegerColumnDefinition("c1", SqlDbType.Int);
-var column2 = new SizeableColumnDefinition("c2", SqlDbType.NVarChar) { Size = 100 };
+var column2 = new StringColumnDefinition("c2", SqlDbType.NVarChar) { Size = 100 };
 var viewDefinition = new TableDefinition(viewName, new[] { column1, column2 });
 var checker = new ViewCheck(this.database.ConnectionString);
 checker.VerifyMatch(viewDefinition);
@@ -177,7 +187,7 @@ The most convenient way to create parameters of the correct type is to use the `
 ```C#
 List<ProcedureParameter> parameters = new List<ProcedureParameter>();
 parameters.Add(new StandardProcedureParameter("@p1", SqlDbType.Int, ParameterDirection.Input));
-parameters.Add(new SizeableProcedureParameter("@p2", SqlDbType.NVarChar, ParameterDirection.InputOutput));
+parameters.Add(new StringProcedureParameter("@p2", SqlDbType.NVarChar, ParameterDirection.InputOutput));
 ProcedureDefinition definition = new ProcedureDefinition(procedureName, parameters)
 {
     Body = @"set @p2 = 'ok'
@@ -192,6 +202,15 @@ Most parameters have no special properties.
 var parameter = new StandardProcedureParameter("c1", SqlDbType.DateTime, ParameterDirection.InputOutput);
 ```
 
+####Integer columns
+Columns that can be used as Identity columns have a ```SqlDbType``` of ```Int```, ```BigInt```, ```SmallInt```, ```TinyInt``` and provide an ```IdentitySeed``` column.
+```C#
+var column = new IntegerColumnDefinition("c1", SqlDbType.Int)
+{
+    IdentitySeed = 1
+};
+```
+
 ####Decimal parameters
 Parameters with a ```SqlDbType``` of ```Decimal``` (and also can shown in SQL Server as Numeric) can include ```Precision``` and ```Scale```. See [decimal and numeric (Transact-SQL)](https://msdn.microsoft.com/en-us/library/ms187746.aspx) for more details on usage.
 ```C#
@@ -202,13 +221,23 @@ var parameter = new DecimalProcedureParameter("c1", ParameterDirection.InputOutp
 };
 ```
 
-####Sizeable parameters
-Variable size parameters, that is with a ```SqlDbType``` of ```Binary```, ```Char```, ```VarBinary```, ```VarChar```, ```NChar```, ```NVarChar``` can include ```Size```.
+####String parameters
+Variable size string-like parameters, that is with a ```SqlDbType``` of ```Char```, ```VarChar```, ```NChar```, ```NVarChar``` can include ```Size```.
 The property ```IsMaximumSize``` is a convenient way to set the column to the maximum size.
 ```C#
-var parameter = new SizeableProcedureParameter("c1", SqlDbType.NVarChar, ParameterDirection.InputOutput)
+var parameter = new StringProcedureParameter("c1", SqlDbType.NVarChar, ParameterDirection.InputOutput)
 {
     Size = 100
+};
+```
+
+####Binary parameters
+Variable length binary parameters (```SqlDbType``` of ```Binary``` or ```VarBinary```) can include ```Size```.
+The property ```IsMaximumSize``` is a convenient way to set the column to the maximum size.
+```C#
+var column = new BinaryProcedureParameter("c1", SqlDbType.Binary, ParameterDirection.InputOutput)
+{
+    Size = 1000
 };
 ```
 

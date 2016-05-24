@@ -31,12 +31,14 @@ namespace IntegrationTestingLibraryForSqlServer
 
         private void GetColumn()
         {
-            column = new ColumnDefinitionFactory().FromSqlDbType((SqlDbType)record[Columns.DataType], GetName());
+            var factory = new ColumnDefinitionFactory();
+            var dataType = new DataType((SqlDbType)record[Columns.DataType]);
+            column = factory.FromDataType(dataType, GetName());
         }
 
         private void GetSize()
         {
-            var sizeableColumn = column as SizeableColumnDefinition;
+            var sizeableColumn = column as StringColumnDefinition;
             if (sizeableColumn == null) return;
             int size = Convert.ToInt32(record[Columns.Size]);
             sizeableColumn.Size = size == -1 ? 0 : size;

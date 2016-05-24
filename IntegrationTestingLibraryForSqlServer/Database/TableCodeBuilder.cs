@@ -48,8 +48,8 @@ namespace IntegrationTestingLibraryForSqlServer
 
         private static string Extended(ColumnDefinition column)
         {
-            var sizeableColumn = column as SizeableColumnDefinition;
-            if (sizeableColumn != null) return string.Format(", {0} = {1}", nameof(sizeableColumn.Size), sizeableColumn.Size);
+            var sizeColumn = column as VariableSizeColumnDefinition;
+            if (sizeColumn != null) return string.Format(", {0} = {1}", nameof(sizeColumn.Size), sizeColumn.Size);
             var integerColumn = column as IntegerColumnDefinition;
             if (integerColumn != null && integerColumn.IdentitySeed.HasValue) return string.Format(", {0} = {1}", nameof(integerColumn.IdentitySeed), integerColumn.IdentitySeed);
             var decimalColumn = column as DecimalColumnDefinition;

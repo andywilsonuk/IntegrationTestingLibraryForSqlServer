@@ -78,8 +78,63 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             Assert.AreEqual(1, actual.Count);
             Assert.AreEqual(SqlDbType.VarChar, actual[0].DataType.SqlType);
-            Assert.IsInstanceOfType(actual[0], typeof(SizeableProcedureParameter));
-            Assert.AreEqual(source.Size, ((SizeableProcedureParameter)actual[0]).Size);
+            Assert.IsInstanceOfType(actual[0], typeof(VariableSizeProcedureParameter));
+            Assert.AreEqual(source.Size, ((VariableSizeProcedureParameter)actual[0]).Size);
+        }
+
+        [TestMethod]
+        public void FromDataTypeBinary()
+        {
+            var factory = new ProcedureParameterFactory();
+            DataType dataType = new DataType(SqlDbType.Binary);
+
+            ProcedureParameter actual = factory.FromDataType(dataType, "n1", ParameterDirection.Input);
+
+            Assert.IsInstanceOfType(actual, typeof(BinaryProcedureParameter));
+        }
+
+        [TestMethod]
+        public void FromDataTypeString()
+        {
+            var factory = new ProcedureParameterFactory();
+            DataType dataType = new DataType(SqlDbType.VarChar);
+
+            ProcedureParameter actual = factory.FromDataType(dataType, "n1", ParameterDirection.Input);
+
+            Assert.IsInstanceOfType(actual, typeof(StringColumnDefinition));
+        }
+
+        [TestMethod]
+        public void FromDataTypeDecimal()
+        {
+            var factory = new ProcedureParameterFactory();
+            DataType dataType = new DataType(SqlDbType.Decimal);
+
+            ProcedureParameter actual = factory.FromDataType(dataType, "n1", ParameterDirection.Input);
+
+            Assert.IsInstanceOfType(actual, typeof(DecimalProcedureParameter));
+        }
+
+        [TestMethod]
+        public void FromDataTypeInteger()
+        {
+            var factory = new ProcedureParameterFactory();
+            DataType dataType = new DataType(SqlDbType.Int);
+
+            ProcedureParameter actual = factory.FromDataType(dataType, "n1", ParameterDirection.Input);
+
+            Assert.IsInstanceOfType(actual, typeof(IntegerProcedureParameter));
+        }
+
+        [TestMethod]
+        public void FromDataTypeDateTime()
+        {
+            var factory = new ProcedureParameterFactory();
+            DataType dataType = new DataType(SqlDbType.DateTime);
+
+            ProcedureParameter actual = factory.FromDataType(dataType, "n1", ParameterDirection.Input);
+
+            Assert.IsInstanceOfType(actual, typeof(StandardProcedureParameter));
         }
     }
 }
