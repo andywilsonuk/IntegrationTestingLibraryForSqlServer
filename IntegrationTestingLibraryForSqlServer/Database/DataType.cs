@@ -50,26 +50,6 @@ namespace IntegrationTestingLibraryForSqlServer
             return SqlType.GetHashCode();
         }
 
-        internal int? DefaultSize
-        {
-            get
-            {
-                switch (SqlType)
-                {
-                    case SqlDbType.Binary:
-                    case SqlDbType.Char:
-                    case SqlDbType.NChar:
-                    case SqlDbType.NVarChar:
-                    case SqlDbType.VarBinary:
-                    case SqlDbType.VarChar:
-                        return DefaultSizeableSize;
-                    case SqlDbType.Decimal:
-                        return DefaultPrecision;
-                    default: return null;
-                }
-            }
-        }
-
         internal bool IsInteger
         {
             get

@@ -8,39 +8,6 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
     public class DataTypeTests
     {
         [TestMethod]
-        public void DefaultSizeForStringLikeDataType()
-        {
-            var dataType = new DataType(SqlDbType.NVarChar);
-            int? expected = DataType.DefaultSizeableSize;
-
-            int? actual = dataType.DefaultSize;
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void DefaultSizeForDecimalDataType()
-        {
-            var dataType = new DataType(SqlDbType.Decimal);
-            int? expected = DataType.DefaultPrecision;
-
-            int? actual = dataType.DefaultSize;
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void DefaultSizeForIntegerDataType()
-        {
-            var dataType = new DataType(SqlDbType.Int);
-            int? expected = null;
-
-            int? actual = dataType.DefaultSize;
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
         public void IsSizeAllowedForStringLikeDataType()
         {
             var dataType = new DataType(SqlDbType.NVarChar);
