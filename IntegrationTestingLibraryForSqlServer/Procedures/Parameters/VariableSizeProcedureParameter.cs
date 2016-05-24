@@ -40,9 +40,9 @@ namespace IntegrationTestingLibraryForSqlServer
         public override bool Equals(ProcedureParameter other)
         {
             if (!base.Equals(other)) return false;
-            var otherSizeable = (VariableSizeProcedureParameter)other;
-            if (IsMaximumSize && otherSizeable.IsMaximumSize) return true;
-            if (Size != otherSizeable.Size) return false;
+            var otherSize = (VariableSizeProcedureParameter)other;
+            if (IsMaximumSize && otherSize.IsMaximumSize) return true;
+            if (Size != otherSize.Size) return false;
             return true;
         }
 

@@ -26,9 +26,9 @@ namespace IntegrationTestingLibraryForSqlServer
 
         private void GetSize()
         {
-            var sizeableParameter = parameter as VariableSizeProcedureParameter;
-            if (sizeableParameter == null) return;
-            sizeableParameter.Size = sqlParameter.Size;
+            var sizeParameter = parameter as VariableSizeProcedureParameter;
+            if (sizeParameter == null) return;
+            sizeParameter.Size = sqlParameter.Size;
         }
 
         private void GetScale()

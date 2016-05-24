@@ -21,8 +21,8 @@ namespace IntegrationTestingLibraryForSqlServer
                     if (rawColumn.Size.HasValue) decimalColumn.Precision = (byte)rawColumn.Size.Value;
                     if (rawColumn.DecimalPlaces.HasValue) decimalColumn.Scale = rawColumn.DecimalPlaces.Value;
                 }
-                var sizeableColumn = column as VariableSizeProcedureParameter;
-                if (sizeableColumn != null && rawColumn.Size.HasValue) sizeableColumn.Size = rawColumn.Size.Value;
+                var sizeColumn = column as VariableSizeProcedureParameter;
+                if (sizeColumn != null && rawColumn.Size.HasValue) sizeColumn.Size = rawColumn.Size.Value;
 
                 yield return column;
             }

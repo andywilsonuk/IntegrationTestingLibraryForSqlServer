@@ -34,10 +34,10 @@ namespace IntegrationTestingLibraryForSqlServer
 
         private string GetFormattedDataType(ProcedureParameter parameter)
         {
-            var sizeableColumn = parameter as VariableSizeProcedureParameter;
-            if (sizeableColumn != null)
+            var sizeColumn = parameter as VariableSizeProcedureParameter;
+            if (sizeColumn != null)
             {
-                string size = sizeableColumn.IsMaximumSize ? "max" : sizeableColumn.Size.ToString();
+                string size = sizeColumn.IsMaximumSize ? "max" : sizeColumn.Size.ToString();
                 return string.Format("{0}({1})", parameter.DataType, size);
             }
             var decimalColumn = parameter as DecimalProcedureParameter;

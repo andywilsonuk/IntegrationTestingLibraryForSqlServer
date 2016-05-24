@@ -40,9 +40,9 @@ namespace IntegrationTestingLibraryForSqlServer
         public override bool Equals(ColumnDefinition other)
         {
             if (!base.Equals(other)) return false;
-            var otherSizeable = (VariableSizeColumnDefinition)other;
-            if (IsMaximumSize && otherSizeable.IsMaximumSize) return true;
-            if (Size != otherSizeable.Size) return false;
+            var otherSize = (VariableSizeColumnDefinition)other;
+            if (IsMaximumSize && otherSize.IsMaximumSize) return true;
+            if (Size != otherSize.Size) return false;
             return true;
         }
 

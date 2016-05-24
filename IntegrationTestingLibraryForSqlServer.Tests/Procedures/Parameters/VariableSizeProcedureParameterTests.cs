@@ -17,7 +17,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void SizeableProcedureParameterEquals()
+        public void VariableSizeProcedureParameterEquals()
         {
             var other = new MockVariableSizeProcedureParameter(ParameterName, SqlDbType.VarChar, ParameterDirection.Input);
             other.Size = 10;
@@ -27,7 +27,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void SizeableProcedureParameterEqualsMaxSize()
+        public void VariableSizeProcedureParameterEqualsMaxSize()
         {
             parameter.IsMaximumSize = true;
             var other = new MockVariableSizeProcedureParameter(ParameterName, SqlDbType.VarChar, ParameterDirection.Input);
@@ -39,7 +39,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void SizeableProcedureParameterNotEqualsSize()
+        public void VariableSizeProcedureParameterNotEqualsSize()
         {
             var other = new MockVariableSizeProcedureParameter(ParameterName, SqlDbType.VarChar, ParameterDirection.Input);
             other.Size = 50;
@@ -50,7 +50,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void SizeableProcedureParameterNotEqualsName()
+        public void VariableSizeProcedureParameterNotEqualsName()
         {
             var other = new MockVariableSizeProcedureParameter("other", SqlDbType.VarChar, ParameterDirection.Input);
             other.Size = 10;
@@ -61,7 +61,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void SizeableProcedureParameterNotEqualsMaxSize()
+        public void VariableSizeProcedureParameterNotEqualsMaxSize()
         {
             var other = new MockVariableSizeProcedureParameter(ParameterName, SqlDbType.VarChar, ParameterDirection.Input);
             other.IsMaximumSize = true;
@@ -72,7 +72,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void SizeableProcedureParameterNotEqualsMaxSize2()
+        public void VariableSizeProcedureParameterNotEqualsMaxSize2()
         {
             parameter.IsMaximumSize = true;
             var other = new MockVariableSizeProcedureParameter(ParameterName, SqlDbType.VarChar, ParameterDirection.Input);
@@ -84,7 +84,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void SizeableProcedureParameterGetMaximumSize0()
+        public void VariableSizeProcedureParameterGetMaximumSize0()
         {
             parameter.Size = 0;
 
@@ -92,7 +92,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void SizeableProcedureParameterGetMaximumSizeNegativeOne()
+        public void VariableSizeProcedureParameterGetMaximumSizeNegativeOne()
         {
             parameter.Size = -1;
 
@@ -102,13 +102,13 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void SizeableProcedureParameterSetSizeInvalidThrows()
+        public void VariableSizeProcedureParameterSetSizeInvalidThrows()
         {
             parameter.Size = -2;
         }
 
         [TestMethod]
-        public void SizeableProcedureParameterSetMaximumSize()
+        public void VariableSizeProcedureParameterSetMaximumSize()
         {
             parameter.IsMaximumSize = true;
 
@@ -116,7 +116,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void SizeableProcedureParameterToString()
+        public void VariableSizeProcedureParameterToString()
         {
             string expected = "Name: " + ParameterName + ", Data type: VarChar, Direction: Input, Size: 10";
 

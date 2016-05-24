@@ -35,10 +35,10 @@ namespace IntegrationTestingLibraryForSqlServer
 
         private string GetFormattedDataType(ColumnDefinition column)
         {
-            var sizeableColumn = column as VariableSizeColumnDefinition;
-            if (sizeableColumn != null)
+            var sizeColumn = column as VariableSizeColumnDefinition;
+            if (sizeColumn != null)
             {
-                string size = sizeableColumn.IsMaximumSize ? "max" : sizeableColumn.Size.ToString();
+                string size = sizeColumn.IsMaximumSize ? "max" : sizeColumn.Size.ToString();
                 return string.Format("{0}({1})", column.DataType, size);
             }
             var decimalColumn = column as DecimalColumnDefinition;

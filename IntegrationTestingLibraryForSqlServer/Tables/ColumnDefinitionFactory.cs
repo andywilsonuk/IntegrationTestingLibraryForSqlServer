@@ -27,8 +27,8 @@ namespace IntegrationTestingLibraryForSqlServer
                 {
                     numberColumn.IdentitySeed = rawColumn.IdentitySeed;
                 }
-                var sizeableColumn = column as VariableSizeColumnDefinition;
-                if (sizeableColumn != null && rawColumn.Size.HasValue) sizeableColumn.Size = rawColumn.Size.Value;
+                var sizeColumn = column as VariableSizeColumnDefinition;
+                if (sizeColumn != null && rawColumn.Size.HasValue) sizeColumn.Size = rawColumn.Size.Value;
 
                 yield return column;
             }

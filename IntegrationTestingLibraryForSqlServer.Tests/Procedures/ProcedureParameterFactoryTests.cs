@@ -101,7 +101,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             ProcedureParameter actual = factory.FromDataType(dataType, "n1", ParameterDirection.Input);
 
-            Assert.IsInstanceOfType(actual, typeof(StringColumnDefinition));
+            Assert.IsInstanceOfType(actual, typeof(StringProcedureParameter));
         }
 
         [TestMethod]

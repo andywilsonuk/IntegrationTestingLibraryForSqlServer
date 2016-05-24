@@ -38,16 +38,16 @@ namespace IntegrationTestingLibraryForSqlServer
 
         private void GetSize()
         {
-            var sizeableColumn = column as VariableSizeColumnDefinition;
-            if (sizeableColumn == null) return;
+            var sizeColumn = column as VariableSizeColumnDefinition;
+            if (sizeColumn == null) return;
 
             int size = record.GetInt16(Columns.Size);
             if (size == -1)
             {
-                sizeableColumn.Size = 0;
+                sizeColumn.Size = 0;
                 return;
             }
-            sizeableColumn.Size = column.DataType.IsUnicodeString ? size / 2 : size;
+            sizeColumn.Size = column.DataType.IsUnicodeString ? size / 2 : size;
         }
 
         private void GetScale()

@@ -38,10 +38,10 @@ namespace IntegrationTestingLibraryForSqlServer
 
         private void GetSize()
         {
-            var sizeableColumn = column as StringColumnDefinition;
-            if (sizeableColumn == null) return;
+            var sizeColumn = column as StringColumnDefinition;
+            if (sizeColumn == null) return;
             int size = Convert.ToInt32(record[Columns.Size]);
-            sizeableColumn.Size = size == -1 ? 0 : size;
+            sizeColumn.Size = size == -1 ? 0 : size;
         }
 
         private void GetScale()
