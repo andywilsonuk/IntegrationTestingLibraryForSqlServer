@@ -22,7 +22,7 @@ database.Drop();
 ####Notes
 * ```DomainAccount``` can include a Domain however if none is specified the domain of the account running the test is assumed
 * SQL Authentication is not currently supported (but is planned)
-* Schemas are supported, see [Using schemas](#using-schemas) for usage
+* Schemas are supported, see [Schemas](#schemas) for usage
 
 ##Tables
 ###Creating tables
@@ -367,5 +367,5 @@ There are a few breaking changes between version 1 and 2 specifically:
 
 1. ```ColumnDefinition``` class can no longer be initialised; use ```ColumnDefinitionRaw``` instead and convert it (see [Table creation with Specflow](#table-creation) for example usage) or a specific concrete class instead (see [Creating tables](#creating-tables) for usage)
 2. Likewise ```ProcedureParameter``` class can now be initialised by converting the ```ProcedureParameterRaw``` class (see [Procedure creation with Specflow](#procedure-creation) for example usage) or again use a specific concrete class (see [Creating procedures](#creating-procedures) for usage)
-3. Database schemas are now better supported and standardised through the ```DatabaseObjectName``` class, existing overloads have been replaced to use this class (see [Using schemas](#using-schemas) for usage)
+3. Database schemas are now better supported and standardised through the ```DatabaseObjectName``` class, existing overloads have been replaced to use this class (see [Schemas](#schemas) for usage)
 4. To grant users access to the database the method ```GrantDomainUserAccess``` has been replaced with ```GrantUserAccess``` which accepts a new ```DomainAccount``` class (see [Setting up and tearing down databases](#setting-up-and-tearing-down-databases) for usage); it is expected that SQL authentication will be supported in the future
