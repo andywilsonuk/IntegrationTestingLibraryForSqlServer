@@ -21,6 +21,7 @@ database.Drop();
 ####Notes
 * ```DomainAccount``` can include a Domain however if none is specified the domain of the account running the test is assumed
 * SQL Authentication is not currently supported (but is planned)
+
 ##Schemas
 ###Creating a schema
 ```C#
@@ -49,6 +50,7 @@ definition.CreateOrReplace(database);
 ####Notes
 * The most convenient way to create columns of the correct type is to use the ```ColumnDefinitionFactory``` factory.
 * A create ```TableDefinition``` statement can be generated from a 'real' table using the [C# code generator](#code-generation).
+
 ####Standard columns
 Most columns have no special properties. 
 ```C#
@@ -360,7 +362,7 @@ Console.WriteLine(output);
 ```
 ##Migrating from v1
 There are a few breaking changes between version 1 and 2 specifically:
-1 ```ColumnDefinition``` class can no longer be initialised; use ```ColumnDefinitionRaw``` instead and convert it (see #table-creation for usage) or a specific concrete class instead (see #creating-tables for usage)
-2 Likewise ```ProcedureParameter``` class can now be initialised using the ```ProcedureParameterRaw``` class (see #procedure-creation for usage) or again a specific concrete class  (see #creating-procedures for usage)
-3 Database schemas are now better supported and standardised through the ```DatabaseObjectName``` class, existing overloads have been replaced to use this class
-4 To grant users access to the database the method ```GrantDomainUserAccess``` has been replaced with ```GrantUserAccess``` which accepts a new ```DomainAccount``` class (see #setting-up-and-tearing-down-databases for usage); it is expected that SQL authentication will be supported in the future
+1 ```ColumnDefinition``` class can no longer be initialised; use ```ColumnDefinitionRaw``` instead and convert it (see #table-creation for usage) or a specific concrete class instead (see (#creating-tables) for usage)
+2 Likewise ```ProcedureParameter``` class can now be initialised using the ```ProcedureParameterRaw``` class (see #procedure-creation for usage) or again a specific concrete class  (see (#creating-procedures) for usage)
+3 Database schemas are now better supported and standardised through the ```DatabaseObjectName``` class, existing overloads have been replaced to use this class (see #using-schemas) for usage)
+4 To grant users access to the database the method ```GrantDomainUserAccess``` has been replaced with ```GrantUserAccess``` which accepts a new ```DomainAccount``` class (see (#setting-up-and-tearing-down-databases) for usage); it is expected that SQL authentication will be supported in the future
