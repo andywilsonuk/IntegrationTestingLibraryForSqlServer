@@ -12,46 +12,48 @@ using IntegrationTestingLibraryForSqlServer;
 ###Setting up and tearing down databases
 SQL Server databases can be created and dropped.
 Windows Authentication access can be given to the user that the system under test will be running as (a website or web service for example).
-
 ```C#
 var database = new DatabaseActions(connectionString);
 database.CreateOrReplace();
 database.GrantUserAccess(new DomainAccount(username));
 database.Drop();
 ```
-####General notes
+####Notes
 * ```DomainAccount``` can include a Domain however if none is specified the domain of the account running the test is assumed
-* SQL Authentication is not currently supported
-
+* SQL Authentication is not currently supported (but is planned)
 ##Schemas
-
 ###Creating a schema
 ```C#
 var database = new DatabaseActions(connectionString);
 database.CreateSchema("schemaName");
 ```
-
 ###Using schemas
 Objects can be created in schemas other than dbo (the default schema) by creating a schema and then passing DatabaseObjectName instead of a string.
-The most convenient way to create columns of the correct type is to use the ```ColumnDefinitionFactory``` factory
 
+For example to create a table definition for the 'Test' schema (assuming it had already been created):
+```C#
+var definition = new TableDefinition(new DatabaseObjectName("Test", "Table1"));
+```
+An alternative would be to use the combined schema and object name:
+```C#
+var definition = new TableDefinition(DatabaseObjectName.FromName("Test.Table1"));
+```
 ##Tables
 ###Creating tables
 Tables can be created with the same structure as the 'real' table.
-
-A create ```TableDefinition``` statement can be generated from a 'real' table using the [C# code generator](#code-generation).
 ```C#
 var column = new IntegerColumnDefinition("c1", SqlDbType.Int);
 var definition = new TableDefinition(tableName, new[] { column });
 definition.CreateOrReplace(database);
 ```
-
+####Notes
+* The most convenient way to create columns of the correct type is to use the ```ColumnDefinitionFactory``` factory.
+* A create ```TableDefinition``` statement can be generated from a 'real' table using the [C# code generator](#code-generation).
 ####Standard columns
 Most columns have no special properties. 
 ```C#
 var column = new StandardColumnDefinition("c1", SqlDbType.DateTime);
 ```
-
 ####Integer columns
 Columns that can be used as Identity columns have a ```SqlDbType``` of ```Int```, ```BigInt```, ```SmallInt```, ```TinyInt``` and provide an ```IdentitySeed``` column.
 ```C#
@@ -60,7 +62,6 @@ var column = new IntegerColumnDefinition("c1", SqlDbType.Int)
     IdentitySeed = 1
 };
 ```
-
 ####Decimal columns
 Columns with a ```SqlDbType``` of ```Decimal``` (also shown in SQL Server as Numeric) can include ```Precision``` and ```Scale```. See [decimal and numeric (Transact-SQL)](https://msdn.microsoft.com/en-us/library/ms187746.aspx) for more details on usage.
 ```C#
@@ -70,7 +71,6 @@ var column = new DecimalColumnDefinition("c1")
 	Scale = 0
 };
 ```
-
 ####String columns
 String-like columns, that is with a ```SqlDbType``` of ```Char```, ```VarChar```, ```NChar```, ```NVarChar``` can include ```Size```.
 The property ```IsMaximumSize``` is a convenient way to set the column to the maximum size.
@@ -80,7 +80,6 @@ var column = new StringColumnDefinition("c1", SqlDbType.NVarChar)
     Size = 100
 };
 ```
-
 ####Binary columns
 Variable length binary columns (```SqlDbType``` of ```Binary``` or ```VarBinary```) can include ```Size```.
 The property ```IsMaximumSize``` is a convenient way to set the column to the maximum size.
@@ -90,7 +89,6 @@ var column = new BinaryColumnDefinition("c1", SqlDbType.Binary)
     Size = 1000
 };
 ```
-
 ###Populating tables with data
 Tables can be loaded with initial data.
 ```C#
@@ -179,7 +177,6 @@ var viewDefinition = new TableDefinition(viewName, new[] { column1, column2 });
 var checker = new ViewCheck(this.database.ConnectionString);
 checker.VerifyMatch(viewDefinition);
 ```
-
 ##Procedures
 ###Creating procedures
 Procedures can be created with the same definition as the 'real' stored procedure but with predictable return values.
@@ -195,7 +192,6 @@ ProcedureDefinition definition = new ProcedureDefinition(procedureName, paramete
 };
 definition.CreateOrReplace(database);
 ```
-
 ####Standard parameters
 Most parameters have no special properties. 
 ```C#
@@ -220,7 +216,6 @@ var parameter = new DecimalProcedureParameter("c1", ParameterDirection.InputOutp
 	Scale = 0
 };
 ```
-
 ####String parameters
 Variable size string-like parameters, that is with a ```SqlDbType``` of ```Char```, ```VarChar```, ```NChar```, ```NVarChar``` can include ```Size```.
 The property ```IsMaximumSize``` is a convenient way to set the column to the maximum size.
@@ -230,7 +225,6 @@ var parameter = new StringProcedureParameter("c1", SqlDbType.NVarChar, Parameter
     Size = 100
 };
 ```
-
 ####Binary parameters
 Variable length binary parameters (```SqlDbType``` of ```Binary``` or ```VarBinary```) can include ```Size```.
 The property ```IsMaximumSize``` is a convenient way to set the column to the maximum size.
@@ -240,7 +234,6 @@ var column = new BinaryProcedureParameter("c1", SqlDbType.Binary, ParameterDirec
     Size = 1000
 };
 ```
-
 ###Verifying stored procedure structures
 Dependency tests can be created that will compare the expected stored procedure definition with that of the 'real' procedure to ensure that it has not changed definition (and therefore invalidating the primary test cases). ```VerifyMatch``` will throw an exception if the two definitions don't match.
 ```C#
@@ -365,3 +358,9 @@ string tableName = "T1";
 string output = TableCodeBuilder.CSharpTableDefinition(DatabaseObjectName.FromName(tableName), connectionString);
 Console.WriteLine(output);
 ```
+##Migrating from v1
+There are a few breaking changes between version 1 and 2 specifically:
+1 ```ColumnDefinition``` class can no longer be initialised; use ```ColumnDefinitionRaw``` instead and convert it (see #table-creation for usage) or a specific concrete class instead (see #creating-tables for usage)
+2 Likewise ```ProcedureParameter``` class can now be initialised using the ```ProcedureParameterRaw``` class (see #procedure-creation for usage) or again a specific concrete class  (see #creating-procedures for usage)
+3 Database schemas are now better supported and standardised through the ```DatabaseObjectName``` class, existing overloads have been replaced to use this class
+4 To grant users access to the database the method ```GrantDomainUserAccess``` has been replaced with ```GrantUserAccess``` which accepts a new ```DomainAccount``` class (see #setting-up-and-tearing-down-databases for usage); it is expected that SQL authentication will be supported in the future
