@@ -8,6 +8,7 @@ Ideal for use with [SQL Server Local DB](http://blogs.msdn.com/b/sqlexpress/arch
 using System.Data;
 using IntegrationTestingLibraryForSqlServer;
 ```
+There are some breaking changes in v2, see [Migrating from v1](#migrating-from-v1)
 ##Databases
 ###Setting up and tearing down databases
 SQL Server databases can be created and dropped.
@@ -21,24 +22,8 @@ database.Drop();
 ####Notes
 * ```DomainAccount``` can include a Domain however if none is specified the domain of the account running the test is assumed
 * SQL Authentication is not currently supported (but is planned)
+* Schemas are supported, see [Using schemas](#using-schemas) for usage
 
-##Schemas
-###Creating a schema
-```C#
-var database = new DatabaseActions(connectionString);
-database.CreateSchema("schemaName");
-```
-###Using schemas
-Objects can be created in schemas other than dbo (the default schema) by creating a schema and then passing DatabaseObjectName instead of a string.
-
-For example to create a table definition for the 'Test' schema (assuming it had already been created):
-```C#
-var definition = new TableDefinition(new DatabaseObjectName("Test", "Table1"));
-```
-An alternative would be to use the combined schema and object name:
-```C#
-var definition = new TableDefinition(DatabaseObjectName.FromName("Test.Table1"));
-```
 ##Tables
 ###Creating tables
 Tables can be created with the same structure as the 'real' table.
@@ -243,6 +228,23 @@ var column1 = new StandardProcedureParameter("c1", SqlDbType.Int);
 ProcedureDefinition definition = new ProcedureDefinition(procedureName, new[] { column1 });
 definition.VerifyMatch(database);
 ```
+##Schemas
+###Creating a schema
+```C#
+var database = new DatabaseActions(connectionString);
+database.CreateSchema("schemaName");
+```
+###Using schemas
+Objects can be created in schemas other than dbo (the default schema) by creating a schema and then passing DatabaseObjectName instead of a string.
+
+For example to create a table definition for the 'Test' schema (assuming it had already been created):
+```C#
+var definition = new TableDefinition(new DatabaseObjectName("Test", "Table1"));
+```
+An alternative would be to use the combined schema and object name:
+```C#
+var definition = new TableDefinition(DatabaseObjectName.FromName("Test.Table1"));
+```
 ##Specflow integration best practices
 [Specflow](http://www.specflow.org/) provides a behaviour-driven development structure ideally suited to integration/acceptance test as such this library has been designed to work well with it. There are helper extension methods included with Specflow which can be access by using the namespace ```TechTalk.SpecFlow.Assist```.
 ###Table creation
@@ -362,7 +364,8 @@ Console.WriteLine(output);
 ```
 ##Migrating from v1
 There are a few breaking changes between version 1 and 2 specifically:
-1 ```ColumnDefinition``` class can no longer be initialised; use ```ColumnDefinitionRaw``` instead and convert it (see []#table-creation for usage) or a specific concrete class instead (see [Creating tables](#creating-tables) for usage)
-2 Likewise ```ProcedureParameter``` class can now be initialised using the ```ProcedureParameterRaw``` class (see []#procedure-creation for usage) or again a specific concrete class  (see [Creating procedures](#creating-procedures) for usage)
-3 Database schemas are now better supported and standardised through the ```DatabaseObjectName``` class, existing overloads have been replaced to use this class (see [Using schemas](#using-schemas) for usage)
-4 To grant users access to the database the method ```GrantDomainUserAccess``` has been replaced with ```GrantUserAccess``` which accepts a new ```DomainAccount``` class (see [Setting up and tearing down databases](#setting-up-and-tearing-down-databases) for usage); it is expected that SQL authentication will be supported in the future
+
+1. ```ColumnDefinition``` class can no longer be initialised; use ```ColumnDefinitionRaw``` instead and convert it (see [Table creation with Specflow](#table-creation) for example usage) or a specific concrete class instead (see [Creating tables](#creating-tables) for usage)
+2. Likewise ```ProcedureParameter``` class can now be initialised by converting the ```ProcedureParameterRaw``` class (see [Procedure creation with Specflow](#procedure-creation) for example usage) or again use a specific concrete class (see [Creating procedures](#creating-procedures) for usage)
+3. Database schemas are now better supported and standardised through the ```DatabaseObjectName``` class, existing overloads have been replaced to use this class (see [Using schemas](#using-schemas) for usage)
+4. To grant users access to the database the method ```GrantDomainUserAccess``` has been replaced with ```GrantUserAccess``` which accepts a new ```DomainAccount``` class (see [Setting up and tearing down databases](#setting-up-and-tearing-down-databases) for usage); it is expected that SQL authentication will be supported in the future
