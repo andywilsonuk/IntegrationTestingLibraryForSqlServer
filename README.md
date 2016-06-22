@@ -8,7 +8,7 @@ Ideal for use with [SQL Server Local DB](http://blogs.msdn.com/b/sqlexpress/arch
 using System.Data;
 using IntegrationTestingLibraryForSqlServer;
 ```
-There are some breaking changes in v2, see [Migrating from v1](#migrating-from-v1)
+There are some breaking changes in v2, see [Migrating from v1](#migrating-from-v1).
 ##Databases
 ###Setting up and tearing down databases
 SQL Server databases can be created and dropped.
