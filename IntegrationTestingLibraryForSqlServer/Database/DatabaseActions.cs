@@ -9,92 +9,86 @@ namespace IntegrationTestingLibraryForSqlServer
 {
     public class DatabaseActions
     {
-        private string masterConnectionString;
-        private string databaseName;
-
+        private SqlConnectionStringBuilder connectionDetails;
+        private SqlConnectionStringBuilder masterConnectionDetails;
         public DatabaseActions(string connectionString)
         {
-            var builder = new SqlConnectionStringBuilder(connectionString);
-            this.databaseName = builder.InitialCatalog;
-            this.ConnectionString = connectionString;
-            if (string.IsNullOrWhiteSpace(this.databaseName) || this.databaseName.Equals("master", StringComparison.CurrentCultureIgnoreCase)) throw new ArgumentException("The connection must have a database set", "connectionString");
-            builder.InitialCatalog = "master";
-            this.masterConnectionString = builder.ToString();
+            connectionDetails = new SqlConnectionStringBuilder(connectionString);
+            if (string.IsNullOrWhiteSpace(connectionDetails.InitialCatalog) || connectionDetails.IsMasterCatalog())
+                throw new ArgumentException("The connection must have an initial catalog set", "connectionString");
+            masterConnectionDetails = connectionDetails.ToMasterCatalog();
         }
 
-        public string ConnectionString { get; private set; }
+        public string ConnectionString
+        {
+            get { return connectionDetails.ToString(); }
+        }
+
+        public bool IsLocalDB
+        {
+            get { return connectionDetails.DataSource.Contains("(localdb)"); }
+        }
 
         public void Create()
         {
-            using (SqlConnection connection = new SqlConnection(this.masterConnectionString))
+            using (var connection = new SqlConnection(masterConnectionDetails.ToString()))
             {
-                connection.Execute(CreateDatabaseCommand, this.databaseName);
+                connection.Execute(CreateDatabaseCommand, connectionDetails.InitialCatalog);
             }
         }
 
         public void Drop()
         {
-            using (SqlConnection connection = new SqlConnection(this.masterConnectionString))
+            using (var connection = new SqlConnection(masterConnectionDetails.ToString()))
             {
-                connection.Execute(DropDatabaseCommand, this.databaseName);
+                connection.Execute(DropDatabaseCommand, connectionDetails.InitialCatalog);
             }
         }
 
         public void CreateOrReplace()
         {
-            this.Drop();
-            this.Create();
+            Drop();
+            Create();
         }
 
-        public void GrantDomainUserAccess(string domain, string username)
+        public void GrantUserAccess(DomainAccount account)
         {
-            if (string.IsNullOrWhiteSpace(domain)) throw new ArgumentNullException("domain");
-            if (string.IsNullOrWhiteSpace(username)) throw new ArgumentNullException("username");
+            if (account == null) throw new ArgumentNullException("account");
+            if (new DomainAccount(Environment.UserDomainName, Environment.UserName).Equals(account)) return;
 
-            string qualitiedName = domain + "\\" + username;
-
-            if ((Environment.UserDomainName + "\\" + Environment.UserName).Equals(qualitiedName, StringComparison.CurrentCultureIgnoreCase))
-                return;
-
-            using (SqlConnection connection = new SqlConnection(this.ConnectionString))
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                connection.Execute(AddWindowsUserCommand, qualitiedName);
-                connection.Execute(GrantPermissions, qualitiedName);
+                connection.Execute(AddDomainUserCommand, account.Qualified);
+                connection.Execute(GrantPermissions, account.Qualified);
             }
         }
 
-        public void CreateSchema(string schemaName)
+        public void CreateSchema(string name)
         {
-            using (var conn = new SqlConnection(ConnectionString))
+            using (var connection = new SqlConnection(ConnectionString))
             {
-                using (SqlCommand command = conn.CreateCommand())
-                {
-                    conn.Open();
-                    command.CommandText = string.Format(CreateSchemaScript, schemaName);
-                    command.ExecuteNonQuery();
-                }
+                connection.Execute(CreateSchemaCommand, name);
             }
         }
 
         private const string CreateDatabaseCommand = @"create database [{0}]";
         private const string DropDatabaseCommand = @"
-if exists(select name from sys.databases where name = '{0}')
-begin
-  alter database [{0}] set single_user with rollback immediate;
-  drop database [{0}]
-end";
-        private const string AddWindowsUserCommand = @"
-if not exists(select loginname from syslogins where loginname = '{0}') create login [{0}] from windows;";
+            if exists(select name from sys.databases where name = '{0}')
+            begin
+              alter database [{0}] set single_user with rollback immediate;
+              drop database [{0}]
+            end";
+        private const string AddDomainUserCommand = @"
+            if not exists(select loginname from syslogins where loginname = '{0}') create login [{0}] from windows;";
         private const string GrantPermissions = @"
-grant connect to [{0}]
-alter role db_datareader add member [{0}]
-alter role db_datawriter add member [{0}]
-grant execute to [{0}]
-";
-        private const string CreateSchemaScript = @"
-            IF NOT EXISTS(SELECT * FROM sys.schemas WHERE name = '{0}')
-            BEGIN
-                EXEC sp_executesql N'CREATE SCHEMA {0}'
-            END";
+            grant connect to [{0}]
+            alter role db_datareader add member [{0}]
+            alter role db_datawriter add member [{0}]
+            grant execute to [{0}]";
+        private const string CreateSchemaCommand = @"
+            if not exists(select name from sys.schemas where name = '{0}')
+            begin
+                exec sp_executesql N'create schema [{0}]'
+            end";
     }
 }

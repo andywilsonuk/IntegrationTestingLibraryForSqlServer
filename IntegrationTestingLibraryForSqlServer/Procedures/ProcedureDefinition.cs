@@ -11,71 +11,66 @@ namespace IntegrationTestingLibraryForSqlServer
 {
     public class ProcedureDefinition : IEquatable<ProcedureDefinition>
     {
-        public ProcedureDefinition(string name)
+        public ProcedureDefinition(DatabaseObjectName name)
             : this(name, null)
         {
         }
-
-        public ProcedureDefinition(string name, IEnumerable<ProcedureParameter> parameters)
+        public ProcedureDefinition(string name)
+            : this(DatabaseObjectName.FromName(name), null)
         {
-            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException("name");
-            this.Name = name;
-            this.Parameters = parameters == null ? new List<ProcedureParameter>() : new List<ProcedureParameter>(parameters);
         }
 
-        public string Name { get; private set; }
+        public ProcedureDefinition(DatabaseObjectName name, IEnumerable<ProcedureParameter> parameters)
+        {
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            Name = name;
+            Parameters = parameters == null ? new List<ProcedureParameter>() : new List<ProcedureParameter>(parameters);
+        }
+
+        public DatabaseObjectName Name { get; private set; }
         public string Body { get; set; }
         public ICollection<ProcedureParameter> Parameters { get;private set; }
         public IEnumerable<ProcedureParameter> ParametersWithoutReturnValue
         {
             get { return this.Parameters.Where(x => x.Direction != ParameterDirection.ReturnValue); }
         }
-
-        public void EnsureValid()
+        public bool HasBody
         {
-            this.EnsureValid(false);
-        }
-
-        public void EnsureValid(bool bodyRequired)
-        {
-            bool isValid = bodyRequired ? !string.IsNullOrWhiteSpace(this.Body) : true;
-            if (isValid) isValid = this.ParametersWithoutReturnValue.All(x => x.IsValid());
-            if (!isValid) 
-                throw new ValidationException("The definition is invalid " + Environment.NewLine + this.ToString());
+            get { return !string.IsNullOrWhiteSpace(Body); }
         }
 
         public void VerifyEqual(ProcedureDefinition actual)
         {
-            if (this.Equals(actual)) return;
-            throw new EquivalenceException(this.MismatchExceptionMessage(actual));
+            if (Equals(actual)) return;
+            throw new EquivalenceException(MismatchExceptionMessage(actual));
         }
 
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("Name: " + this.Name);
-            foreach (var definition in this.Parameters)
+            sb.AppendLine("Name: " + Name.Qualified);
+            foreach (var definition in Parameters)
                 sb.AppendLine(definition.ToString());
-            sb.AppendLine("Body: " + this.Body);
+            sb.AppendLine("Body: " + Body);
             return sb.ToString();
         }
 
         public bool Equals(ProcedureDefinition other)
         {
             if (other == null) return false;
-            if (!this.Name.Equals(other.Name, StringComparison.CurrentCultureIgnoreCase)) return false;
-            if (other.Body != null && !this.Body.Equals(other.Body, StringComparison.CurrentCultureIgnoreCase)) return false;
-            return this.ParametersWithoutReturnValue.SequenceEqual(other.ParametersWithoutReturnValue);
+            if (Name.GetHashCode() != other.Name.GetHashCode()) return false;
+            if (other.Body != null && !Body.Equals(other.Body, StringComparison.CurrentCultureIgnoreCase)) return false;
+            return ParametersWithoutReturnValue.SequenceEqual(other.ParametersWithoutReturnValue);
         }
 
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as ProcedureDefinition);
+            return Equals(obj as ProcedureDefinition);
         }
 
         public override int GetHashCode()
         {
-            return this.Name.ToLowerInvariant().GetHashCode();
+            return Name.GetHashCode();
         }
 
         private string MismatchExceptionMessage(ProcedureDefinition actual)
@@ -83,9 +78,9 @@ namespace IntegrationTestingLibraryForSqlServer
             return new StringBuilder()
                 .AppendLine("Procedure mismatch.")
                 .AppendLine("Expected:")
-                .Append(this.ToString())
+                .Append(this)
                 .AppendLine("Actual:")
-                .Append(actual.ToString())
+                .Append(actual)
                 .ToString();
         }
     }

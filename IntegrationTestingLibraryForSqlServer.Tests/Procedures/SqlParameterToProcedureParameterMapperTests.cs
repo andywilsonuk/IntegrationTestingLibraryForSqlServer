@@ -12,7 +12,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             // Arrange
             var sqlParameter = new SqlParameter("p1", SqlDbType.Decimal) { Precision = 10, Scale = 5, Direction = ParameterDirection.Input };
-            var expected = new ProcedureParameter("p1", SqlDbType.Decimal, ParameterDirection.Input) { Size = 10, DecimalPlaces = 5, };
+            var expected = new DecimalProcedureParameter("p1", ParameterDirection.Input) { Precision = 10, Scale = 5, };
             var mapper = new SqlParameterToProcedureParameterMapper();
 
             // Act
@@ -23,38 +23,37 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void ProcedureParameterFromSqlParameterNonDecimalSize()
+        public void ProcedureParameterFromSqlParameterVarChar()
         {
             // Arrange
             SqlParameter sqlParameter = new SqlParameter
             {
                 ParameterName = "p1",
-                SqlDbType = SqlDbType.Int,
-                Size = 10,
-                Precision = 5,
-                Direction = ParameterDirection.Input
+                SqlDbType = SqlDbType.VarChar,
+                Direction = ParameterDirection.Input,
+                Size = 10
             };
             var mapper = new SqlParameterToProcedureParameterMapper();
 
             // Act
-            var parameter = mapper.FromSqlParameter(sqlParameter);
+            var parameter = mapper.FromSqlParameter(sqlParameter) as VariableSizeProcedureParameter;
 
             // Assert
+            Assert.IsNotNull(parameter);
             Assert.AreEqual(sqlParameter.ParameterName, parameter.Name);
-            Assert.AreEqual(sqlParameter.SqlDbType, parameter.DataType);
-            Assert.AreEqual(null, parameter.Size);
-            Assert.AreEqual(null, parameter.DecimalPlaces);
+            Assert.AreEqual(sqlParameter.SqlDbType, parameter.DataType.SqlType);
+            Assert.AreEqual(10, parameter.Size);
             Assert.AreEqual(sqlParameter.Direction, parameter.Direction);
         }
 
         [TestMethod]
-        public void ProcedureParameterFromSqlParameterNonDecimalNoSize()
+        public void ProcedureParameterFromSqlParameterDateTime()
         {
             // Arrange
             SqlParameter sqlParameter = new SqlParameter
             {
                 ParameterName = "p1",
-                SqlDbType = SqlDbType.Int,
+                SqlDbType = SqlDbType.VarChar,
                 Direction = ParameterDirection.Input
             };
             var mapper = new SqlParameterToProcedureParameterMapper();
@@ -64,9 +63,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             // Assert
             Assert.AreEqual(sqlParameter.ParameterName, parameter.Name);
-            Assert.AreEqual(sqlParameter.SqlDbType, parameter.DataType);
-            Assert.AreEqual(null, parameter.Size);
-            Assert.AreEqual(null, parameter.DecimalPlaces);
+            Assert.AreEqual(sqlParameter.SqlDbType, parameter.DataType.SqlType);
             Assert.AreEqual(sqlParameter.Direction, parameter.Direction);
         }
     }

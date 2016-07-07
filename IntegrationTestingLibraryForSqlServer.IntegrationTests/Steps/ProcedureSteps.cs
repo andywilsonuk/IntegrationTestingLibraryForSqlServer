@@ -17,7 +17,8 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         [Then(@"the definition of procedure ""(.*)"" should match")]
         public void ThenTheDefinitionOfProcedureShouldMatch(string procedureName, Table table)
         {
-            ProcedureDefinition definition = new ProcedureDefinition(procedureName, table.CreateSet<ProcedureParameter>());
+            ProcedureDefinition definition = new ProcedureDefinition(DatabaseObjectName.FromName(procedureName));
+            definition.Parameters.AddFromRaw(table.CreateSet<ProcedureParameterRaw>());
             definition.VerifyMatch(database);
         }
 
@@ -25,10 +26,9 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         [When(@"the procedure ""(.*)"" is created with body ""(.*)""")]
         public void GivenTheProcedureIsCreatedWithBody(string procedureName, string body, Table table)
         {
-            ProcedureDefinition definition = new ProcedureDefinition(procedureName, table.CreateSet<ProcedureParameter>())
-            {
-                Body = body
-            };
+            ProcedureDefinition definition = new ProcedureDefinition(DatabaseObjectName.FromName(procedureName));
+            definition.Parameters.AddFromRaw(table.CreateSet<ProcedureParameterRaw>());
+            definition.Body = body;
             definition.CreateOrReplace(database);
         }
 
@@ -42,8 +42,13 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
                 using (SqlCommand command = connection.CreateCommand())
                 {
                     var parameters = new List<ProcedureParameterWithValue>(table.CreateSet<ProcedureParameterWithValue>());
-                    string bindings = string.Join(",", parameters.Select(x => x.QualifiedName));
-                    parameters.Add(new ProcedureParameterWithValue("@retVal", SqlDbType.Int, ParameterDirection.Output));
+                    string bindings = string.Join(",", parameters.Select(x => "@" + x.Name));
+                    parameters.Add(new ProcedureParameterWithValue
+                    {
+                        Name = "@retVal",
+                        DataType = "Int",
+                        Direction = ParameterDirection.Output
+                    });
 
                     command.Parameters.AddRange(parameters.Select(x => x.ToSqlParameter()).ToArray());
                     command.CommandText = string.Format("exec @retVal = {0} {1}", procedureName, bindings);
@@ -58,21 +63,6 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         public void ThenTheReturnValueShouldBe(int returnValue)
         {
             Assert.AreEqual(returnValue, this.returnValue);
-        }
-
-        [Then(@"an attempt to create the procedure ""(.*)"" with body ""(.*)"" and an invalid parameter definition should fail")]
-        public void ThenAnAttemptToCreateTheProcedureWithBodyAndAnInvalidParameterDefinitionShouldFail(string procedureName, string body, Table table)
-        {
-            Exception ex = null;
-            try
-            {
-                GivenTheProcedureIsCreatedWithBody(procedureName, body, table);
-            }
-            catch (Exception e)
-            {
-                ex = e;
-            }
-            Assert.IsNotNull(ex, ex == null ? "Exception not thrown when expected" : ex.Message);
         }
     }
 }

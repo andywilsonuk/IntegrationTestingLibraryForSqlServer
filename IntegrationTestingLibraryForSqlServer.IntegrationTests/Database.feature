@@ -4,9 +4,9 @@
 @db
 Scenario: Grant user access
 	Given there is a test database
-	When the user 'another' is granted access to the database 
+	When the user 'Administrator' is granted access to the database 
 	# change user to be sql auth
-	Then the permissions for 'another' should be
+	Then the permissions for 'Administrator' should be
 	| Permission |
 	| CONNECT    |
 	| SELECT     |

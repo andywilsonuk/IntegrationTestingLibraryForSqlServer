@@ -12,19 +12,19 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public void VerifyMatch(TableDefinition expected)
         {
-            expected.VerifyEqual(GetDefinition(expected.Name, expected.Schema));
+            expected.VerifyEqual(GetDefinition(expected.Name));
         }
 
         public void VerifyMatchOrSubset(TableDefinition expected)
         {
-            expected.VerifyEqualOrSubsetOf(GetDefinition(expected.Name, expected.Schema));
+            expected.VerifyEqualOrSubsetOf(GetDefinition(expected.Name));
         }
 
-        private TableDefinition GetDefinition(string tableName, string schemaName = Constants.DEFAULT_SCHEMA)
+        public TableDefinition GetDefinition(DatabaseObjectName tableName)
         {
             var factory = new TableDefinitionInterrogationStrategyFactory(connectionString);
-            var strategy = factory.GetTableDefinitionInterrogationStrategy(tableName, schemaName, TableDefinitionInterrogationStrategyType.SystemTables);
-            return strategy.GetTableDefinition(tableName, schemaName);
+            var strategy = factory.GetTableDefinitionInterrogationStrategy(TableDefinitionInterrogationStrategyType.SystemTables);
+            return strategy.GetTableDefinition(tableName);
         }
     }
 }

@@ -17,20 +17,18 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ValidationException))]
-        public void CreateProcedureWithInvalidParametersThrowsException()
+        [ExpectedException(typeof(ArgumentException))]
+        public void CreateProcedureWithoutBodyThrowsException()
         {
-            procedure.Parameters.Add(
-                new ProcedureParameter("id", SqlDbType.Int, ParameterDirection.Input) { Name = null });
-
+            procedure.Body = null;
             new ProcedureCreateSqlGenerator().Sql(procedure);
         }
 
         [TestMethod]
         public void CreateProcedureWithSingleParameter()
         {
-            procedure.Parameters.Add(new ProcedureParameter("id", SqlDbType.Int, ParameterDirection.Input));
-            string expected = "create procedure [testproc] @id Int as begin return 5 end";
+            procedure.Parameters.Add(new IntegerProcedureParameter("id", SqlDbType.Int, ParameterDirection.Input));
+            string expected = "create procedure [dbo].[testproc] @id Int as begin return 5 end";
 
             string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
 
@@ -40,9 +38,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void CreateProcedureWithMultipleParameters()
         {
-            procedure.Parameters.Add(new ProcedureParameter("id", SqlDbType.Int, ParameterDirection.Input));
-            procedure.Parameters.Add(new ProcedureParameter("name", SqlDbType.NVarChar, ParameterDirection.Input));
-            string expected = "create procedure [testproc] @id Int,@name NVarChar as begin return 5 end";
+            procedure.Parameters.Add(new IntegerProcedureParameter("id", SqlDbType.Int, ParameterDirection.Input));
+            procedure.Parameters.Add(new StringProcedureParameter("name", SqlDbType.NVarChar, ParameterDirection.Input));
+            string expected = "create procedure [dbo].[testproc] @id Int,@name NVarChar(1) as begin return 5 end";
 
             string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
 
@@ -52,8 +50,8 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void CreateProcedureWithNVarCharParameter()
         {
-            procedure.Parameters.Add(new ProcedureParameter("name", SqlDbType.NVarChar, ParameterDirection.Input) { Size = 100 });
-            string expected = "create procedure [testproc] @name NVarChar(100) as begin return 5 end";
+            procedure.Parameters.Add(new StringProcedureParameter("name", SqlDbType.NVarChar, ParameterDirection.Input) { Size = 100 });
+            string expected = "create procedure [dbo].[testproc] @name NVarChar(100) as begin return 5 end";
 
             string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
 
@@ -63,8 +61,19 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void CreateProcedureWithNVarCharNoSizeParameter()
         {
-            procedure.Parameters.Add(new ProcedureParameter("name", SqlDbType.NVarChar, ParameterDirection.Input));
-            string expected = "create procedure [testproc] @name NVarChar as begin return 5 end";
+            procedure.Parameters.Add(new StringProcedureParameter("name", SqlDbType.NVarChar, ParameterDirection.Input));
+            string expected = "create procedure [dbo].[testproc] @name NVarChar(1) as begin return 5 end";
+
+            string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CreateProcedureWithMaxSizeNVarCharParameter()
+        {
+            procedure.Parameters.Add(new StringProcedureParameter("name", SqlDbType.NVarChar, ParameterDirection.Input) { IsMaximumSize = true });
+            string expected = "create procedure [dbo].[testproc] @name NVarChar(max) as begin return 5 end";
 
             string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
 
@@ -74,22 +83,8 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void CreateProcedureWithDecimalParameter()
         {
-            procedure.Parameters.Add(new ProcedureParameter("money", SqlDbType.Decimal, ParameterDirection.Input) { Size = 10, DecimalPlaces = 5 });
-            string expected = "create procedure [testproc] @money Decimal(10,5) as begin return 5 end";
-
-            string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void CreateProcedureWithDecimalNoSizeParameter()
-        {
-            procedure.Parameters.Add(new ProcedureParameter("money", SqlDbType.Decimal, ParameterDirection.Input) { DecimalPlaces = 5 });
-            string expected = "create procedure [testproc] @money Decimal(0,5) as begin return 5 end";
-            // Note this would fail when run.
-            // This then forces the user to provide a valid combination of Size and Decimal Places.
-            // SQL requires Precision (represented by ProcedureParameter.Size) to be >= Scale (represented by ProcedureParameter.DecimalPlaces)
+            procedure.Parameters.Add(new DecimalProcedureParameter("money", ParameterDirection.Input) { Precision = 10, Scale = 5 });
+            string expected = "create procedure [dbo].[testproc] @money Decimal(10,5) as begin return 5 end";
 
             string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
 
@@ -99,8 +94,8 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void CreateProcedureWithOutputParameter()
         {
-            procedure.Parameters.Add(new ProcedureParameter("id", SqlDbType.Int, ParameterDirection.Output));
-            string expected = "create procedure [testproc] @id Int OUTPUT as begin return 5 end";
+            procedure.Parameters.Add(new IntegerProcedureParameter("id", SqlDbType.Int, ParameterDirection.Output));
+            string expected = "create procedure [dbo].[testproc] @id Int OUTPUT as begin return 5 end";
 
             string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
 

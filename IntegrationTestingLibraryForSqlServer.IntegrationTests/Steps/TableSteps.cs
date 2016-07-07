@@ -16,15 +16,17 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         [When(@"the table ""(.*)"" is created")]
         public void WhenTheTableIsCreated(string tableName, Table table)
         {
-            var definition = new TableDefinition(tableName, table.CreateSet<ColumnDefinition>());
+            var definition = new TableDefinition(tableName);
+            definition.Columns.AddFromRaw(table.CreateSet<ColumnDefinitionRaw>());
             definition.CreateOrReplace(database);
         }
 
         [When(@"the table ""(.*)"" is created with a numeric column")]
         public void WhenTheTableIsCreatedWithANumericColumn(string tableName, Table table)
         {
-            var definition = new TableDefinition(tableName, table.CreateSet<ColumnDefinition>());
-            definition.CreateOrReplaceWithDecimalsAsNumerics(database);
+            var definition = new TableDefinition(tableName);
+            definition.Columns.AddFromRaw(table.CreateSet<ColumnDefinitionRaw>());
+            definition.CreateOrReplace(database);
         }
 
         [Given(@"table ""(.*)"" is populated")]
@@ -33,7 +35,7 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         {
             var tableActions = new TableActions(database.ConnectionString);
             var tableData = new CollectionPopulatedTableData(table.Header, table.Rows.Select(x => x.Values));
-            tableActions.Insert(tableName, tableData);
+            tableActions.Insert(DatabaseObjectName.FromName(tableName), tableData);
         }
 
         [When(@"table ""(.*)"" is populated supporting Null values")]
@@ -42,42 +44,29 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
             var tableActions = new TableActions(database.ConnectionString);
             var tableData = new CollectionPopulatedTableData(table.Header, table.Rows.Select(x => x.Values));
             tableData.TransformData(new TableDataNullValueTransformer());
-            tableActions.Insert(tableName, tableData);
+            tableActions.Insert(DatabaseObjectName.FromName(tableName), tableData);
         }
 
         [When(@"a view called ""(.*)"" of the table ""(.*)"" is created")]
         public void WhenAViewCalledOfTheTableIsCreated(string viewName, string tableName)
         {
             var tableActions = new TableActions(database.ConnectionString);
-            tableActions.CreateView(tableName, viewName);
+            tableActions.CreateView(DatabaseObjectName.FromName(tableName), DatabaseObjectName.FromName(viewName));
         }
 
         [Then(@"the definition of table ""(.*)"" should match")]
         public void ThenTheDefinitionOfTableShouldMatch(string tableName, Table table)
         {
-            var definition = new TableDefinition(tableName, table.CreateSet<ColumnDefinition>());
+            var definition = new TableDefinition(tableName);
+            definition.Columns.AddFromRaw(table.CreateSet<ColumnDefinitionRaw>());
             definition.VerifyMatch(database);
-        }
-
-        [Then(@"an attempt to create the table ""(.*)"" with an invalid definition should fail")]
-        public void ThenAnAttemptToCreateTheTableWithAnInvalidDefinitionShouldFail(string tableName, Table table)
-        {
-            Exception ex = null;
-            try
-            {
-                WhenTheTableIsCreatedWithANumericColumn(tableName, table);
-            }
-            catch (Exception e)
-            {
-                ex = e;
-            }
-            Assert.IsNotNull(ex, ex == null ? "Exception not thrown when expected" : ex.Message);
         }
 
         [Then(@"the definition of table ""(.*)"" should contain")]
         public void ThenTheDefinitionOfTableShouldContain(string tableName, Table table)
         {
-            var definition = new TableDefinition(tableName, table.CreateSet<ColumnDefinition>());
+            var definition = new TableDefinition(tableName);
+            definition.Columns.AddFromRaw(table.CreateSet<ColumnDefinitionRaw>());
             definition.VerifyMatchOrSubset(database);
         }
 
@@ -114,6 +103,22 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
             var actual = this.LoadTableDataFromSql(string.Format("SELECT * FROM {0} WHERE Id = {1}", viewName, id));
 
             expected.VerifyMatch(actual, TableDataComparers.UnorderedRowNamedColumn);
+        }
+
+        [When(@"the table ""(.*)"" is created outside of the library")]
+        public void WhenTheTableIsCreatedOutsideOfTheLibrary(string tableName, Table table)
+        {
+            var columns = string.Join(",", table.CreateSet<ColumnDefinitionRaw>().Select(x => string.Format("[{0}] {1}({2},{3}){4}", x.Name, x.DataType, x.Size, x.DecimalPlaces, x.AllowNulls ? " NULL " : " NOT NULL")));
+
+            using (SqlConnection connection = new SqlConnection(database.ConnectionString))
+            {
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = string.Format("CREATE TABLE {0} ({1})", tableName, columns);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
         }
 
         private TableData LoadTableDataFromSql(string sql)

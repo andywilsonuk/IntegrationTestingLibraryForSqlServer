@@ -11,26 +11,16 @@ namespace IntegrationTestingLibraryForSqlServer
 {
     public class TableCreateSqlGenerator
     {
-        private bool createWithDecimalsAsNumerics;
-
         public string Sql(TableDefinition definition)
         {
-            if (definition == null) throw new ArgumentNullException("definition");
-            definition.EnsureValid();
-            return string.Format(CreateTableFormat, definition.Schema, definition.Name, this.CreateCommaSeparatedColumns(definition));
-        }
-
-        public string SqlWithDecimalsAsNumerics(TableDefinition definition)
-        {
-            if (definition == null) throw new ArgumentNullException("definition");
-            definition.EnsureValid();
-            createWithDecimalsAsNumerics = true;
-            return string.Format(CreateTableFormat, definition.Schema, definition.Name, this.CreateCommaSeparatedColumns(definition));
+            if (definition == null) throw new ArgumentNullException(nameof(definition));
+            if (definition.Columns.Count == 0) throw new ArgumentException("The Table Definition must have at least one column", nameof(definition));
+            return string.Format(CreateTableFormat, definition.Name.Qualified, CreateCommaSeparatedColumns(definition));
         }
 
         private string CreateCommaSeparatedColumns(TableDefinition definition)
         {
-            return string.Join(",", definition.Columns.Select(x => this.GetFormattedColumnLine(x)));
+            return string.Join(",", definition.Columns.Select(x => GetFormattedColumnLine(x)));
         }
 
         private string GetFormattedColumnLine(ColumnDefinition column)
@@ -38,42 +28,32 @@ namespace IntegrationTestingLibraryForSqlServer
             return string.Format(
                 "[{0}] {1}{2}{3}",
                 column.Name,
-                this.GetFormattedDataType(column),
-                this.GetFormattedIdentity(column),
-                this.GetFormattedNullable(column));
+                GetFormattedDataType(column),
+                GetFormattedIdentity(column),
+                GetFormattedNullable(column));
         }
 
         private string GetFormattedDataType(ColumnDefinition column)
         {
-            switch (column.DataType)
+            var sizeColumn = column as VariableSizeColumnDefinition;
+            if (sizeColumn != null)
             {
-                case SqlDbType.Binary:
-                case SqlDbType.Char:
-                case SqlDbType.NChar:
-                    if (!column.Size.HasValue) break;
-                    return string.Format("{0}({1})", column.DataType, column.Size.Value);
-                case SqlDbType.NVarChar:
-                case SqlDbType.VarBinary:
-                case SqlDbType.VarChar:
-                    if (!column.Size.HasValue) break;
-                    string size = column.IsMaximumSize ? "max" : column.Size.Value.ToString();
-                    return string.Format("{0}({1})", column.DataType, size);
-                case SqlDbType.Decimal:
-                    if (!column.Size.HasValue && !column.DecimalPlaces.HasValue) break;
-                    var colDataType = createWithDecimalsAsNumerics ? Constants.NUMERIC_COLUMN_NAME : column.DataType.ToString();
-                    var colSize = column.Size ?? 0;
-                    var colDecimalPlaces = column.DecimalPlaces ?? 0;
-                    return string.Format("{0}({1},{2})", colDataType, colSize, colDecimalPlaces);
+                string size = sizeColumn.IsMaximumSize ? "max" : sizeColumn.Size.ToString();
+                return string.Format("{0}({1})", column.DataType, size);
             }
-            return string.Format("{0}", column.DataType);
+            var decimalColumn = column as DecimalColumnDefinition;
+            if (decimalColumn != null)
+            {
+                return string.Format("{0}({1},{2})", column.DataType, decimalColumn.Precision, decimalColumn.Scale);
+            }
+            return column.DataType.ToString();
         }
 
         private string GetFormattedIdentity(ColumnDefinition column)
         {
-            if (column.IdentitySeed != null)
-                return string.Format(" IDENTITY({0},1) ", column.IdentitySeed);
-
-            return " ";
+            var identityColumn = column as IntegerColumnDefinition;
+            if (identityColumn == null || !identityColumn.IdentitySeed.HasValue) return " ";
+            return string.Format(" IDENTITY({0},1) ", identityColumn.IdentitySeed.Value);
         }
 
         private string GetFormattedNullable(ColumnDefinition column)
@@ -81,6 +61,6 @@ namespace IntegrationTestingLibraryForSqlServer
             return column.AllowNulls ? "NULL" : "NOT NULL";
         }
 
-        private const string CreateTableFormat = "CREATE TABLE [{0}].[{1}] ({2})";
+        private const string CreateTableFormat = "CREATE TABLE {0} ({1})";
     }
 }

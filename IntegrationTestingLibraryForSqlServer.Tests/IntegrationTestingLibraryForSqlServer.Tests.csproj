@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>IntegrationTestingLibraryForSqlServer.Tests</RootNamespace>
     <AssemblyName>IntegrationTestingLibraryForSqlServer.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -16,6 +16,7 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,8 +42,9 @@
     <AssemblyOriginatorKeyFile>Properties\IntegrationTestingLibraryForSqlServer.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Moq">
-      <HintPath>..\packages\Moq.4.2.1507.0118\lib\net40\Moq.dll</HintPath>
+    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -56,17 +58,32 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Database\DataTypeDefaultsTests.cs" />
+    <Compile Include="Database\DataTypeTests.cs" />
     <Compile Include="Database\DatabaseActionsTests.cs" />
+    <Compile Include="Database\DomainAccountTests.cs" />
+    <Compile Include="Database\SqlConnectionStringBuilderExtensionsTests.cs" />
+    <Compile Include="Database\DatabaseObjectNameTests.cs" />
+    <Compile Include="Procedures\Parameters\IntegerProcedureParameterTests.cs" />
+    <Compile Include="Procedures\Parameters\StringProcedureParameterTests.cs" />
+    <Compile Include="Procedures\Parameters\BinaryProcedureParameterTests.cs" />
+    <Compile Include="Procedures\Parameters\MockVariableSizeProcedureParameter.cs" />
+    <Compile Include="Procedures\Parameters\MockProcedureParameter.cs" />
+    <Compile Include="Procedures\ProcedureParameterFactoryTests.cs" />
+    <Compile Include="Procedures\ProcedureParameterCollectionExtensionsTests.cs" />
+    <Compile Include="Procedures\Parameters\VariableSizeProcedureParameterTests.cs" />
     <Compile Include="Procedures\ProcedureCreateSqlGeneratorTests.cs" />
     <Compile Include="Procedures\ProcedureDefinitionTests.cs" />
-    <Compile Include="Procedures\ProcedureParameterTests.cs" />
+    <Compile Include="Procedures\Parameters\ProcedureParameterTests.cs" />
     <Compile Include="Procedures\SqlParameterToProcedureParameterMapperTests.cs" />
+    <Compile Include="Procedures\Parameters\DecimalProcedureParameterTests.cs" />
+    <Compile Include="Procedures\Parameters\StandardProcedureParameterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TableData\ColumnCompare\TableDataMatchSubsetColumnComparerTests.cs" />
     <Compile Include="TableData\ColumnCompare\TableDataMatchEqualColumnComparerTests.cs" />
@@ -89,13 +106,24 @@
     <Compile Include="TableData\ValueCompare\Pipeline\TableDataDefaultValueComparerTests.cs" />
     <Compile Include="TableData\ValueCompare\Pipeline\TableDataValueComparerPipelineTests.cs" />
     <Compile Include="TableData\ValueCompare\TableDataCaseSensitiveStringValueComparerTests.cs" />
-    <Compile Include="Tables\ColumnDefinitionTests.cs" />
+    <Compile Include="Tables\ColumnDefinitionFactoryTests.cs" />
+    <Compile Include="Tables\Columns\ColumnDefinitionTests.cs" />
+    <Compile Include="Tables\Columns\MockColumnDefinition.cs" />
+    <Compile Include="Tables\Columns\MockVariableSizeColumnDefinition.cs" />
+    <Compile Include="Tables\Columns\StandardColumnDefinitionTests.cs" />
     <Compile Include="Tables\SchemaRowToColumnMapperTests.cs" />
     <Compile Include="Tables\DataRecordToColumnMapperTests.cs" />
+    <Compile Include="Tables\Columns\BinaryColumnDefinitionTests.cs" />
     <Compile Include="Tables\TableCreateSqlGeneratorTests.cs" />
     <Compile Include="Tables\TableDefinitionExtensionsTests.cs" />
     <Compile Include="Tables\TableDefinitionTests.cs" />
     <Compile Include="Tables\TableInsertSqlGeneratorTests.cs" />
+    <Compile Include="Tables\ColumnDefinitionCollectionExtensionsTests.cs" />
+    <Compile Include="Tables\TableCodeBuilderTests.cs" />
+    <Compile Include="Tables\Columns\DecimalColumnDefinitionTests.cs" />
+    <Compile Include="Tables\Columns\IntegerColumnDefinitionTests.cs" />
+    <Compile Include="Tables\Columns\StringColumnDefinitionTests.cs" />
+    <Compile Include="Tables\Columns\VariableSizeColumnDefinitionTests.cs" />
     <Compile Include="Views\TableBackedViewDefinitionTests.cs" />
     <Compile Include="Views\TableBackedViewCreateSqlGeneratorTests.cs" />
     <None Include="packages.config" />

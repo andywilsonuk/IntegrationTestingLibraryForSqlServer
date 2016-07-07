@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>IntegrationTestingLibraryForSqlServer</RootNamespace>
     <AssemblyName>IntegrationTestingLibraryForSqlServer</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -46,11 +48,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants.cs" />
-    <Compile Include="Database\DataTypeDefaults.cs" />
+    <Compile Include="Database\DatabaseObjectName.cs" />
+    <Compile Include="Database\DataType.cs" />
+    <Compile Include="Database\DomainAccount.cs" />
+    <Compile Include="Database\SqlConnectionStringBuilderExtensions.cs" />
+    <Compile Include="Procedures\Parameters\StringProcedureParameter.cs" />
+    <Compile Include="Procedures\Parameters\BinaryProcedureParameter.cs" />
+    <Compile Include="Procedures\ProcedureParameterCollectionExtensions.cs" />
+    <Compile Include="Procedures\Parameters\ProcedureParameterRaw.cs" />
+    <Compile Include="Procedures\ProcedureParameterFactory.cs" />
+    <Compile Include="Procedures\Parameters\DecimalProcedureParameter.cs" />
+    <Compile Include="Procedures\Parameters\IntegerProcedureParameter.cs" />
+    <Compile Include="Procedures\Parameters\VariableSizeProcedureParameter.cs" />
+    <Compile Include="Procedures\Parameters\StandardProcedureParameter.cs" />
     <Compile Include="Procedures\ProcedureCreateSqlGenerator.cs" />
     <Compile Include="Procedures\ProcedureDefinitionExtensions.cs" />
-    <Compile Include="Procedures\ProcedureParameter.cs" />
+    <Compile Include="Procedures\Parameters\ProcedureParameter.cs" />
     <Compile Include="Procedures\SqlParameterToProcedureParameterMapper.cs" />
     <Compile Include="TableData\CollectionPopulatedTableData.cs" />
     <Compile Include="TableData\TableDataComparison\TableDataComparer.cs" />
@@ -69,7 +82,9 @@
     <Compile Include="TableData\TableDataComparison\ValueCompare\Pipeline\TableDataValueComparerPipeline.cs" />
     <Compile Include="TableData\TableDataTransformation\TableDataNullValueTransformer.cs" />
     <Compile Include="TableData\TableDataTransformation\TableDataValueTransformer.cs" />
-    <Compile Include="Tables\ColumnDefinition.cs" />
+    <Compile Include="Tables\Columns\StringColumnDefinition.cs" />
+    <Compile Include="Tables\Columns\BinaryColumnDefinition.cs" />
+    <Compile Include="Tables\Columns\ColumnDefinition.cs" />
     <Compile Include="TableData\DataReaderPopulatedTableData.cs" />
     <Compile Include="TableData\TableDataComparison\RowCompare\TableDataMatchEqualRowComparer.cs" />
     <Compile Include="TableData\TableDataComparison\RowCompare\TableDataMatchSubsetRowComparer.cs" />
@@ -81,9 +96,17 @@
     <Compile Include="TableData\TableDataComparison\ColumnCompare\TableDataOrdinalColumnComparer.cs" />
     <Compile Include="TableData\TableDataComparison\RowCompare\TableDataRowComparer.cs" />
     <Compile Include="TableData\TableDataComparison\ColumnCompare\TableDataMatchSubsetColumnComparer.cs" />
+    <Compile Include="Tables\ColumnDefinitionCollectionExtensions.cs" />
+    <Compile Include="Tables\ColumnDefinitionFactory.cs" />
+    <Compile Include="Tables\Columns\ColumnDefinitionRaw.cs" />
+    <Compile Include="Tables\Columns\StandardColumnDefinition.cs" />
     <Compile Include="Tables\DataReaderSchemaTableDefinitionInterrogationStrategy.cs" />
+    <Compile Include="Tables\Columns\DecimalColumnDefinition.cs" />
+    <Compile Include="Tables\Columns\IntegerColumnDefinition.cs" />
     <Compile Include="Tables\SchemaRowToColumnMapper.cs" />
+    <Compile Include="Tables\Columns\VariableSizeColumnDefinition.cs" />
     <Compile Include="Tables\SystemTablesTableDefinitionInterrogationStrategy.cs" />
+    <Compile Include="Database\TableCodeBuilder.cs" />
     <Compile Include="Tables\TableDefinitionExtensions.cs" />
     <Compile Include="Tables\TableDefinition.cs" />
     <Compile Include="Database\DatabaseActions.cs" />
@@ -112,7 +135,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(ProjectDir)bin\$(ConfigurationName)\*.dll" "$(SolutionDir)IntegrationTestingLibraryForSqlServer.Packager\lib\net40" /Ys</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(ProjectDir)bin\$(ConfigurationName)\*.dll" "$(SolutionDir)IntegrationTestingLibraryForSqlServer.Packager\lib\net45" /Ys</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

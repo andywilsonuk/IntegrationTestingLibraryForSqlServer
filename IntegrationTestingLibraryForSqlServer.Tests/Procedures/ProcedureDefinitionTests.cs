@@ -9,14 +9,14 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
     [TestClass]
     public class ProcedureDefinitionTests
     {
-        private const string procedureName = "testproc";
+        private readonly static DatabaseObjectName procedureName = DatabaseObjectName.FromName("testproc");
         ProcedureParameter parameter1;
         ProcedureDefinition definition;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            this.parameter1 = new ProcedureParameter("p1", SqlDbType.Int, ParameterDirection.Input);
+            this.parameter1 = new StandardProcedureParameter("p1", SqlDbType.DateTime, ParameterDirection.Input);
             this.definition = new ProcedureDefinition(procedureName, new[] { parameter1 });
         }
 
@@ -24,7 +24,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
         [ExpectedException(typeof(ArgumentNullException))]
         public void ProcedureDefinitionConstructorNullName()
         {
-            var definition = new ProcedureDefinition(null);
+            var definition = new ProcedureDefinition((DatabaseObjectName)null);
         }
 
         [TestMethod]
@@ -46,7 +46,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
         [TestMethod]
         public void ProcedureDefinitionParametersWithoutReturn()
         {
-            this.definition.Parameters.Add(new ProcedureParameter("retVal", SqlDbType.Int, ParameterDirection.ReturnValue));
+            this.definition.Parameters.Add(new IntegerProcedureParameter("retVal", SqlDbType.Int, ParameterDirection.ReturnValue));
 
             Assert.AreEqual(2, this.definition.Parameters.Count);
             Assert.AreEqual(1, this.definition.ParametersWithoutReturnValue.Count());
@@ -55,9 +55,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
         [TestMethod]
         public void ProcedureDefinitionGetHashcode()
         {
-            int expected = procedureName.ToLowerInvariant().GetHashCode();
+            int expected = procedureName.GetHashCode();
 
-            Assert.AreEqual(expected, this.definition.GetHashCode());
+            Assert.AreEqual(expected, definition.GetHashCode());
         }
 
         [TestMethod]
@@ -66,7 +66,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
             this.definition.Body = "return 5";
             string expected = new StringBuilder()
                 .AppendLine("Name: " + procedureName)
-                .AppendLine("Name: p1, Data type: Int, Direction: Input, Size: , Decimal Places: ")
+                .AppendLine("Name: p1, Data type: DateTime, Direction: Input")
                 .AppendLine("Body: " + "return 5")
                 .ToString();
 
@@ -87,6 +87,14 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
         public void ProcedureDefinitionEquals()
         {
             bool actual = this.definition.Equals(this.definition);
+
+            Assert.IsTrue(actual);
+        }
+
+        [TestMethod]
+        public void ProcedureDefinitionEqualsAsObject()
+        {
+            bool actual = definition.Equals((object)definition);
 
             Assert.IsTrue(actual);
         }
@@ -125,7 +133,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
         [TestMethod]
         public void ProcedureDefinitionNotEqualsParameters()
         {
-            var parameter2 = new ProcedureParameter("p2", SqlDbType.Int, ParameterDirection.Input);
+            var parameter2 = new MockProcedureParameter("p2", SqlDbType.Int, ParameterDirection.Input);
             var other = new ProcedureDefinition(procedureName, new[] { parameter1, parameter2 });
             bool actual = this.definition.Equals(other);
 
@@ -135,7 +143,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
         [TestMethod]
         public void ProcedureDefinitionEqualsWithReturnValue()
         {
-            var parameter2 = new ProcedureParameter("retVal", SqlDbType.Int, ParameterDirection.ReturnValue);
+            var parameter2 = new MockProcedureParameter("retVal", SqlDbType.Int, ParameterDirection.ReturnValue);
             var other = new ProcedureDefinition(procedureName, new[] { parameter1, parameter2 });
 
             bool actual = this.definition.Equals(other);
@@ -144,9 +152,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
         }
 
         [TestMethod]
-        public void ProcedureDefinitionVerifyEquals()
+        public void ProcedureDefinitionVerifyEqual()
         {
-            this.definition.Equals(this.definition);
+
+            this.definition.VerifyEqual(this.definition);
         }
 
         [TestMethod]
@@ -159,25 +168,21 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
             this.definition.VerifyEqual(other);
         }
 
+
         [TestMethod]
-        public void ProcedureDefinitionEnsureValid()
+        public void ProcedureDefinitionHasBodyFalse()
         {
-            this.definition.EnsureValid();
+            definition.Body = null;
+
+            Assert.IsFalse(definition.HasBody);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ValidationException))]
-        public void ProcedureDefinitionEnsureValidMissingBodyThrowsException()
+        public void ProcedureDefinitionHasBodyTrue()
         {
-            this.definition.EnsureValid(true);
-        }
+            definition.Body = "return 10";
 
-        [TestMethod]
-        [ExpectedException(typeof(ValidationException))]
-        public void ProcedureDefinitionEnsureValidMissingInvalidParameterThrowsException()
-        {
-            this.definition.Parameters.First().Name = null;
-            this.definition.EnsureValid(true);
+            Assert.IsTrue(definition.HasBody);
         }
     }
 }

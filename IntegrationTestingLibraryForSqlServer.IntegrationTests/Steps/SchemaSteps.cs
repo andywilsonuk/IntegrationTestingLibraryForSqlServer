@@ -4,7 +4,7 @@ using TechTalk.SpecFlow.Assist;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Data.SqlClient;
 
-namespace IntegrationTestingLibraryForSqlServer.IntegrationTests.Steps
+namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
 {
     [Binding]
     public class SchemaSteps
@@ -43,7 +43,8 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests.Steps
         public void GivenTheTableIsCreatedInTheSchema(string tableName, string schemaName, Table table)
         {
             var tableActions = new TableActions(database.ConnectionString);
-            var def = new TableDefinition(tableName, table.CreateSet<ColumnDefinition>(), schemaName);
+            var def = new TableDefinition(new DatabaseObjectName(schemaName, tableName));
+            def.Columns.AddFromRaw(table.CreateSet<ColumnDefinitionRaw>());
             tableActions.Create(def);
         }
 
@@ -51,7 +52,7 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests.Steps
         public void WhenTheViewOfTheTableIsCreatedInTheSchema(string viewName, string tableName, string schemaName)
         {
             var tableActions = new TableActions(database.ConnectionString);
-            tableActions.CreateView(tableName, viewName, schemaName);
+            tableActions.CreateView(new DatabaseObjectName(schemaName, tableName), new DatabaseObjectName(schemaName, viewName));
         }
 
         [Then(@"the table ""(.*)"" exists in the schema ""(.*)""")]

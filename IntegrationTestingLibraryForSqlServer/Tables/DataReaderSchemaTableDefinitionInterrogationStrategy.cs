@@ -10,7 +10,7 @@ namespace IntegrationTestingLibraryForSqlServer
     public class DataReaderSchemaTableDefinitionInterrogationStrategy : TableDefinitionInterrogationStrategy
     {
         string connectionString;
-        private const string TableDefinitionQuery = @"SELECT * FROM [{0}].[{1}] WHERE 1=0";
+        private const string TableDefinitionQuery = @"SELECT * FROM {0} WHERE 1=0";
 
         public DataReaderSchemaTableDefinitionInterrogationStrategy(string connectionString)
         {
@@ -18,16 +18,16 @@ namespace IntegrationTestingLibraryForSqlServer
             this.connectionString = connectionString;
         }
 
-        public TableDefinition GetTableDefinition(string viewName, string schemaName)
+        public TableDefinition GetTableDefinition(DatabaseObjectName viewName)
         {
             var mapper = new SchemaRowToColumnMapper();
-            var viewDefinition = new TableDefinition(viewName, schemaName);
+            var viewDefinition = new TableDefinition(viewName);
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 using (SqlCommand command = connection.CreateCommand())
                 {
-                    command.CommandText = string.Format(TableDefinitionQuery, schemaName, viewName);
+                    command.CommandText = string.Format(TableDefinitionQuery, viewName.Qualified);
                     connection.Open();
                     using (var reader = command.ExecuteReader())
                     {

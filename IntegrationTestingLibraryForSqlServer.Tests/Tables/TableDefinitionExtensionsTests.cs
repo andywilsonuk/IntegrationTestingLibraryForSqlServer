@@ -10,7 +10,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
     [TestClass]
     public class TableDefinitionExtensionsTests
     {
-        private string connectionString = @"server=(localdb)\v11.0;database=notreal;integrated security=True";
+        private string connectionString = @"server=(localdb)\MSSQLLocalDB;database=notreal;integrated security=True";
         private TableDefinition tableDefinition = new TableDefinition("test");
 
         [TestMethod]

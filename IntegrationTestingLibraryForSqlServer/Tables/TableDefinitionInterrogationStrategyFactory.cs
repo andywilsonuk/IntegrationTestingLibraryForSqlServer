@@ -17,7 +17,7 @@ namespace IntegrationTestingLibraryForSqlServer
             this.connectionString = connectionString;
         }
 
-        public TableDefinitionInterrogationStrategy GetTableDefinitionInterrogationStrategy(string viewName, string schemaName, TableDefinitionInterrogationStrategyType strategyType)
+        public TableDefinitionInterrogationStrategy GetTableDefinitionInterrogationStrategy(TableDefinitionInterrogationStrategyType strategyType)
         {
             switch (strategyType)
             {

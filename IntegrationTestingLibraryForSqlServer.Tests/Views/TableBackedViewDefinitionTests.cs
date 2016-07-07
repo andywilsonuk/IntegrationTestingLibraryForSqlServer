@@ -6,29 +6,27 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
     [TestClass]
     public class TableBackedViewDefinitionTests
     {
-        private TableBackedViewDefinition definition;
-
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TableBackedViewDefinitionNullName()
         {
-            this.definition = new TableBackedViewDefinition(null, "t1");
+            var definition = new TableBackedViewDefinition(null, DatabaseObjectName.FromName("t1"));
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TableBackedViewDefinitionNullTableName()
         {
-            this.definition = new TableBackedViewDefinition("v1", null);
+            var definition = new TableBackedViewDefinition(DatabaseObjectName.FromName("v1"), null);
         }
 
         [TestMethod]
         public void TableBackedViewDefinitionPropertiesSet()
         {
-            this.definition = new TableBackedViewDefinition("v1", "t1");
+            var definition = new TableBackedViewDefinition(DatabaseObjectName.FromName("v1"), DatabaseObjectName.FromName("t1"));
 
-            Assert.AreEqual("v1", this.definition.Name);
-            Assert.AreEqual("t1", this.definition.BackingTable);
+            Assert.AreEqual("[dbo].[v1]", definition.Name.Qualified);
+            Assert.AreEqual("[dbo].[t1]", definition.BackingTable.Qualified);
         }
     }
 }

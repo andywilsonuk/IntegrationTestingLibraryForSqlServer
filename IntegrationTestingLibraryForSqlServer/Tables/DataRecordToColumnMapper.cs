@@ -11,21 +11,18 @@ namespace IntegrationTestingLibraryForSqlServer
     internal class DataRecordToColumnMapper
     {
         private IDataRecord record;
-        private DataTypeDefaults dataTypeDefaults;
+        private ColumnDefinition column;
 
         public ColumnDefinition ToColumnDefinition(IDataRecord record)
         {
             this.record = record;
-            this.dataTypeDefaults = new DataTypeDefaults(this.GetDataType());
-            return new ColumnDefinition
-            {
-                Name = this.GetName(),
-                DataType = this.dataTypeDefaults.DataType,
-                Size = this.GetSize(),
-                DecimalPlaces = this.GetDecimalPlaces(),
-                AllowNulls = this.GetNullable(),
-                IdentitySeed = this.GetIdentitySeed()
-            };
+            GetColumn();
+            GetNullable();
+            GetSize();
+            GetIdentitySeed();
+            GetPrecision();
+            GetScale();
+            return column;
         }
 
         private string GetName()
@@ -33,52 +30,49 @@ namespace IntegrationTestingLibraryForSqlServer
             return this.record.GetString(Columns.Name);
         }
 
-        private SqlDbType GetDataType()
+        private void GetColumn()
         {
-            var dataTypeName = this.record.GetString(Columns.DataType);
-            if (dataTypeName == Constants.NUMERIC_COLUMN_NAME)
+            var dataType = new DataType(record.GetString(Columns.DataType));
+            column = new ColumnDefinitionFactory().FromDataType(dataType, GetName());
+        }
+
+        private void GetSize()
+        {
+            var sizeColumn = column as VariableSizeColumnDefinition;
+            if (sizeColumn == null) return;
+
+            int size = record.GetInt16(Columns.Size);
+            if (size == -1)
             {
-                return SqlDbType.Decimal;
+                sizeColumn.Size = 0;
+                return;
             }
-            return (SqlDbType)Enum.Parse(typeof(SqlDbType), dataTypeName, true);
+            sizeColumn.Size = column.DataType.IsUnicodeString ? size / 2 : size;
         }
 
-        private int? GetSize()
+        private void GetScale()
         {
-            if (this.dataTypeDefaults.IsUnicodeSizeAllowed) return this.record.GetInt16(Columns.Size) / 2;
-            if (this.dataTypeDefaults.IsSizeAllowed)
-            {
-                if (GetDataType() == SqlDbType.Decimal)
-                {
-                    return (int?)this.record.GetByte(Columns.Precision);
-                }
-                else
-                {
-                    return this.record.GetInt16(Columns.Size);
-                }
-            }
-            return (int?)null;
+            var decimalColumn = column as DecimalColumnDefinition;
+            if (decimalColumn == null) return;
+            decimalColumn.Scale = record.GetByte(Columns.Scale);
+        }
+        private void GetPrecision()
+        {
+            var decimalColumn = column as DecimalColumnDefinition;
+            if (decimalColumn == null) return;
+            decimalColumn.Precision = record.GetByte(Columns.Precision);
         }
 
-        private byte? GetDecimalPlaces()
+        private void GetNullable()
         {
-            if (dataTypeDefaults.AreDecimalPlacesAllowed)
-            {
-                return this.record.GetByte(Columns.Scale);
-            }
-            return (byte?)null;
+            column.AllowNulls = record.GetBoolean(Columns.IsNullable);
         }
 
-        private bool GetNullable()
+        private void GetIdentitySeed()
         {
-            return this.record.GetBoolean(Columns.IsNullable);
-        }
-
-        private decimal? GetIdentitySeed()
-        {
-            if (this.record.GetBoolean(Columns.IsIdentity))
-                return this.record.GetDecimal(Columns.IdentitySeed);
-            return null;
+            var integerColumn = column as IntegerColumnDefinition;
+            if (integerColumn == null) return;
+            if (record.GetBoolean(Columns.IsIdentity)) integerColumn.IdentitySeed = (int?)record.GetDecimal(Columns.IdentitySeed);
         }
 
         internal static class Columns

@@ -13,19 +13,13 @@ namespace IntegrationTestingLibraryForSqlServer
             new TableActions(database.ConnectionString).CreateOrReplace(definition);
         }
 
-        public static void CreateOrReplaceWithDecimalsAsNumerics(this TableDefinition definition, DatabaseActions database)
-        {
-            if (database == null) throw new ArgumentNullException("database");
-            new TableActions(database.ConnectionString).CreateOrReplaceWithDecimalsAsNumerics(definition);
-        }
-
         public static void Insert(this TableDefinition definition, DatabaseActions database, TableData tableData)
         {
             if (database == null) throw new ArgumentNullException("database");
             if (tableData == null) throw new ArgumentNullException("tableData");
             if (tableData.ColumnNames == null || !tableData.ColumnNames.Any())
                 tableData = new CollectionPopulatedTableData(definition.Columns.Select(x => x.Name).ToList(), tableData.Rows);
-            new TableActions(database.ConnectionString).Insert(definition.Name, tableData, definition.Schema);
+            new TableActions(database.ConnectionString).Insert(definition.Name, tableData);
         }
 
         public static void VerifyMatch(this TableDefinition definition, DatabaseActions database)
@@ -44,8 +38,13 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public static void CreateView(this TableDefinition definition, DatabaseActions database, string viewName)
         {
+            CreateView(definition, database, new DatabaseObjectName(definition.Name.SchemaName, viewName));
+        }
+
+        public static void CreateView(this TableDefinition definition, DatabaseActions database, DatabaseObjectName viewName)
+        {
             if (database == null) throw new ArgumentNullException("database");
-            new TableActions(database.ConnectionString).CreateView(definition.Name, viewName, definition.Schema);
+            new TableActions(database.ConnectionString).CreateView(definition.Name, viewName);
         }
     }
 }

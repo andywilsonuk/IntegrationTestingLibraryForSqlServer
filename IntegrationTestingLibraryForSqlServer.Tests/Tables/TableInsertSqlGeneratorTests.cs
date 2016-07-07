@@ -7,10 +7,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Tables
     [TestClass]
     public class TableInsertSqlGeneratorTests
     {
-        private string tableName = "t1";
+        private DatabaseObjectName tableName = DatabaseObjectName.FromName("t1");
         private List<string> columnNames = new List<string> { "c1" };
         private TableInsertSqlGenerator generator = new TableInsertSqlGenerator();
-        private const string TEST_SCHEMA = "testSchema";
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -22,19 +21,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Tables
         [TestMethod]
         public void InsertTable()
         {
-            string expected = string.Format("INSERT INTO [{0}].[{1}] (c1) SELECT @0", Constants.DEFAULT_SCHEMA, tableName);
+            string expected = string.Format("INSERT INTO {0} (c1) SELECT @0", tableName.Qualified);
 
             string actual = generator.Sql(tableName, columnNames);
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void InsertTableWithSchema()
-        {
-            string expected = string.Format("INSERT INTO [{0}].[{1}] (c1) SELECT @0", TEST_SCHEMA, tableName);
-
-            string actual = generator.Sql(tableName, columnNames, TEST_SCHEMA);
 
             Assert.AreEqual(expected, actual);
         }
@@ -49,7 +38,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Tables
         [TestMethod]
         public void InsertTableMultipleColumns()
         {
-            string expected = string.Format("INSERT INTO [{0}].[{1}] (c1,c2) SELECT @0,@1", Constants.DEFAULT_SCHEMA, tableName);
+            string expected = string.Format("INSERT INTO {0} (c1,c2) SELECT @0,@1", tableName.Qualified);
             columnNames.Add("c2");
 
             string actual = generator.Sql(tableName, columnNames);
@@ -74,7 +63,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Tables
         [TestMethod]
         public void InsertTableNoColumnNames()
         {
-            string expected = string.Format("INSERT INTO [{0}].[{1}] SELECT @0", Constants.DEFAULT_SCHEMA, tableName);
+            string expected = string.Format("INSERT INTO {0} SELECT @0", tableName.Qualified);
 
             string actual = generator.Sql(tableName, 1);
 
