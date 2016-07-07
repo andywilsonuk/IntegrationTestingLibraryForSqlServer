@@ -31,6 +31,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
     new IntegerColumnDefinition(""c5"", SqlDbType.Int) { AllowNulls = false, IdentitySeed = 1 },
     new BinaryColumnDefinition(""c6"", SqlDbType.VarBinary) { AllowNulls = true, Size = 1000 },
 });";
+            // GitHub stores this source file with \n line breaks not \r\n so update it to use the windows format
+            expected = expected.Replace("\n", Environment.NewLine);
+
             Assert.AreEqual(expected, actual);
         }
     }
