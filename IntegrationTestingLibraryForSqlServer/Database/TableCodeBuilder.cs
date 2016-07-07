@@ -19,11 +19,11 @@ namespace IntegrationTestingLibraryForSqlServer
         internal static string ToCSharp(this TableDefinition table)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat(@"var table = new {0}(new {1}(""{2}""), ",
+            sb.AppendFormat(@"var table = new {0}({1}.FromName(""{2}""), ",
                 nameof(TableDefinition),
                 nameof(DatabaseObjectName),
                 table.Name.Qualified);
-            sb.Append("new [] {");
+            sb.AppendFormat("new {0}[] {{", nameof(ColumnDefinition));
             sb.AppendLine();
             foreach (var column in table.Columns)
             {

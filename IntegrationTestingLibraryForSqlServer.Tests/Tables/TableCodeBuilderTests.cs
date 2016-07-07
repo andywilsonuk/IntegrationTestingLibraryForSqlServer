@@ -23,7 +23,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             string actual = table.ToCSharp();
 
             string expected =
-@"var table = new TableDefinition(new DatabaseObjectName(""[dbo].[table1]""), new [] {
+@"var table = new TableDefinition(DatabaseObjectName.FromName(""[dbo].[table1]""), new ColumnDefinition[] {
     new IntegerColumnDefinition(""c1"", SqlDbType.Int) { AllowNulls = true },
     new StandardColumnDefinition(""c2"", SqlDbType.DateTime2) { AllowNulls = false },
     new StringColumnDefinition(""c3"", SqlDbType.VarChar) { AllowNulls = false, Size = 100 },
