@@ -9,27 +9,29 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
     public class TableDefinitionTests
     {
         private readonly DatabaseObjectName tableName = DatabaseObjectName.FromName("table1");
+        private readonly DatabaseObjectName alternativeTableName = DatabaseObjectName.FromName("other");
         private const string ColumnName = "c1";
-        private ColumnDefinition column;
-        private TableDefinition table;
+        private const string AlternativeColumnName = "c2";
+        private ColumnDefinition sourceColumn;
+        private TableDefinition source;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            column = new IntegerColumnDefinition(ColumnName, SqlDbType.Int);
-            table = new TableDefinition(tableName, new[] { column });
+            sourceColumn = new IntegerColumnDefinition(ColumnName, SqlDbType.Int);
+            source = new TableDefinition(tableName, new[] { sourceColumn });
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TableDefinitionConstructorNullTableNameString()
+        public void TableDefinitionConstructorNullTableNameStringThrows()
         {
             new TableDefinition((string)null);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TableDefinitionConstructorNullTableName()
+        public void TableDefinitionConstructorNullTableNameThrows()
         {
             new TableDefinition((DatabaseObjectName)null);
         }
@@ -45,63 +47,57 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void TableDefinitionVerifyEqual()
         {
-            var other = new TableDefinition(tableName, new[] { column });
+            var other = new TableDefinition(tableName, new[] { sourceColumn });
 
-            table.VerifyEqual(other);
+            source.VerifyEqual(other);
         }
 
         [TestMethod]
         [ExpectedException(typeof(EquivalenceException))]
-        public void TableDefinitionVerifyNotEqualName()
+        public void TableDefinitionVerifyNotEqualNameThrows()
         {
-            var other = new TableDefinition(DatabaseObjectName.FromName("other"), new[] { column });
+            var other = new TableDefinition(alternativeTableName, new[] { sourceColumn });
 
-            table.VerifyEqual(other);
+            source.VerifyEqual(other);
         }
 
         [TestMethod]
         [ExpectedException(typeof(EquivalenceException))]
-        public void TableDefinitionVerifyNotEqualColumn()
+        public void TableDefinitionVerifyNotEqualColumnThrows()
         {
-            var other = new TableDefinition(DatabaseObjectName.FromName("other"), new[] { new StringColumnDefinition(ColumnName, SqlDbType.NVarChar) });
+            var other = new TableDefinition(alternativeTableName, new[] { new StringColumnDefinition(ColumnName, SqlDbType.NVarChar) });
 
-            table.VerifyEqual(other);
+            source.VerifyEqual(other);
         }
 
         [TestMethod]
         public void TableDefinitionEquals()
         {
-            var other = new TableDefinition(tableName, new[] { column });
+            var other = new TableDefinition(tableName, new[] { sourceColumn });
 
-            bool actual = table.Equals(other);
-
-            Assert.IsTrue(actual);
+            Assert.AreEqual(source, other);
         }
 
         [TestMethod]
         public void TableDefinitionNotEqualsName()
         {
-            var other = new TableDefinition(DatabaseObjectName.FromName("other"), new[] { column });
+            var other = new TableDefinition(alternativeTableName, new[] { sourceColumn });
 
-            bool actual = table.Equals(other);
-
-            Assert.IsFalse(actual);
+            Assert.AreNotEqual(source, other);
         }
 
         [TestMethod]
         public void TableDefinitionNotEqualsColumn()
         {
-            var other = new TableDefinition(tableName, new[] { new StringColumnDefinition(column.Name, SqlDbType.NVarChar) });
+            var other = new TableDefinition(tableName, new[] { new StringColumnDefinition(sourceColumn.Name, SqlDbType.NVarChar) });
 
-            bool actual = table.Equals(other);
-
-            Assert.IsFalse(actual);
+            Assert.AreNotEqual(source, other);
         }
 
         [TestMethod]
         public void TableDefinitionNotEqualNull()
         {
-            bool actual = table.Equals(null);
+            bool actual = source.Equals(null);
 
             Assert.IsFalse(actual);
         }
@@ -109,27 +105,25 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void TableDefinitionNotEqualString()
         {
-            bool actual = table.Equals(string.Empty);
-
-            Assert.IsFalse(actual);
+            Assert.AreNotEqual(source, string.Empty);
         }
 
         [TestMethod]
         public void TableDefinitionEqualMixedColumnOrder()
         {
-            var column2 = new StringColumnDefinition("c2", SqlDbType.NVarChar);
-            table.Columns.Add(column2);
-            var other = new TableDefinition(tableName, new[] { column2, column });
+            var column2 = new StringColumnDefinition(AlternativeColumnName, SqlDbType.NVarChar);
+            source.Columns.Add(column2);
+            var other = new TableDefinition(tableName, new[] { column2, sourceColumn });
 
-            Assert.IsTrue(table.Equals(other));
+            Assert.AreEqual(source, other);
         }
 
         [TestMethod]
         public void TableDefinitionGetHashCode()
         {
-            int expected = table.Name.GetHashCode();
+            int expected = this.source.Name.GetHashCode();
 
-            int actual = table.GetHashCode();
+            int actual = this.source.GetHashCode();
 
             Assert.AreEqual(expected, actual);
         }
@@ -137,8 +131,8 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void TableDefinitionToString()
         {
-            table.Columns.Clear();
-            table.Columns.Add(new StringColumnDefinition(ColumnName, SqlDbType.NVarChar)
+            this.source.Columns.Clear();
+            this.source.Columns.Add(new StringColumnDefinition(ColumnName, SqlDbType.NVarChar)
             {
                 Size = 10,
                 AllowNulls = true,
@@ -149,7 +143,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
                 .AppendLine("Name: c1, Type: NVarChar, Allow Nulls: True, Size: 10")
                 .ToString();
 
-            string actual = table.ToString();
+            string actual = this.source.ToString();
 
             Assert.AreEqual(expected, actual);
         }
@@ -157,9 +151,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void TableDefinitionIsSubsetEqual()
         {
-            var other = new TableDefinition(tableName, new[] { column });
+            var other = new TableDefinition(tableName, new[] { sourceColumn });
 
-            bool actual = table.IsSubset(other);
+            bool actual = source.IsSubset(other);
 
             Assert.IsTrue(actual);
         }
@@ -167,9 +161,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void TableDefinitionIsNotSubsetName()
         {
-            var other = new TableDefinition(DatabaseObjectName.FromName("other"), new[] { column });
+            var other = new TableDefinition(alternativeTableName, new[] { sourceColumn });
 
-            bool actual = table.IsSubset(other);
+            bool actual = source.IsSubset(other);
 
             Assert.IsFalse(actual);
         }
@@ -177,9 +171,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void TableDefinitionIsSubsetAdditionalColumn()
         {
-            var other = new TableDefinition(tableName, new[] { column, new StringColumnDefinition("c2", SqlDbType.NVarChar) });
+            var other = new TableDefinition(tableName, new[] { sourceColumn, new StringColumnDefinition(AlternativeColumnName, SqlDbType.NVarChar) });
 
-            bool actual = table.IsSubset(other);
+            bool actual = source.IsSubset(other);
 
             Assert.IsTrue(actual);
         }
@@ -187,10 +181,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void TableDefinitionIsNotSubsetMissingColumn()
         {
-            var other = new TableDefinition(tableName, new[] { column });
-            table.Columns.Add(new StringColumnDefinition("c2", SqlDbType.NVarChar));
+            var other = new TableDefinition(tableName, new[] { sourceColumn });
+            source.Columns.Add(new StringColumnDefinition(AlternativeColumnName, SqlDbType.NVarChar));
 
-            bool actual = table.IsSubset(other);
+            bool actual = source.IsSubset(other);
 
             Assert.IsFalse(actual);
         }
@@ -198,11 +192,11 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void TableDefinitionIsSubsetEqualMixedOrder()
         {
-            var column2 = new StringColumnDefinition("c2", SqlDbType.NVarChar);
-            table.Columns.Add(column2);
-            var other = new TableDefinition(tableName, new[] { column2, column });
+            var column2 = new StringColumnDefinition(AlternativeColumnName, SqlDbType.NVarChar);
+            source.Columns.Add(column2);
+            var other = new TableDefinition(tableName, new[] { column2, sourceColumn });
 
-            bool actual = table.IsSubset(other);
+            bool actual = source.IsSubset(other);
 
             Assert.IsTrue(actual);
         }
@@ -210,7 +204,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void TableDefinitionIsNotSubsetNull()
         {
-            bool actual = table.IsSubset(null);
+            bool actual = source.IsSubset(null);
 
             Assert.IsFalse(actual);
         }
@@ -218,36 +212,36 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void TableDefinitionVerifySubsetOfEquals()
         {
-            var other = new TableDefinition(tableName, new[] { column });
+            var other = new TableDefinition(tableName, new[] { sourceColumn });
 
-            table.VerifyEqualOrSubsetOf(other);
+            source.VerifyEqualOrSubsetOf(other);
         }
 
         [TestMethod]
         [ExpectedException(typeof(EquivalenceException))]
-        public void TableDefinitionVerifyNotSubsetName()
+        public void TableDefinitionVerifyNotSubsetNameThrows()
         {
-            var other = new TableDefinition(DatabaseObjectName.FromName("other"), new[] { column });
+            var other = new TableDefinition(alternativeTableName, new[] { sourceColumn });
 
-            table.VerifyEqualOrSubsetOf(other);
+            source.VerifyEqualOrSubsetOf(other);
         }
 
         [TestMethod]
         public void TableDefinitionVerifySubsetAdditionalColumn()
         {
-            var other = new TableDefinition(tableName, new[] { column, new StringColumnDefinition("c2", SqlDbType.NVarChar) });
+            var superset = new TableDefinition(tableName, new[] { sourceColumn, new StringColumnDefinition(AlternativeColumnName, SqlDbType.NVarChar) });
 
-            table.VerifyEqualOrSubsetOf(other);
+            source.VerifyEqualOrSubsetOf(superset);
         }
 
         [TestMethod]
         [ExpectedException(typeof(EquivalenceException))]
-        public void TableDefinitionVerifyNotSubsetMissingColumn()
+        public void TableDefinitionVerifyNotSubsetMissingColumnThrows()
         {
-            var other = new TableDefinition(tableName, new[] { column });
-            table.Columns.Add(new StringColumnDefinition("c2", SqlDbType.NVarChar));
+            var superset = new TableDefinition(tableName, new[] { sourceColumn });
+            source.Columns.Add(new StringColumnDefinition(AlternativeColumnName, SqlDbType.NVarChar));
 
-            table.VerifyEqualOrSubsetOf(other);
+            source.VerifyEqualOrSubsetOf(superset);
         }
     }
 }
