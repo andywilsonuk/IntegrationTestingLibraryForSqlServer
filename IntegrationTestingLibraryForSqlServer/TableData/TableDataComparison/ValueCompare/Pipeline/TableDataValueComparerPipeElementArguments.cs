@@ -9,7 +9,7 @@ namespace IntegrationTestingLibraryForSqlServer.TableDataComparison
     {
         public TableDataValueComparerPipeElementArguments()
         {
-            this.MatchStatus = MatchedValueComparer.NotYetCompared;
+            MatchStatus = MatchedValueComparer.NotYetCompared;
         }
 
         public object X { get; set; }
@@ -18,7 +18,7 @@ namespace IntegrationTestingLibraryForSqlServer.TableDataComparison
 
         public bool IsCompared
         {
-            get { return this.MatchStatus != MatchedValueComparer.NotYetCompared; }
+            get { return MatchStatus != MatchedValueComparer.NotYetCompared; }
         }
     }
 

@@ -27,7 +27,7 @@ namespace IntegrationTestingLibraryForSqlServer
 
         private string GetName()
         {
-            return this.record.GetString(Columns.Name);
+            return record.GetString(Columns.Name);
         }
 
         private void GetColumn()

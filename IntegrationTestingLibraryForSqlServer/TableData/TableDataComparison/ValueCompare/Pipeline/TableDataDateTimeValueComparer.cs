@@ -11,8 +11,8 @@ namespace IntegrationTestingLibraryForSqlServer.TableDataComparison
         {
             if (args.MatchStatus != MatchedValueComparer.NotYetCompared) return;
 
-            DateTime? x = this.ConvertToDateTime(args.X);
-            DateTime? y = this.ConvertToDateTime(args.Y);
+            DateTime? x = ConvertToDateTime(args.X);
+            DateTime? y = ConvertToDateTime(args.Y);
 
             if (!x.HasValue || !y.HasValue) return;
 

@@ -18,7 +18,7 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public void Create(ProcedureDefinition definition)
         {
-            using (var connection = new SqlConnection(this.connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 connection.Execute(new ProcedureCreateSqlGenerator().Sql(definition));
             }
@@ -31,7 +31,7 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public void Drop(DatabaseObjectName name)
         {
-            using (var connection = new SqlConnection(this.connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 connection.Execute(dropProcedureCommand, name);
             }

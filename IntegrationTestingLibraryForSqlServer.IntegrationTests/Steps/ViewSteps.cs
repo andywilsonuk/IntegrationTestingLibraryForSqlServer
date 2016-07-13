@@ -18,7 +18,7 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
             var definition = new TableDefinition("tbl" + viewName); 
             definition.Columns.AddFromRaw(table.CreateSet<ColumnDefinitionRaw>());
             definition.CreateOrReplace(database);
-            definition.CreateView(this.database, viewName);
+            definition.CreateView(database, viewName);
         }
 
         [Then(@"the definition of view ""(.*)"" should match")]
@@ -26,7 +26,7 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         {
             var definition = new TableDefinition(viewName);
             definition.Columns.AddFromRaw(table.CreateSet<ColumnDefinitionRaw>());
-            var checker = new ViewCheck(this.database.ConnectionString);
+            var checker = new ViewCheck(database.ConnectionString);
             checker.VerifyMatch(definition);
         }
 
@@ -35,7 +35,7 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         {
             var definition = new TableDefinition(viewName);
             definition.Columns.AddFromRaw(table.CreateSet<ColumnDefinitionRaw>());
-            var checker = new ViewCheck(this.database.ConnectionString);
+            var checker = new ViewCheck(database.ConnectionString);
             checker.VerifyMatch(definition, TableDefinitionInterrogationStrategyType.SystemTables);
         }
     }

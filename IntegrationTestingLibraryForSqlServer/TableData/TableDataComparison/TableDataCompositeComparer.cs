@@ -9,9 +9,9 @@ namespace IntegrationTestingLibraryForSqlServer.TableDataComparison
     {
         public TableDataCompositeComparer(TableDataColumnComparer columnComparer, TableDataRowComparer rowComparer, TableDataValueComparer valueComparer)
         {
-            this.ColumnComparer = columnComparer;
-            this.RowComparer = rowComparer;
-            this.ValueComparer = valueComparer;
+            ColumnComparer = columnComparer;
+            RowComparer = rowComparer;
+            ValueComparer = valueComparer;
         }
 
         internal TableDataColumnComparer ColumnComparer { get; private set; }
@@ -23,12 +23,12 @@ namespace IntegrationTestingLibraryForSqlServer.TableDataComparison
             if (x.Rows == null) throw new ArgumentNullException("x", "Rows in x cannot be null");
             if (y.Rows == null) throw new ArgumentNullException("y", "Rows in y cannot be null");
 
-            this.ColumnComparer.Initialise(x, y);
-            if (!this.ColumnComparer.IsMatch()) return false;
+            ColumnComparer.Initialise(x, y);
+            if (!ColumnComparer.IsMatch()) return false;
 
-            this.RowComparer.Initialise(x.Rows, y.Rows, this.ColumnComparer.ColumnMappings, this.ValueComparer);
+            RowComparer.Initialise(x.Rows, y.Rows, ColumnComparer.ColumnMappings, ValueComparer);
 
-            return this.RowComparer.IsMatch();
+            return RowComparer.IsMatch();
         }
     }
 }

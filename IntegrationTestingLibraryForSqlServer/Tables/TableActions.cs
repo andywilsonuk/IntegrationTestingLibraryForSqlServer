@@ -52,7 +52,7 @@ namespace IntegrationTestingLibraryForSqlServer
 
             bool hasColumnNames = tableData.ColumnNames != null && !tableData.ColumnNames.Equals(Enumerable.Empty<string>());
             var generator = new TableInsertSqlGenerator();
-            using (var connection = new SqlConnection(this.connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 foreach (var row in tableData.Rows)
                 {
@@ -70,7 +70,7 @@ namespace IntegrationTestingLibraryForSqlServer
 
             var definition = new TableBackedViewDefinition(viewName, tableName);
 
-            using (var connection = new SqlConnection(this.connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 connection.Execute(new TableBackedViewCreateSqlGenerator().Sql(definition));
             }

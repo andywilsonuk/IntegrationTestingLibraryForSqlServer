@@ -15,9 +15,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            this.indexMappings = new List<int> { 0, 1, 2 };
-            this.comparer = new TableDataMatchEqualRowComparer();
-            this.valueComparer = new TableDataCaseSensitiveStringValueComparer();
+            indexMappings = new List<int> { 0, 1, 2 };
+            comparer = new TableDataMatchEqualRowComparer();
+            valueComparer = new TableDataCaseSensitiveStringValueComparer();
         }
 
         [TestMethod]
@@ -25,9 +25,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             var rowsX = new List<IList<object>> { new List<object> { "a", "b", "c" }, new List<object> { "d", "e", "f" } };
             var rowsY = new List<IList<object>> { new List<object> { "d", "e", "f" }, new List<object> { "a", "b", "c" } };
-            this.comparer.Initialise(rowsX, rowsY, this.indexMappings, this.valueComparer);
+            comparer.Initialise(rowsX, rowsY, indexMappings, valueComparer);
 
-            bool actual = this.comparer.IsMatch();
+            bool actual = comparer.IsMatch();
 
             Assert.IsTrue(actual);
         }
@@ -38,9 +38,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             var rowsX = new List<IList<object>> { new List<object> { "a", "b", "c" }, new List<object> { "d", "e", "f" } };
             var rowsY = new List<IList<object>> { new List<object> { "d", "e", "f" } };
 
-            this.comparer.Initialise(rowsX, rowsY, this.indexMappings, this.valueComparer);
+            comparer.Initialise(rowsX, rowsY, indexMappings, valueComparer);
 
-            bool actual = this.comparer.IsMatch();
+            bool actual = comparer.IsMatch();
 
             Assert.IsFalse(actual);
         }
@@ -51,9 +51,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             var rowsX = new List<IList<object>> { new List<object> { "a", "b" } };
             var rowsY = new List<IList<object>> { new List<object> { "a", "b", "c" } };
 
-            this.comparer.Initialise(rowsX, rowsY, this.indexMappings, this.valueComparer);
+            comparer.Initialise(rowsX, rowsY, indexMappings, valueComparer);
 
-            bool actual = this.comparer.IsMatch();
+            bool actual = comparer.IsMatch();
 
             Assert.IsTrue(actual);
         }

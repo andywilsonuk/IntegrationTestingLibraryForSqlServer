@@ -11,8 +11,8 @@ namespace IntegrationTestingLibraryForSqlServer.TableDataComparison
         {
             if (args.MatchStatus != MatchedValueComparer.NotYetCompared) return;
 
-            bool? x = this.ConvertToBoolean(args.X);
-            bool? y = this.ConvertToBoolean(args.Y);
+            bool? x = ConvertToBoolean(args.X);
+            bool? y = ConvertToBoolean(args.Y);
 
             if (!x.HasValue || !y.HasValue) return;
 

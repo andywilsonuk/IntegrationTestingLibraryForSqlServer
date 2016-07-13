@@ -54,7 +54,7 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
                     command.CommandText = string.Format("exec @retVal = {0} {1}", procedureName, bindings);
                     connection.Open();
                     command.ExecuteNonQuery();
-                    this.returnValue = Convert.ToInt32(command.Parameters["@retVal"].Value);
+                    returnValue = Convert.ToInt32(command.Parameters["@retVal"].Value);
                 }
             }
         }

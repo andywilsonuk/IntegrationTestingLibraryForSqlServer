@@ -13,7 +13,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            this.columnNames = new List<string> { "a", "b" };
+            columnNames = new List<string> { "a", "b" };
         }
 
         [TestMethod]

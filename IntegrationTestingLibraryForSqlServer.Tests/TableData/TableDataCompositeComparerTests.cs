@@ -19,64 +19,64 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            this.columnComparer = new Mock<TableDataColumnComparer>();
-            this.rowComparer = new Mock<TableDataRowComparer>();
-            this.valueComparer = new Mock<TableDataValueComparer>();
-            this.comparer = new TableDataCompositeComparer(this.columnComparer.Object, this.rowComparer.Object, this.valueComparer.Object);
-            this.x = new TableData();
-            this.y = new TableData();
+            columnComparer = new Mock<TableDataColumnComparer>();
+            rowComparer = new Mock<TableDataRowComparer>();
+            valueComparer = new Mock<TableDataValueComparer>();
+            comparer = new TableDataCompositeComparer(columnComparer.Object, rowComparer.Object, valueComparer.Object);
+            x = new TableData();
+            y = new TableData();
         }
 
         [TestMethod]
         public void TableDataCompositeComparerIsMatchTrue()
         {
-            this.columnComparer.Setup(x => x.IsMatch()).Returns(true);
-            this.rowComparer.Setup(x => x.IsMatch()).Returns(true);
+            columnComparer.Setup(x => x.IsMatch()).Returns(true);
+            rowComparer.Setup(x => x.IsMatch()).Returns(true);
 
-            bool actual = this.comparer.IsMatch(this.x, this.y);
+            bool actual = comparer.IsMatch(this.x, y);
 
             Assert.IsTrue(actual);
-            this.columnComparer.Verify(x => x.Initialise(this.x, this.y), Times.Once);
-            this.columnComparer.Verify(x => x.IsMatch(), Times.Once);
+            columnComparer.Verify(x => x.Initialise(this.x, y), Times.Once);
+            columnComparer.Verify(x => x.IsMatch(), Times.Once);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TableDataCompositeComparerIsMatchFalseNullRowsX()
         {
-            this.x.Rows = null;
+            x.Rows = null;
 
-            this.comparer.IsMatch(this.x, this.y);
+            comparer.IsMatch(x, y);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TableDataCompositeComparerIsMatchFalseNullRowsY()
         {
-            this.y.Rows = null;
+            y.Rows = null;
 
-            this.comparer.IsMatch(this.x, this.y);
+            comparer.IsMatch(x, y);
         }
 
         [TestMethod]
         public void TableDataCompositeComparerIsMatchFalseMismatchedColumns()
         {
-            this.columnComparer.Setup(x => x.IsMatch()).Returns(false);
+            columnComparer.Setup(x => x.IsMatch()).Returns(false);
 
-            bool actual = this.comparer.IsMatch(this.x, this.y);
+            bool actual = comparer.IsMatch(this.x, y);
 
             Assert.IsFalse(actual);
-            this.columnComparer.Verify(x => x.Initialise(this.x, this.y), Times.Once);
-            this.columnComparer.Verify(x => x.IsMatch(), Times.Once);
+            columnComparer.Verify(x => x.Initialise(this.x, y), Times.Once);
+            columnComparer.Verify(x => x.IsMatch(), Times.Once);
         }
 
         [TestMethod]
         public void TableDataCompositeComparerIsMatchFalse()
         {
-            this.columnComparer.Setup(x => x.IsMatch()).Returns(true);
-            this.rowComparer.Setup(x => x.IsMatch()).Returns(false);
+            columnComparer.Setup(x => x.IsMatch()).Returns(true);
+            rowComparer.Setup(x => x.IsMatch()).Returns(false);
 
-            bool actual = this.comparer.IsMatch(this.x, this.y);
+            bool actual = comparer.IsMatch(this.x, y);
 
             Assert.IsFalse(actual);
         }

@@ -9,7 +9,7 @@ namespace IntegrationTestingLibraryForSqlServer.TableDataComparison
     {
         public override bool IsMatch()
         {
-            if (this.columnsX.Count != this.columnsY.Count) return false;
+            if (columnsX.Count != columnsY.Count) return false;
             return base.IsMatch();
         }
     }

@@ -17,7 +17,7 @@ namespace IntegrationTestingLibraryForSqlServer.TableDataComparison
 
         public override bool IsMatch()
         {
-            return x.All(rowX => y.Any(rowY => this.IsRowEqual(rowX, rowY)));
+            return x.All(rowX => y.Any(rowY => IsRowEqual(rowX, rowY)));
         }
 
         private bool IsRowEqual(IList<object> rowX, IList<object> rowY)
@@ -25,7 +25,7 @@ namespace IntegrationTestingLibraryForSqlServer.TableDataComparison
             for (int i = 0; i < rowX.Count; i++)
             {
                 object valueX = rowX[i];
-                object valueY = rowY[this.indexMappings[i]];
+                object valueY = rowY[indexMappings[i]];
 
                 if (!valueComparer.IsMatch(valueX, valueY)) return false;
             }

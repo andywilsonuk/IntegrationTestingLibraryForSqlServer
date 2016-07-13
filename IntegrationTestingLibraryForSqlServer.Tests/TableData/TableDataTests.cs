@@ -14,26 +14,26 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            this.tableData = new TableData();
-            this.tableData.ColumnNames = new List<string> { "a", "b" };
-            this.tableData.Rows.Add(new List<object> { "1", "2" });
+            tableData = new TableData();
+            tableData.ColumnNames = new List<string> { "a", "b" };
+            tableData.Rows.Add(new List<object> { "1", "2" });
         }
 
         [TestMethod]
         public void TableDataConstructor()
         {
-            Assert.IsNotNull(this.tableData.ColumnNames);
-            Assert.IsNotNull(this.tableData.Rows);
+            Assert.IsNotNull(tableData.ColumnNames);
+            Assert.IsNotNull(tableData.Rows);
         }
 
         [TestMethod]
         public void TableDataIsMatchSpecificComparerFromEnum()
         {
             var other = new TableData();
-            other.ColumnNames = this.tableData.ColumnNames;
-            other.Rows = this.tableData.Rows;
+            other.ColumnNames = tableData.ColumnNames;
+            other.Rows = tableData.Rows;
 
-            bool actual = this.tableData.IsMatch(other, TableDataComparers.OrdinalRowOrdinalColumn);
+            bool actual = tableData.IsMatch(other, TableDataComparers.OrdinalRowOrdinalColumn);
 
             Assert.IsTrue(actual);
         }
@@ -42,11 +42,11 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void TableDataIsMatchCustomComparer()
         {
             var other = new TableData();
-            other.ColumnNames = this.tableData.ColumnNames;
-            other.Rows = this.tableData.Rows;
+            other.ColumnNames = tableData.ColumnNames;
+            other.Rows = tableData.Rows;
             var strategy = new TableDataComparerStrategyFactory().Comparer(TableDataComparers.OrdinalRowOrdinalColumn);
 
-            bool actual = this.tableData.IsMatch(other, strategy);
+            bool actual = tableData.IsMatch(other, strategy);
 
             Assert.IsTrue(actual);
         }
@@ -57,7 +57,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             var other = new TableData();
 
-            this.tableData.IsMatch(other, (TableDataComparer)null);
+            tableData.IsMatch(other, (TableDataComparer)null);
         }
 
         [TestMethod]
@@ -67,7 +67,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 1, 2
 ";
 
-            string actual = this.tableData.ToString();
+            string actual = tableData.ToString();
 
             Assert.AreEqual(expected, actual);
         }
@@ -75,12 +75,12 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void TableDataToStringNoColumnNames()
         {
-            this.tableData.ColumnNames = null;
+            tableData.ColumnNames = null;
             string expected = @"Column names: 
 1, 2
 ";
 
-            string actual = this.tableData.ToString();
+            string actual = tableData.ToString();
 
             Assert.AreEqual(expected, actual);
         }
@@ -89,10 +89,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void TableDataVerifyMatchSpecificComparerFromEnum()
         {
             var other = new TableData();
-            other.ColumnNames = this.tableData.ColumnNames;
-            other.Rows = this.tableData.Rows;
+            other.ColumnNames = tableData.ColumnNames;
+            other.Rows = tableData.Rows;
 
-            this.tableData.VerifyMatch(other, TableDataComparers.OrdinalRowOrdinalColumn);
+            tableData.VerifyMatch(other, TableDataComparers.OrdinalRowOrdinalColumn);
         }
 
         [TestMethod]
@@ -100,9 +100,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void TableDataVerifyMatchSpecificComparerFromEnumThrows()
         {
             var other = new TableData();
-            other.ColumnNames = this.tableData.ColumnNames;
+            other.ColumnNames = tableData.ColumnNames;
 
-            this.tableData.VerifyMatch(other, TableDataComparers.OrdinalRowOrdinalColumn);
+            tableData.VerifyMatch(other, TableDataComparers.OrdinalRowOrdinalColumn);
         }
 
         [TestMethod]
@@ -110,10 +110,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void TableDataIsMatchCustomComparerThrows()
         {
             var other = new TableData();
-            other.ColumnNames = this.tableData.ColumnNames;
+            other.ColumnNames = tableData.ColumnNames;
             var strategy = new TableDataComparerStrategyFactory().Comparer(TableDataComparers.OrdinalRowOrdinalColumn);
 
-            this.tableData.VerifyMatch(other, strategy);
+            tableData.VerifyMatch(other, strategy);
         }
     }
 }

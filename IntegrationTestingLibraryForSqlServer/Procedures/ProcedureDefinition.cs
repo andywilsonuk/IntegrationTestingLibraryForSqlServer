@@ -32,7 +32,7 @@ namespace IntegrationTestingLibraryForSqlServer
         public ICollection<ProcedureParameter> Parameters { get;private set; }
         public IEnumerable<ProcedureParameter> ParametersWithoutReturnValue
         {
-            get { return this.Parameters.Where(x => x.Direction != ParameterDirection.ReturnValue); }
+            get { return Parameters.Where(x => x.Direction != ParameterDirection.ReturnValue); }
         }
         public bool HasBody
         {

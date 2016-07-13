@@ -15,8 +15,8 @@ namespace IntegrationTestingLibraryForSqlServer
             return string.Format(
                 InsertTableFormat,
                 name,
-                this.GetColumnNames(columnNames),
-                this.BindingMarkers(columnNames.Count()));
+                GetColumnNames(columnNames),
+                BindingMarkers(columnNames.Count()));
         }
 
         public string Sql(DatabaseObjectName name, int columnCount)
@@ -28,7 +28,7 @@ namespace IntegrationTestingLibraryForSqlServer
                 InsertTableFormat,
                 name,
                 null,
-                this.BindingMarkers(columnCount));
+                BindingMarkers(columnCount));
         }
 
         private string GetColumnNames(IEnumerable<string> columns)

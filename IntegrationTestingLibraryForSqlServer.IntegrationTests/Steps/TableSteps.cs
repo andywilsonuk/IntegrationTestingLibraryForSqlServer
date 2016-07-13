@@ -75,7 +75,7 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         {
             var expected = new CollectionPopulatedTableData(table.Header, table.Rows.Select(x => x.Values));
 
-            var actual = this.LoadTableDataFromSql(string.Format("SELECT * FROM {0}", tableName));
+            var actual = LoadTableDataFromSql(string.Format("SELECT * FROM {0}", tableName));
 
             expected.VerifyMatch(actual, TableDataComparers.UnorderedRowNamedColumn);
         }
@@ -90,7 +90,7 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
                     row[1] = DBNull.Value;
             }
 
-            var actual = this.LoadTableDataFromSql(string.Format("SELECT * FROM {0}", tableName));
+            var actual = LoadTableDataFromSql(string.Format("SELECT * FROM {0}", tableName));
 
             expected.VerifyMatch(actual, TableDataComparers.UnorderedRowNamedColumn);
         }
@@ -100,7 +100,7 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         {
             var expected = new CollectionPopulatedTableData(table.Header, table.Rows.Select(x => x.Values));
 
-            var actual = this.LoadTableDataFromSql(string.Format("SELECT * FROM {0} WHERE Id = {1}", viewName, id));
+            var actual = LoadTableDataFromSql(string.Format("SELECT * FROM {0} WHERE Id = {1}", viewName, id));
 
             expected.VerifyMatch(actual, TableDataComparers.UnorderedRowNamedColumn);
         }

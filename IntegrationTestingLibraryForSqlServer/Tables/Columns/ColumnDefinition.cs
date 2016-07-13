@@ -36,20 +36,20 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as ColumnDefinition);
+            return Equals(obj as ColumnDefinition);
         }
 
         public override int GetHashCode()
         {
-            return this.Name.ToLowerInvariant().GetHashCode();
+            return Name.ToLowerInvariant().GetHashCode();
         }
 
         public override string ToString()
         {
             return new StringBuilder()
-                .Append("Name: " + this.Name)
-                .Append(", Type: " + this.DataType)
-                .Append(", Allow Nulls: " + this.AllowNulls)
+                .Append("Name: " + Name)
+                .Append(", Type: " + DataType)
+                .Append(", Allow Nulls: " + AllowNulls)
                 .ToString();
         }
     }

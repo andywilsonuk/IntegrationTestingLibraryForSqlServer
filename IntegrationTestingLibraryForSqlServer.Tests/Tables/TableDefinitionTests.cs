@@ -121,9 +121,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void TableDefinitionGetHashCode()
         {
-            int expected = this.source.Name.GetHashCode();
+            int expected = source.Name.GetHashCode();
 
-            int actual = this.source.GetHashCode();
+            int actual = source.GetHashCode();
 
             Assert.AreEqual(expected, actual);
         }
@@ -131,8 +131,8 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void TableDefinitionToString()
         {
-            this.source.Columns.Clear();
-            this.source.Columns.Add(new StringColumnDefinition(ColumnName, SqlDbType.NVarChar)
+            source.Columns.Clear();
+            source.Columns.Add(new StringColumnDefinition(ColumnName, SqlDbType.NVarChar)
             {
                 Size = 10,
                 AllowNulls = true,
@@ -143,7 +143,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
                 .AppendLine("Name: c1, Type: NVarChar, Allow Nulls: True, Size: 10")
                 .ToString();
 
-            string actual = this.source.ToString();
+            string actual = source.ToString();
 
             Assert.AreEqual(expected, actual);
         }

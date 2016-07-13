@@ -11,8 +11,8 @@ namespace IntegrationTestingLibraryForSqlServer.TableDataComparison
         {
             if (args.MatchStatus != MatchedValueComparer.NotYetCompared) return;
 
-            Guid? x = this.ConvertToGuid(args.X);
-            Guid? y = this.ConvertToGuid(args.Y);
+            Guid? x = ConvertToGuid(args.X);
+            Guid? y = ConvertToGuid(args.Y);
 
             if (!x.HasValue || !y.HasValue) return;
 

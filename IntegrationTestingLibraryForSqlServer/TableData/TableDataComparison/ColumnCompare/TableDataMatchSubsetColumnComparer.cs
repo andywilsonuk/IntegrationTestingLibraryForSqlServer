@@ -14,13 +14,13 @@ namespace IntegrationTestingLibraryForSqlServer.TableDataComparison
         {
             if (x.ColumnNames == null || !x.ColumnNames.Any()) throw new ArgumentNullException("Column names X cannot be null or empty");
             if (y.ColumnNames == null || !y.ColumnNames.Any()) throw new ArgumentNullException("Column names Y cannot be null or empty");
-            this.columnsX = x.ColumnNames;
-            this.columnsY = y.ColumnNames;
+            columnsX = x.ColumnNames;
+            columnsY = y.ColumnNames;
         }
 
         public virtual bool IsMatch()
         {
-            return !this.columnsX.Except(this.columnsY, StringComparer.CurrentCultureIgnoreCase).Any();
+            return !columnsX.Except(columnsY, StringComparer.CurrentCultureIgnoreCase).Any();
         }
 
         public virtual IList<int> ColumnMappings

@@ -12,7 +12,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            this.comparer = new TableDataCaseSensitiveStringValueComparer();
+            comparer = new TableDataCaseSensitiveStringValueComparer();
         }
 
         [TestMethod]
@@ -21,7 +21,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             string x = "a";
             string y = "a";
 
-            bool actual = this.comparer.IsMatch(x, y);
+            bool actual = comparer.IsMatch(x, y);
 
             Assert.IsTrue(actual);
         }
@@ -32,7 +32,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             int x = 1;
             string y = "1";
 
-            bool actual = this.comparer.IsMatch(x, y);
+            bool actual = comparer.IsMatch(x, y);
 
             Assert.IsTrue(actual);
         }
@@ -43,7 +43,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             string x = "a";
             string y = "b";
 
-            bool actual = this.comparer.IsMatch(x, y);
+            bool actual = comparer.IsMatch(x, y);
 
             Assert.IsFalse(actual);
         }
@@ -54,7 +54,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             string x = null;
             string y = "b";
 
-            bool actual = this.comparer.IsMatch(x, y);
+            bool actual = comparer.IsMatch(x, y);
 
             Assert.IsFalse(actual);
         }
@@ -65,7 +65,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             string x = "a";
             string y = null;
 
-            bool actual = this.comparer.IsMatch(x, y);
+            bool actual = comparer.IsMatch(x, y);
 
             Assert.IsFalse(actual);
         }
@@ -76,7 +76,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             string x = null;
             string y = null;
 
-            bool actual = this.comparer.IsMatch(x, y);
+            bool actual = comparer.IsMatch(x, y);
 
             Assert.IsTrue(actual);
         }

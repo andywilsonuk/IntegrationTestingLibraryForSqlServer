@@ -11,8 +11,8 @@ namespace IntegrationTestingLibraryForSqlServer
     {
         public TableData()
         {
-            this.ColumnNames = new List<string>();
-            this.Rows = new List<IList<object>>();
+            ColumnNames = new List<string>();
+            Rows = new List<IList<object>>();
         }
 
         public IList<string> ColumnNames { get; set; }
@@ -26,27 +26,27 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public bool IsMatch(TableData other, TableDataComparers strategy)
         {
-            return this.IsMatch(other, new TableDataComparerStrategyFactory().Comparer(strategy));
+            return IsMatch(other, new TableDataComparerStrategyFactory().Comparer(strategy));
         }
 
         public void VerifyMatch(TableData other, TableDataComparer comparer)
         {
-            if (!this.IsMatch(other, comparer)) throw new EquivalenceException(this.EquivalenceDetails(other));
+            if (!IsMatch(other, comparer)) throw new EquivalenceException(EquivalenceDetails(other));
         }
 
         public void VerifyMatch(TableData other, TableDataComparers strategy)
         {
-            if (!this.IsMatch(other, new TableDataComparerStrategyFactory().Comparer(strategy))) throw new EquivalenceException(this.EquivalenceDetails(other));
+            if (!IsMatch(other, new TableDataComparerStrategyFactory().Comparer(strategy))) throw new EquivalenceException(EquivalenceDetails(other));
         }
 
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("Column names: ");
-            if (this.ColumnNames != null) sb.Append(string.Join(", ", this.ColumnNames));
+            if (ColumnNames != null) sb.Append(string.Join(", ", ColumnNames));
             sb.AppendLine();
 
-            foreach (var row in this.Rows)
+            foreach (var row in Rows)
                 sb.AppendLine(string.Join(", ", row));
             return sb.ToString();
         }
@@ -56,7 +56,7 @@ namespace IntegrationTestingLibraryForSqlServer
             return new StringBuilder()
                 .AppendLine("Table data mismatch.")
                 .AppendLine("Expected:")
-                .Append(this.ToString())
+                .Append(ToString())
                 .AppendLine("Actual:")
                 .Append(actual.ToString())
                 .ToString();

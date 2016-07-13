@@ -20,9 +20,9 @@ namespace IntegrationTestingLibraryForSqlServer.TableDataComparison
 
         public virtual bool IsMatch()
         {
-            if (this.x.Rows.Count == 0 && this.y.Rows.Count == 0) return true;
-            if (this.x.Rows.Count != 0 && this.y.Rows.Count == 0) return false;
-            return this.x.Rows[0].Count == this.y.Rows[0].Count;
+            if (x.Rows.Count == 0 && y.Rows.Count == 0) return true;
+            if (x.Rows.Count != 0 && y.Rows.Count == 0) return false;
+            return x.Rows[0].Count == y.Rows[0].Count;
         }
 
         public virtual IList<int> ColumnMappings
@@ -30,8 +30,8 @@ namespace IntegrationTestingLibraryForSqlServer.TableDataComparison
             
             get
             {
-                if (this.x.Rows.Count == 0) return new List<int>();
-                return Enumerable.Range(0, this.x.Rows[0].Count).ToList();
+                if (x.Rows.Count == 0) return new List<int>();
+                return Enumerable.Range(0, x.Rows[0].Count).ToList();
             }
         }
     }

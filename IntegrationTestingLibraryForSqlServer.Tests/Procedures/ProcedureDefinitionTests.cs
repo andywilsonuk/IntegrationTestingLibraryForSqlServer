@@ -16,8 +16,8 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
         [TestInitialize]
         public void TestInitialize()
         {
-            this.parameter1 = new StandardProcedureParameter("p1", SqlDbType.DateTime, ParameterDirection.Input);
-            this.definition = new ProcedureDefinition(procedureName, new[] { parameter1 });
+            parameter1 = new StandardProcedureParameter("p1", SqlDbType.DateTime, ParameterDirection.Input);
+            definition = new ProcedureDefinition(procedureName, new[] { parameter1 });
         }
 
         [TestMethod]
@@ -39,17 +39,17 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
         [TestMethod]
         public void ProcedureDefinitionConstructor()
         {
-            Assert.AreEqual(procedureName, this.definition.Name);
-            Assert.AreEqual(1, this.definition.Parameters.Count);
+            Assert.AreEqual(procedureName, definition.Name);
+            Assert.AreEqual(1, definition.Parameters.Count);
         }
 
         [TestMethod]
         public void ProcedureDefinitionParametersWithoutReturn()
         {
-            this.definition.Parameters.Add(new IntegerProcedureParameter("retVal", SqlDbType.Int, ParameterDirection.ReturnValue));
+            definition.Parameters.Add(new IntegerProcedureParameter("retVal", SqlDbType.Int, ParameterDirection.ReturnValue));
 
-            Assert.AreEqual(2, this.definition.Parameters.Count);
-            Assert.AreEqual(1, this.definition.ParametersWithoutReturnValue.Count());
+            Assert.AreEqual(2, definition.Parameters.Count);
+            Assert.AreEqual(1, definition.ParametersWithoutReturnValue.Count());
         }
 
         [TestMethod]
@@ -63,14 +63,14 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
         [TestMethod]
         public void ProcedureDefinitionToString()
         {
-            this.definition.Body = "return 5";
+            definition.Body = "return 5";
             string expected = new StringBuilder()
                 .AppendLine("Name: " + procedureName)
                 .AppendLine("Name: p1, Data type: DateTime, Direction: Input")
                 .AppendLine("Body: " + "return 5")
                 .ToString();
 
-            string actual = this.definition.ToString();
+            string actual = definition.ToString();
 
             Assert.AreEqual(expected, actual);
         }
@@ -78,7 +78,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
         [TestMethod]
         public void ProcedureDefinitionEqualsNull()
         {
-            bool actual = this.definition.Equals((ProcedureDefinition)null);
+            bool actual = definition.Equals((ProcedureDefinition)null);
 
             Assert.IsFalse(actual);
         }
@@ -86,7 +86,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
         [TestMethod]
         public void ProcedureDefinitionEquals()
         {
-            bool actual = this.definition.Equals(this.definition);
+            bool actual = definition.Equals(definition);
 
             Assert.IsTrue(actual);
         }
@@ -102,10 +102,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
         [TestMethod]
         public void ProcedureDefinitionEqualsWithBody()
         {
-            this.definition.Body = "return 5";
+            definition.Body = "return 5";
             var other = new ProcedureDefinition(procedureName, new[] { parameter1 }) { Body = "return 5" };
 
-            bool actual = this.definition.Equals(other);
+            bool actual = definition.Equals(other);
 
             Assert.IsTrue(actual);
         }
@@ -114,7 +114,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
         public void ProcedureDefinitionNotEqualsName()
         {
             var other = new ProcedureDefinition("other");
-            bool actual = this.definition.Equals(other);
+            bool actual = definition.Equals(other);
 
             Assert.IsFalse(actual);
         }
@@ -122,10 +122,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
         [TestMethod]
         public void ProcedureDefinitionNotEqualsBody()
         {
-            this.definition.Body = "return 10";
+            definition.Body = "return 10";
             var other = new ProcedureDefinition(procedureName) { Body = "return 5" };
 
-            bool actual = this.definition.Equals(other);
+            bool actual = definition.Equals(other);
 
             Assert.IsFalse(actual);
         }
@@ -135,7 +135,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
         {
             var parameter2 = new MockProcedureParameter("p2", SqlDbType.Int, ParameterDirection.Input);
             var other = new ProcedureDefinition(procedureName, new[] { parameter1, parameter2 });
-            bool actual = this.definition.Equals(other);
+            bool actual = definition.Equals(other);
 
             Assert.IsFalse(actual);
         }
@@ -146,7 +146,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
             var parameter2 = new MockProcedureParameter("retVal", SqlDbType.Int, ParameterDirection.ReturnValue);
             var other = new ProcedureDefinition(procedureName, new[] { parameter1, parameter2 });
 
-            bool actual = this.definition.Equals(other);
+            bool actual = definition.Equals(other);
 
             Assert.IsTrue(actual);
         }
@@ -155,17 +155,17 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
         public void ProcedureDefinitionVerifyEqual()
         {
 
-            this.definition.VerifyEqual(this.definition);
+            definition.VerifyEqual(definition);
         }
 
         [TestMethod]
         [ExpectedException(typeof(EquivalenceException))]
         public void ProcedureDefinitionVerifyNotEqualsBodyThrowsException()
         {
-            this.definition.Body = "return 10";
+            definition.Body = "return 10";
             var other = new ProcedureDefinition(procedureName) { Body = "return 5" };
 
-            this.definition.VerifyEqual(other);
+            definition.VerifyEqual(other);
         }
 
 

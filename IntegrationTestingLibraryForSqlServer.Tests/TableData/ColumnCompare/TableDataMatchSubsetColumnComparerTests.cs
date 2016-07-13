@@ -16,11 +16,11 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            this.comparer = new TableDataMatchSubsetColumnComparer();
-            this.x = new TableData();
-            this.x.ColumnNames = this.GetDefaultColumnNames();
-            this.y = new TableData();
-            this.y.ColumnNames = this.GetDefaultColumnNames();
+            comparer = new TableDataMatchSubsetColumnComparer();
+            x = new TableData();
+            x.ColumnNames = GetDefaultColumnNames();
+            y = new TableData();
+            y.ColumnNames = GetDefaultColumnNames();
         }
 
         private IList<string> GetDefaultColumnNames()
@@ -32,36 +32,36 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void TableDataMatchEqualColumnComparerInitialiseFailMissingXColumnNames()
         {
-            this.x.ColumnNames = null;
+            x.ColumnNames = null;
 
-            this.comparer.Initialise(this.x, this.y);
+            comparer.Initialise(x, y);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TableDataMatchEqualColumnComparerInitialiseFailMissingYColumnNames()
         {
-            this.y.ColumnNames = null;
+            y.ColumnNames = null;
 
-            this.comparer.Initialise(this.x, this.y);
+            comparer.Initialise(x, y);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TableDataMatchEqualColumnComparerInitialiseFailEmptyXColumnNames()
         {
-            this.x.ColumnNames = new List<string>();
+            x.ColumnNames = new List<string>();
 
-            this.comparer.Initialise(this.x, this.y);
+            comparer.Initialise(x, y);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TableDataMatchEqualColumnComparerInitialiseFailEmptyYColumnNames()
         {
-            this.y.ColumnNames = new List<string>();
+            y.ColumnNames = new List<string>();
 
-            this.comparer.Initialise(this.x, this.y);
+            comparer.Initialise(x, y);
         }
 
         [TestMethod]
@@ -71,9 +71,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             x.Rows.Add(new[] { "a", "b", "c" });
             y.ColumnNames = new List<string> { "2", "1", "3" };
             y.Rows.Add(new[] { "b", "a", "c" });
-            this.comparer.Initialise(x, y);
+            comparer.Initialise(x, y);
 
-            var actual = this.comparer.ColumnMappings;
+            var actual = comparer.ColumnMappings;
 
             Assert.IsTrue(expected.SequenceEqual(actual));
         }
@@ -83,9 +83,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             x.ColumnNames = new List<string> { "1", "2", "3" };
             y.ColumnNames = new List<string> { "1", "2", "3" };
-            this.comparer.Initialise(x, y);
+            comparer.Initialise(x, y);
 
-            bool actual = this.comparer.IsMatch();
+            bool actual = comparer.IsMatch();
 
             Assert.IsTrue(actual);
         }
@@ -95,9 +95,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             x.ColumnNames = new List<string> { "1", "2", "3" };
             y.ColumnNames = new List<string> { "1", "2" };
-            this.comparer.Initialise(x, y);
+            comparer.Initialise(x, y);
 
-            bool actual = this.comparer.IsMatch();
+            bool actual = comparer.IsMatch();
 
             Assert.IsFalse(actual);
         }
@@ -107,9 +107,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             x.ColumnNames = new List<string> { "1", "2" };
             y.ColumnNames = new List<string> { "1", "2", "3" };
-            this.comparer.Initialise(x, y);
+            comparer.Initialise(x, y);
 
-            bool actual = this.comparer.IsMatch();
+            bool actual = comparer.IsMatch();
 
             Assert.IsTrue(actual);
         }

@@ -16,8 +16,8 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public CollectionPopulatedTableData(IEnumerable<string> columnNames, IEnumerable<IEnumerable<object>> rows)
         {
-            this.ColumnNames = columnNames.ToList();
-            this.Rows = rows.Select(x => (IList<object>)x.ToList()).ToList();
+            ColumnNames = columnNames.ToList();
+            Rows = rows.Select(x => (IList<object>)x.ToList()).ToList();
         }
 
         public void TransformData(TableDataValueTransformer transformer)

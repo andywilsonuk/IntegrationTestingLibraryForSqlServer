@@ -16,9 +16,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            this.comparer = new TableDataOrdinalColumnComparer();
-            this.x = new TableData();
-            this.y = new TableData();
+            comparer = new TableDataOrdinalColumnComparer();
+            x = new TableData();
+            y = new TableData();
         }
 
         [TestMethod]
@@ -27,9 +27,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             var expected = new List<int> { 0, 1, 2 };
             x.Rows.Add(new[] { "a", "b", "c" });
             y.Rows.Add(new[] { "a", "b", "c" });
-            this.comparer.Initialise(x, y);
+            comparer.Initialise(x, y);
 
-            var actual = this.comparer.ColumnMappings;
+            var actual = comparer.ColumnMappings;
 
             Assert.IsTrue(expected.SequenceEqual(actual));
         }
@@ -39,9 +39,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             x.Rows.Add(new[] { "a", "b", "c" });
             y.Rows.Add(new[] { "a", "b", "c" });
-            this.comparer.Initialise(x, y);
+            comparer.Initialise(x, y);
 
-            bool actual = this.comparer.IsMatch();
+            bool actual = comparer.IsMatch();
 
             Assert.IsTrue(actual);
         }
@@ -51,9 +51,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             x.Rows.Add(new[] { "a", "b", "c" });
             y.Rows.Add(new[] { "a", "b" });
-            this.comparer.Initialise(x, y);
+            comparer.Initialise(x, y);
 
-            bool actual = this.comparer.IsMatch();
+            bool actual = comparer.IsMatch();
 
             Assert.IsFalse(actual);
         }
@@ -62,9 +62,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void TableDataOrdinalColumnComparerIsMatchFalseNoYRows()
         {
             x.Rows.Add(new[] { "a" });
-            this.comparer.Initialise(x, y);
+            comparer.Initialise(x, y);
 
-            bool actual = this.comparer.IsMatch();
+            bool actual = comparer.IsMatch();
 
             Assert.IsFalse(actual);
         }
@@ -74,7 +74,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void TableDataOrdinalColumnComparerInitialiseInvalidRows()
         {
             y.Rows.Add(new[] { "a", "b", "c" });
-            this.comparer.Initialise(x, y);
+            comparer.Initialise(x, y);
         }
 
         [TestMethod]
@@ -82,15 +82,15 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void TableDataOrdinalColumnComparerInitialiseZeroColumnsInFirstRow()
         {
             x.Rows.Add(new object[] { });
-            this.comparer.Initialise(x, y);
+            comparer.Initialise(x, y);
         }
 
         [TestMethod]
         public void TableDataOrdinalColumnComparerIsMatchZeroRows()
         {
-            this.comparer.Initialise(x, y);
+            comparer.Initialise(x, y);
 
-            bool actual = this.comparer.IsMatch();
+            bool actual = comparer.IsMatch();
 
             Assert.IsTrue(actual);
         }
@@ -98,9 +98,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void TableDataOrdinalColumnComparerColumnMappingsZeroRows()
         {
-            this.comparer.Initialise(x, y);
+            comparer.Initialise(x, y);
 
-            IList<int> actual = this.comparer.ColumnMappings;
+            IList<int> actual = comparer.ColumnMappings;
 
             Assert.AreEqual(0, actual.Count);
         }

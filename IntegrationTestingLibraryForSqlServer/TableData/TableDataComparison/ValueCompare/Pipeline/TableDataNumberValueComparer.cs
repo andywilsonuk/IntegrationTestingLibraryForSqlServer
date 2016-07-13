@@ -11,8 +11,8 @@ namespace IntegrationTestingLibraryForSqlServer.TableDataComparison
         {
             if (args.MatchStatus != MatchedValueComparer.NotYetCompared) return;
 
-            decimal? x = this.ConvertToDecimal(args.X);
-            decimal? y = this.ConvertToDecimal(args.Y);
+            decimal? x = ConvertToDecimal(args.X);
+            decimal? y = ConvertToDecimal(args.Y);
 
             if (!x.HasValue || !y.HasValue) return;
 

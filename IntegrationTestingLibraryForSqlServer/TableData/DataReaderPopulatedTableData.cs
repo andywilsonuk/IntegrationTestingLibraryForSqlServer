@@ -14,7 +14,7 @@ namespace IntegrationTestingLibraryForSqlServer
             var columnNames = new List<string>();
             var rows = new List<IList<object>>();
             for (int i = 0; i < reader.FieldCount; i++) columnNames.Add(reader.GetName(i));
-            this.ColumnNames = columnNames;
+            ColumnNames = columnNames;
 
             while (reader.Read())
             {
@@ -23,7 +23,7 @@ namespace IntegrationTestingLibraryForSqlServer
                     row.Add(reader.GetValue(i));
                 rows.Add(row);
             }
-            this.Rows = rows;
+            Rows = rows;
         }
     }
 }
