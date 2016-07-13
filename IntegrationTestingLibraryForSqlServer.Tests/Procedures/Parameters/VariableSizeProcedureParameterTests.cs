@@ -21,9 +21,8 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             var other = new MockVariableSizeProcedureParameter(ParameterName, SqlDbType.VarChar, ParameterDirection.Input);
             other.Size = 10;
-            bool actual = parameter.Equals(parameter);
 
-            Assert.IsTrue(actual);
+            Assert.AreEqual(parameter, other);
         }
 
         [TestMethod]
@@ -33,9 +32,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             var other = new MockVariableSizeProcedureParameter(ParameterName, SqlDbType.VarChar, ParameterDirection.Input);
             other.IsMaximumSize = true;
 
-            bool actual = parameter.Equals(parameter);
-
-            Assert.IsTrue(actual);
+            Assert.AreEqual(parameter, other);
         }
 
         [TestMethod]
@@ -44,9 +41,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             var other = new MockVariableSizeProcedureParameter(ParameterName, SqlDbType.VarChar, ParameterDirection.Input);
             other.Size = 50;
 
-            bool actual = parameter.Equals(other);
-
-            Assert.IsFalse(actual);
+            Assert.AreNotEqual(parameter, other);
         }
 
         [TestMethod]
@@ -55,9 +50,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             var other = new MockVariableSizeProcedureParameter("other", SqlDbType.VarChar, ParameterDirection.Input);
             other.Size = 10;
 
-            bool actual = parameter.Equals(other);
-
-            Assert.IsFalse(actual);
+            Assert.AreNotEqual(parameter, other);
         }
 
         [TestMethod]
@@ -66,9 +59,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             var other = new MockVariableSizeProcedureParameter(ParameterName, SqlDbType.VarChar, ParameterDirection.Input);
             other.IsMaximumSize = true;
 
-            bool actual = parameter.Equals(other);
-
-            Assert.IsFalse(actual);
+            Assert.AreNotEqual(parameter, other);
         }
 
         [TestMethod]
@@ -78,9 +69,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             var other = new MockVariableSizeProcedureParameter(ParameterName, SqlDbType.VarChar, ParameterDirection.Input);
             other.Size = 10;
 
-            bool actual = parameter.Equals(other);
-
-            Assert.IsFalse(actual);
+            Assert.AreNotEqual(parameter, other);
         }
 
         [TestMethod]
@@ -118,7 +107,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void VariableSizeProcedureParameterToString()
         {
-            string expected = "Name: " + ParameterName + ", Data type: VarChar, Direction: Input, Size: 10";
+            string expected = $"Name: {ParameterName}, Data type: VarChar, Direction: Input, Size: 10";
 
             string actual = parameter.ToString();
 

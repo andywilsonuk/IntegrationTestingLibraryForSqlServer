@@ -19,7 +19,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void ConstructorInvalidDataType()
+        public void ConstructorInvalidDataTypeThrows()
         {
             new StandardProcedureParameter(ColumnName, SqlDbType.Decimal, ParameterDirection.InputOutput);
         }

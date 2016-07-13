@@ -20,9 +20,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void ConstructorWithWrongDataTypeThrowsException()
+        public void ConstructorWithWrongDataTypeThrows()
         {
-            parameter = new BinaryProcedureParameter(parameterName, SqlDbType.Int, ParameterDirection.Input);
+            new BinaryProcedureParameter(parameterName, SqlDbType.Int, ParameterDirection.Input);
         }
     }
 }

@@ -23,9 +23,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
                 Scale = 2,
             };
 
-            bool actual = parameter.Equals(parameter);
-
-            Assert.IsTrue(actual);
+            Assert.AreEqual(parameter, other);
         }
 
 
@@ -38,9 +36,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
                 Scale = 2
             };
 
-            bool actual = parameter.Equals(other);
-
-            Assert.IsFalse(actual);
+            Assert.AreNotEqual(parameter, other);
         }
 
         [TestMethod]
@@ -52,29 +48,13 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
                 Scale = 0,
             };
 
-            bool actual = parameter.Equals(other);
-
-            Assert.IsFalse(actual);
-        }
-
-        [TestMethod]
-        public void DecimalProcedureParameterNotEqualsName()
-        {
-            var other = new DecimalProcedureParameter("P2", ParameterDirection.Input)
-            {
-                Precision = 10,
-                Scale = 2,
-            };
-
-            bool actual = parameter.Equals(other);
-
-            Assert.IsFalse(actual);
+            Assert.AreNotEqual(parameter, other);
         }
 
         [TestMethod]
         public void ProcedureParameterToString()
         {
-            string expected = "Name: " + ParameterName + ", Data type: Decimal, Direction: Input, Precision: 10, Scale: 2";
+            string expected = $"Name: {ParameterName}, Data type: Decimal, Direction: Input, Precision: 10, Scale: 2";
 
             string actual = parameter.ToString();
 
@@ -83,9 +63,17 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void ProcedureParameterInvalidPrecisionThrowsException()
+        public void ProcedureParameterInvalidPrecisionThrows()
         {
             parameter.Precision = 0;
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ScaleExceedsPrecisionThrows()
+        {
+            parameter.Precision = 5;
+            parameter.Scale = 6;
         }
 
         [TestMethod]
@@ -97,14 +85,6 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             Assert.AreEqual(3, parameter.Scale);
             Assert.AreEqual(3, parameter.Precision);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void ScaleExceedsPrecision()
-        {
-            parameter.Precision = 5;
-            parameter.Scale = 6;
         }
     }
 }
