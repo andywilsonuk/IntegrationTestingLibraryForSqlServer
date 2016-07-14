@@ -52,6 +52,8 @@
     <Compile Include="Database\DataType.cs" />
     <Compile Include="Database\DomainAccount.cs" />
     <Compile Include="Database\SqlConnectionStringBuilderExtensions.cs" />
+    <Compile Include="Procedures\Parameters\ProcedureParameterCollection.cs" />
+    <Compile Include="Procedures\Parameters\ProcedureParameterNameEqualityComparer.cs" />
     <Compile Include="Procedures\Parameters\StringProcedureParameter.cs" />
     <Compile Include="Procedures\Parameters\BinaryProcedureParameter.cs" />
     <Compile Include="Procedures\ProcedureParameterCollectionExtensions.cs" />
