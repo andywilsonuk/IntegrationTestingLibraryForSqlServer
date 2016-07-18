@@ -7,7 +7,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
     [TestClass]
     public class IntegerProcedureParameterTests
     {
-        private const string parameterName = "c1";
+        private const string parameterName = "@p1";
         private IntegerProcedureParameter parameter = new IntegerProcedureParameter(parameterName, SqlDbType.Int, ParameterDirection.Input);
 
         [TestMethod]

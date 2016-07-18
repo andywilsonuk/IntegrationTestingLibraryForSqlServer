@@ -8,20 +8,20 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
     [TestClass]
     public class StandardProcedureParameterTests
     {
-        private const string ColumnName = "c1";
-        private StandardProcedureParameter column = new StandardProcedureParameter(ColumnName, SqlDbType.DateTime, ParameterDirection.InputOutput);
+        private const string ParameterName = "@p1";
+        private StandardProcedureParameter parameter = new StandardProcedureParameter(ParameterName, SqlDbType.DateTime, ParameterDirection.InputOutput);
 
         [TestMethod]
         public void ConstructorBasics()
         {
-            Assert.AreEqual(SqlDbType.DateTime, column.DataType.SqlType);
-            Assert.AreEqual(ColumnName, column.Name);
+            Assert.AreEqual(SqlDbType.DateTime, parameter.DataType.SqlType);
+            Assert.AreEqual(ParameterName, parameter.Name);
         }
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void ConstructorInvalidDataTypeThrows()
         {
-            new StandardProcedureParameter(ColumnName, SqlDbType.Decimal, ParameterDirection.InputOutput);
+            new StandardProcedureParameter(ParameterName, SqlDbType.Decimal, ParameterDirection.InputOutput);
         }
     }
 }

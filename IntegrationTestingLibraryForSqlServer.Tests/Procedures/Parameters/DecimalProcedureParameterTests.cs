@@ -7,7 +7,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
     [TestClass]
     public class DecimalProcedureParameterTests
     {
-        private const string ParameterName = "p1";
+        private const string ParameterName = "@p1";
         private DecimalProcedureParameter parameter = new DecimalProcedureParameter(ParameterName, ParameterDirection.Input)
         {
             Precision = 10,

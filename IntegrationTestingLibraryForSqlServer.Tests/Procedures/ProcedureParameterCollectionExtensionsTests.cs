@@ -12,7 +12,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void AddFromRaw()
         {
-            var source = new[] { new ProcedureParameterRaw { Name = "C1", DataType = "Int" } };
+            var source = new[] { new ProcedureParameterRaw { Name = "@p1", DataType = "Int" } };
             ICollection<ProcedureParameter> parameters = new Collection<ProcedureParameter>();
 
             parameters.AddFromRaw(source);

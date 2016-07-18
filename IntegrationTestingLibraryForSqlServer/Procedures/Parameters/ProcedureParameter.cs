@@ -9,6 +9,8 @@ namespace IntegrationTestingLibraryForSqlServer
 {
     public abstract class ProcedureParameter : IEquatable<ProcedureParameter>
     {
+        private string name;
+
         public ProcedureParameter(string name, SqlDbType dataType, ParameterDirection direction)
         {
             Name = name;
@@ -20,19 +22,21 @@ namespace IntegrationTestingLibraryForSqlServer
 
         protected abstract bool IsDataTypeAllowed { get; }
 
-        public string Name { get; private set; }
+        public string Name
+        {
+            get { return name; }
+            set
+            {
+                name = value.StartsWith("@") ? value : "@" + value;
+            }
+        }
         public DataType DataType { get; private set; }
         public ParameterDirection Direction { get; set; }
-
-        public string QualifiedName
-        {
-            get { return Name.StartsWith("@") ? Name : "@" + Name; }
-        }
 
         public virtual bool Equals(ProcedureParameter other)
         {
             if (other == null) return false;
-            if (!QualifiedName.Equals(other.QualifiedName, StringComparison.CurrentCultureIgnoreCase)) return false;
+            if (!Name.Equals(other.Name, StringComparison.CurrentCultureIgnoreCase)) return false;
             if (!DataType.Equals(other.DataType)) return false;
             return IsDirectionEquivalent(other);
         }

@@ -7,7 +7,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
     [TestClass]
     public class VariableSizeProcedureParameterTests
     {
-        private const string ParameterName = "p1";
+        private const string ParameterName = "@p1";
         private MockVariableSizeProcedureParameter parameter = new MockVariableSizeProcedureParameter(ParameterName, SqlDbType.VarChar, ParameterDirection.Input);
 
         [TestInitialize]

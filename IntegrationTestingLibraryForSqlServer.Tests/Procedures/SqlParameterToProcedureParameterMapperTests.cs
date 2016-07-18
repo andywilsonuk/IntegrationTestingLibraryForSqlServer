@@ -28,7 +28,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             // Arrange
             SqlParameter sqlParameter = new SqlParameter
             {
-                ParameterName = "p1",
+                ParameterName = "@p1",
                 SqlDbType = SqlDbType.VarChar,
                 Direction = ParameterDirection.Input,
                 Size = 10
@@ -52,7 +52,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             // Arrange
             SqlParameter sqlParameter = new SqlParameter
             {
-                ParameterName = "p1",
+                ParameterName = "@p1",
                 SqlDbType = SqlDbType.VarChar,
                 Direction = ParameterDirection.Input
             };

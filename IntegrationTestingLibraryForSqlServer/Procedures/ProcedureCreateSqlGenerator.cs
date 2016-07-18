@@ -27,7 +27,7 @@ namespace IntegrationTestingLibraryForSqlServer
         {
             return string.Format(
                 "{0} {1}{2}",
-                parameter.QualifiedName,
+                parameter.Name,
                 GetFormattedDataType(parameter),
                 GetFormattedDirection(parameter));
         }

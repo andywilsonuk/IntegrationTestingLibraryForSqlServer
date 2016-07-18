@@ -7,7 +7,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
     [TestClass]
     public class BinaryProcedureParameterTests
     {
-        private const string parameterName = "c1";
+        private const string parameterName = "@p1";
         private BinaryProcedureParameter parameter = new BinaryProcedureParameter(parameterName, SqlDbType.VarBinary, ParameterDirection.Input);
 
         [TestMethod]

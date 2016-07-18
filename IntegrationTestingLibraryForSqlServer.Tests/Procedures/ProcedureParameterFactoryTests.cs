@@ -15,7 +15,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             var source = new ProcedureParameterRaw
             {
-                Name = "C1",
+                Name = "@p1",
                 DataType = "DateTime",
                 Direction = ParameterDirection.InputOutput,
             };

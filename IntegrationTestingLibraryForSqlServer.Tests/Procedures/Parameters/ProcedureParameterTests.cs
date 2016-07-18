@@ -9,110 +9,149 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
     public class ProcedureParameterTests
     {
         private const string ParameterName = "p1";
-        private MockProcedureParameter parameter = new MockProcedureParameter(ParameterName, SqlDbType.DateTime, ParameterDirection.Input);
+        private const string QualifiedParameterName = "@" + ParameterName;
 
         [TestMethod]
-        public void ProcedureParameterConstructor()
+        public void Constructor_PassedValues_SetAgainstProperties()
         {
-            Assert.AreEqual(ParameterName, parameter.Name);
+            var parameter = GetParameter(ParameterName, SqlDbType.DateTime);
+
             Assert.AreEqual(SqlDbType.DateTime, parameter.DataType.SqlType);
             Assert.AreEqual(ParameterDirection.Input, parameter.Direction);
         }
 
         [TestMethod]
-        public void ProcedureParameterQualifiedName()
+        public void Name_NotQualified_True()
         {
-            Assert.AreEqual("@" + ParameterName, parameter.QualifiedName);
+            var parameter = GetParameter(ParameterName, SqlDbType.DateTime);
+
+            Assert.AreEqual(QualifiedParameterName, parameter.Name);
         }
 
         [TestMethod]
-        public void ProcedureParameterQualifiedNameAlreadyQualified()
+        public void Name_AlreadyQualified_True()
         {
-            parameter = new MockProcedureParameter("@" + ParameterName, SqlDbType.DateTime, ParameterDirection.Input);
-            Assert.AreEqual("@" + ParameterName, parameter.QualifiedName);
+            var parameter = GetParameter(QualifiedParameterName, SqlDbType.DateTime);
+
+            Assert.AreEqual(QualifiedParameterName, parameter.Name);
         }
 
         [TestMethod]
-        public void ProcedureParameterEquals()
+        public void Equals_Equivalent_True()
         {
-            var other = new MockProcedureParameter(ParameterName, SqlDbType.DateTime, ParameterDirection.Input);
+            var x = GetParameter(QualifiedParameterName, SqlDbType.DateTime);
+            var y = GetParameter(QualifiedParameterName, SqlDbType.DateTime);
 
-            bool actual = parameter.Equals(parameter);
+            bool actual = x.Equals(y);
 
             Assert.IsTrue(actual);
         }
 
         [TestMethod]
-        public void ProcedureParameterNotEqualsNull()
+        public void Equals_Null_False()
         {
+            var parameter = GetParameter(QualifiedParameterName, SqlDbType.DateTime);
+
             bool actual = parameter.Equals(null);
 
             Assert.IsFalse(actual);
         }
 
         [TestMethod]
-        public void ProcedureParameterNotEqualsName()
+        public void Equals_DifferentName_False()
         {
-            var other = new MockProcedureParameter("other", SqlDbType.Int, ParameterDirection.Input);
+            var parameter = GetParameter(QualifiedParameterName, SqlDbType.DateTime);
+            var other = GetParameter("other", SqlDbType.DateTime);
+
             bool actual = parameter.Equals(other);
 
             Assert.IsFalse(actual);
         }
 
         [TestMethod]
-        public void ProcedureParameterNotEqualsDataType()
+        public void Equals_DifferentDataType_False()
         {
-            var other = new MockProcedureParameter(ParameterName, SqlDbType.SmallDateTime, ParameterDirection.Input);
+            var parameter = GetParameter(QualifiedParameterName, SqlDbType.DateTime);
+            var other = GetParameter(QualifiedParameterName, SqlDbType.SmallDateTime);
+
             bool actual = parameter.Equals(other);
 
             Assert.IsFalse(actual);
         }
 
         [TestMethod]
-        public void ProcedureParameterNotEqualsDirection()
+        public void Equals_DifferentDirection_False()
         {
-            var other = new MockProcedureParameter(ParameterName, SqlDbType.DateTime, ParameterDirection.Output);
+            var parameter = GetParameter(QualifiedParameterName, SqlDbType.DateTime);
+            var other = GetParameter(QualifiedParameterName, SqlDbType.DateTime);
+            other.Direction = ParameterDirection.Output;
+
             bool actual = parameter.Equals(other);
 
             Assert.IsFalse(actual);
         }
 
         [TestMethod]
-        public void ProcedureParameterEqualsOutputDirection()
+        public void Equals_EquivalentDirectionsLeft_True()
         {
-            parameter.Direction = ParameterDirection.Output;
-            var other = new MockProcedureParameter(ParameterName, SqlDbType.DateTime, ParameterDirection.InputOutput);
-            bool actual = parameter.Equals(other);
-
-            Assert.IsTrue(actual);
-        }
-
-        [TestMethod]
-        public void ProcedureParameterEqualsInputOutputDirection()
-        {
+            var parameter = GetParameter(QualifiedParameterName, SqlDbType.DateTime);
             parameter.Direction = ParameterDirection.InputOutput;
-            var other = new MockProcedureParameter(ParameterName, SqlDbType.DateTime, ParameterDirection.Output);
+            var other = GetParameter(QualifiedParameterName, SqlDbType.DateTime);
+            other.Direction = ParameterDirection.Output;
+
             bool actual = parameter.Equals(other);
 
             Assert.IsTrue(actual);
         }
 
         [TestMethod]
-        public void ProcedureParameterGetHashCode()
+        public void Equals_EquivalentDirectionsRight_True()
         {
-            int expected = parameter.Name.ToLowerInvariant().GetHashCode();
+            var parameter = GetParameter(QualifiedParameterName, SqlDbType.DateTime);
+            parameter.Direction = ParameterDirection.Output;
+            var other = GetParameter(QualifiedParameterName, SqlDbType.DateTime);
+            other.Direction = ParameterDirection.InputOutput;
 
-            Assert.AreEqual(expected, parameter.GetHashCode());
+            bool actual = parameter.Equals(other);
+
+            Assert.IsTrue(actual);
         }
 
         [TestMethod]
-        public void ProcedureParameterToString()
+        public void GetHashCode_Lowered_Equal()
         {
-            string expected = "Name: " + ParameterName + ", Data type: DateTime, Direction: Input";
+            var parameter = GetParameter(QualifiedParameterName, SqlDbType.DateTime);
+            int expected = QualifiedParameterName.GetHashCode();
+
+            int actual = parameter.GetHashCode();
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void GetHashCode_Qualified_Equal()
+        {
+            var expected = GetParameter(QualifiedParameterName, SqlDbType.Date);
+
+            var actual = GetParameter(ParameterName, SqlDbType.Date);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void ToString_Overridden_Equal()
+        {
+            var parameter = GetParameter(QualifiedParameterName, SqlDbType.DateTime);
+            string expected = "Name: " + QualifiedParameterName + ", Data type: DateTime, Direction: Input";
 
             string actual = parameter.ToString();
 
             Assert.AreEqual(expected, actual);
+        }
+
+        private ProcedureParameter GetParameter(string name, SqlDbType type)
+        {
+            return new MockProcedureParameter(name, type, ParameterDirection.Input);
         }
     }
 }
