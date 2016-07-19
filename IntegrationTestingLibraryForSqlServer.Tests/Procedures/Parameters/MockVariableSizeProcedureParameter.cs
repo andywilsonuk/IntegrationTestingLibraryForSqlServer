@@ -15,5 +15,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         protected override bool IsDataTypeAllowed => true;
+
+        public static MockVariableSizeProcedureParameter GetParameter(string name)
+        {
+            return new MockVariableSizeProcedureParameter(name, SqlDbType.VarChar, ParameterDirection.InputOutput);
+        }
     }
 }

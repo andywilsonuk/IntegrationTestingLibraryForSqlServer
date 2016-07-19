@@ -15,5 +15,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         protected override bool IsDataTypeAllowed => true;
+
+        public static MockProcedureParameter GetParameter(string name)
+        {
+            return new MockProcedureParameter(name, SqlDbType.Int, ParameterDirection.InputOutput);
+        }
     }
 }

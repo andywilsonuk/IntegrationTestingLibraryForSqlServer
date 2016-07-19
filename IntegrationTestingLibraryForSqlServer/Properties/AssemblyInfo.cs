@@ -32,6 +32,6 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.0.1.0")]
-[assembly: AssemblyFileVersion("2.0.1.0")]
+[assembly: AssemblyVersion("2.1.0.0")]
+[assembly: AssemblyFileVersion("2.1.0.0")]
 [assembly: InternalsVisibleTo("IntegrationTestingLibraryForSqlServer.Tests, PublicKey=002400000480000094000000060200000024000052534131000400000100010029a45732889b84f06cc1babf526e460af60775fcdf9b7b9467934752cdfc3f2dcf8ab761e10bcae01911c2f3ab95f7282845df2040083b3cdd612177ba7486462e7809b795d8cbfc07c4dc9a67f8f24166099f91b48cb18985e0daf1d2dee9d53717ed9f7557c804d42916c22db6aa003a9f2579b0fd615af29c380e3003c4b8")]

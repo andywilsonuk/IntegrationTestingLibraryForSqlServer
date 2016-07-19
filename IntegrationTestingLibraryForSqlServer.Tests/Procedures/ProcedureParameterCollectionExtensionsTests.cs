@@ -11,29 +11,68 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
     public class ProcedureParameterCollectionExtensionsTests
     {
         private const string ParameterName = "@p1";
+        private ProcedureParameterCollection parameters = new ProcedureParameterCollection();
 
         [TestMethod]
         public void AddFromRaw()
         {
-            var source = new[] { new ProcedureParameterRaw { Name = ParameterName, DataType = "Int" } };
-            ICollection<ProcedureParameter> parameters = new Collection<ProcedureParameter>();
+            var expected = new IntegerProcedureParameter(ParameterName, SqlDbType.Int, ParameterDirection.InputOutput);
+            var source = new[] { new ProcedureParameterRaw { Name = ParameterName, DataType = "Int", Direction = ParameterDirection.InputOutput } };
 
             parameters.AddFromRaw(source);
 
             Assert.AreEqual(1, parameters.Count);
-            Assert.AreEqual(source[0].Name, parameters.First().Name);
+            Assert.AreEqual(expected, parameters[0]);
         }
-
         [TestMethod]
         public void AddBinary_Valid_Added()
         {
-            var parameters = new ProcedureParameterCollection();
+            var expected = new BinaryProcedureParameter(ParameterName, SqlDbType.Binary, ParameterDirection.InputOutput);
 
-            var parameter = parameters.AddBinary(ParameterName, SqlDbType.Binary);
+            var actual = parameters.AddBinary(ParameterName, SqlDbType.Binary);
 
             Assert.AreEqual(1, parameters.Count);
-            Assert.IsNotNull(parameter);
-            Assert.AreEqual(ParameterName, parameter.Name);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void AddDecimal_Valid_Added()
+        {
+            var expected = new DecimalProcedureParameter(ParameterName, ParameterDirection.InputOutput);
+
+            var actual = parameters.AddDecimal(ParameterName);
+
+            Assert.AreEqual(1, parameters.Count);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void AddInteger_Valid_Added()
+        {
+            var expected = new IntegerProcedureParameter(ParameterName, SqlDbType.Int, ParameterDirection.InputOutput);
+
+            var actual = parameters.AddInteger(ParameterName, SqlDbType.Int);
+
+            Assert.AreEqual(1, parameters.Count);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void AddString_Valid_Added()
+        {
+            var expected = new StringProcedureParameter(ParameterName, SqlDbType.VarChar, ParameterDirection.InputOutput);
+
+            var actual = parameters.AddString(ParameterName, SqlDbType.VarChar);
+
+            Assert.AreEqual(1, parameters.Count);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void AddStandard_Valid_Added()
+        {
+            var expected = new StandardProcedureParameter(ParameterName, SqlDbType.DateTime, ParameterDirection.InputOutput);
+
+            var actual = parameters.AddStandard(ParameterName, SqlDbType.DateTime);
+
+            Assert.AreEqual(1, parameters.Count);
+            Assert.AreEqual(expected, actual);
         }
     }
 }

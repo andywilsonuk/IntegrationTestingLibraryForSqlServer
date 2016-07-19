@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IntegrationTestingLibraryForSqlServer
 {
-    internal class DistinctCollection<T> : Collection<T>
+    public class DistinctCollection<T> : Collection<T>
     {
         private IEqualityComparer<T> equalityComparer;
 

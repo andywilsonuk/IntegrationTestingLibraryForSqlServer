@@ -22,11 +22,12 @@ namespace IntegrationTestingLibraryForSqlServer
         {
             if (name == null) throw new ArgumentNullException("name");
             Name = name;
-            Columns = columns == null ? new List<ColumnDefinition>() : new List<ColumnDefinition>(columns);
+            Columns = new ColumnDefinitionCollection();
+            if (columns != null) Columns.AddRange(columns);
         }
 
         public DatabaseObjectName Name { get; private set; }
-        public ICollection<ColumnDefinition> Columns { get; private set; }
+        public ColumnDefinitionCollection Columns { get; private set; }
 
         public void VerifyEqual(TableDefinition other)
         {

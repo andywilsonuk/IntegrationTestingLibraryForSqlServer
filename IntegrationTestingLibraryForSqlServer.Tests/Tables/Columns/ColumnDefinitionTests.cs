@@ -9,19 +9,20 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
     public class ColumnDefinitionTests
     {
         private const string ColumnName = "c1";
-        private ColumnDefinition definition = new MockColumnDefinition(ColumnName, SqlDbType.DateTime);
+        private ColumnDefinition definition = MockColumnDefinition.GetColumn(ColumnName);
 
         [TestMethod]
         public void ColumnDefinitionConstructor()
         {
-            new MockColumnDefinition(ColumnName, SqlDbType.DateTime);
+            Assert.AreEqual(ColumnName, definition.Name);
+            Assert.AreEqual(SqlDbType.Int, definition.DataType.SqlType);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ColumnDefinitionConstructorNullName()
         {
-            new MockColumnDefinition(null, SqlDbType.DateTime);
+            new MockColumnDefinition(null, SqlDbType.Int);
         }
 
 
@@ -36,7 +37,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void ColumnDefinitionNotEqualsName()
         {
-            var other = new MockColumnDefinition("other", SqlDbType.DateTime);
+            var other = MockColumnDefinition.GetColumn("other");
 
             bool actual = definition.Equals(other);
 
@@ -57,10 +58,8 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void ColumnDefinitionNotEqualsAllowNulls()
         {
             definition.AllowNulls = false;
-            var other = new MockColumnDefinition(ColumnName, SqlDbType.DateTime)
-            {
-                AllowNulls = true,
-            };
+            var other = MockColumnDefinition.GetColumn(ColumnName);
+            other.AllowNulls = true;
 
             bool actual = definition.Equals(other);
 
@@ -83,7 +82,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             definition.AllowNulls = false;
             string expected = new StringBuilder()
                 .Append("Name: " + ColumnName)
-                .Append(", Type: DateTime")
+                .Append(", Type: Int")
                 .Append(", Allow Nulls: False")
                 .ToString();
 

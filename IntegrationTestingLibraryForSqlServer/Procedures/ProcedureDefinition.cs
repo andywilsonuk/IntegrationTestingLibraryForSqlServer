@@ -24,16 +24,14 @@ namespace IntegrationTestingLibraryForSqlServer
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
             Name = name;
-            Parameters = parameters == null ? new List<ProcedureParameter>() : new List<ProcedureParameter>(parameters);
+            Parameters = new ProcedureParameterCollection();
+            if (parameters != null) Parameters.AddRange(parameters);
         }
 
         public DatabaseObjectName Name { get; private set; }
         public string Body { get; set; }
-        public ICollection<ProcedureParameter> Parameters { get;private set; }
-        public IEnumerable<ProcedureParameter> ParametersWithoutReturnValue
-        {
-            get { return Parameters.Where(x => x.Direction != ParameterDirection.ReturnValue); }
-        }
+        public ProcedureParameterCollection Parameters { get;private set; }
+
         public bool HasBody
         {
             get { return !string.IsNullOrWhiteSpace(Body); }
@@ -60,7 +58,7 @@ namespace IntegrationTestingLibraryForSqlServer
             if (other == null) return false;
             if (Name.GetHashCode() != other.Name.GetHashCode()) return false;
             if (other.Body != null && !Body.Equals(other.Body, StringComparison.CurrentCultureIgnoreCase)) return false;
-            return ParametersWithoutReturnValue.SequenceEqual(other.ParametersWithoutReturnValue);
+            return Parameters.ExceptReturnValue.SequenceEqual(other.Parameters.ExceptReturnValue);
         }
 
         public override bool Equals(object obj)

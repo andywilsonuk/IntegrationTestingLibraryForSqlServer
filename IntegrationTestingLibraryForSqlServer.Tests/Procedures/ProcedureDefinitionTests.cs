@@ -33,7 +33,6 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
             var definition = new ProcedureDefinition(procedureName, null);
 
             Assert.IsNotNull(definition.Parameters);
-            Assert.IsNotNull(definition.ParametersWithoutReturnValue);
         }
 
         [TestMethod]
@@ -41,15 +40,6 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
         {
             Assert.AreEqual(procedureName, definition.Name);
             Assert.AreEqual(1, definition.Parameters.Count);
-        }
-
-        [TestMethod]
-        public void ProcedureDefinitionParametersWithoutReturn()
-        {
-            definition.Parameters.Add(new IntegerProcedureParameter("retVal", SqlDbType.Int, ParameterDirection.ReturnValue));
-
-            Assert.AreEqual(2, definition.Parameters.Count);
-            Assert.AreEqual(1, definition.ParametersWithoutReturnValue.Count());
         }
 
         [TestMethod]
@@ -133,18 +123,19 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
         [TestMethod]
         public void ProcedureDefinitionNotEqualsParameters()
         {
-            var parameter2 = new MockProcedureParameter("p2", SqlDbType.Int, ParameterDirection.Input);
-            var other = new ProcedureDefinition(procedureName, new[] { parameter1, parameter2 });
+            var other = new ProcedureDefinition(procedureName);
+            other.Parameters.Add(parameter1);
+            other.Parameters.Add(MockProcedureParameter.GetParameter("p2"));
             bool actual = definition.Equals(other);
 
             Assert.IsFalse(actual);
         }
 
         [TestMethod]
-        public void ProcedureDefinitionEqualsWithReturnValue()
+        public void Equals_YParametersContainReturnValue_True()
         {
-            var parameter2 = new MockProcedureParameter("retVal", SqlDbType.Int, ParameterDirection.ReturnValue);
-            var other = new ProcedureDefinition(procedureName, new[] { parameter1, parameter2 });
+            var other = new ProcedureDefinition(procedureName, new[] { parameter1 });
+            other.Parameters.AddReturnValue();
 
             bool actual = definition.Equals(other);
 

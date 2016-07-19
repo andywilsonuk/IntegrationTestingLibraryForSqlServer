@@ -11,21 +11,13 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         private const string parameterName = "@p1";
 
         [TestMethod]
-        public void Constructor_DefaultValues_Initialised()
+        public void ExceptReturnValue_ExcludesOneItem_CountOne()
         {
             var parameters = new ProcedureParameterCollection();
+            parameters.Add(MockProcedureParameter.GetParameter(parameterName));
+            parameters.AddReturnValue();
 
-            Assert.IsNotNull(parameters);
-        }
-
-        [TestMethod]
-        public void ExcludingReturnValue_ExcludesOneItem_CountOne()
-        {
-            var parameters = new ProcedureParameterCollection();
-            parameters.Add(GetParameter(parameterName));
-            parameters.Add(new MockProcedureParameter("retVal", SqlDbType.Int, ParameterDirection.ReturnValue));
-
-            var actual = parameters.ExcludingReturnValue;
+            var actual = parameters.ExceptReturnValue;
 
             Assert.AreEqual(2, parameters.Count);
             Assert.IsNotNull(actual);
@@ -33,23 +25,23 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void ExcludingReturnValue_NoReturnParameter_CountOne()
+        public void ExceptReturnValue_NoReturnParameter_CountOne()
         {
             var parameters = new ProcedureParameterCollection();
-            parameters.Add(GetParameter(parameterName));
+            parameters.Add(MockProcedureParameter.GetParameter(parameterName));
 
-            var actual = parameters.ExcludingReturnValue;
+            var actual = parameters.ExceptReturnValue;
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(1, actual.ToList().Count);
         }
 
         [TestMethod]
-        public void ExcludingReturnValue_NoParameters_CountZero()
+        public void ExceptReturnValue_NoParameters_CountZero()
         {
             var parameters = new ProcedureParameterCollection();
 
-            var actual = parameters.ExcludingReturnValue;
+            var actual = parameters.ExceptReturnValue;
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(0, actual.ToList().Count);
@@ -66,14 +58,30 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void GetName_Parameter_ReturnsName()
         {
-            string actual = ProcedureParameterCollection.GetName(GetParameter(parameterName));
+            string actual = ProcedureParameterCollection.GetName(MockProcedureParameter.GetParameter(parameterName));
 
             Assert.AreEqual(parameterName, actual);
         }
 
-        private ProcedureParameter GetParameter(string name)
+        [TestMethod]
+        public void AddReturnValue_Empty_CountOne()
         {
-            return new MockProcedureParameter(name, SqlDbType.NVarChar, ParameterDirection.Input);
+            var parameters = new ProcedureParameterCollection();
+
+            parameters.AddReturnValue();
+
+            Assert.AreEqual(1, parameters.Count);
+        }
+
+        [TestMethod]
+        public void AddReturnValue_AlreadyExists_CountOne()
+        {
+            var parameters = new ProcedureParameterCollection();
+            parameters.Add(new IntegerProcedureParameter("retVal", SqlDbType.Int, ParameterDirection.ReturnValue));
+
+            parameters.AddReturnValue();
+
+            Assert.AreEqual(1, parameters.Count);
         }
     }
 }

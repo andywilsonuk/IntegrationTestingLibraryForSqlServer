@@ -9,18 +9,16 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
     public class VariableSizeColumnDefinitionTests
     {
         private const string ColumnName = "c1";
-        private MockVariableSizeColumnDefinition definition = new MockVariableSizeColumnDefinition(ColumnName, SqlDbType.NVarChar);
+        private MockVariableSizeColumnDefinition definition = MockVariableSizeColumnDefinition.GetColumn(ColumnName);
 
         [TestMethod]
         public void VariableSizeColumnDefinitionEquals()
         {
             definition.AllowNulls = false;
             definition.Size = 10;
-            var other = new MockVariableSizeColumnDefinition(ColumnName, SqlDbType.NVarChar)
-            {
-                AllowNulls = false,
-                Size = 10,
-            };
+            var other = MockVariableSizeColumnDefinition.GetColumn(ColumnName);
+            other.AllowNulls = false;
+            other.Size = 10;
 
             bool actual = definition.Equals(other);
 
@@ -32,11 +30,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             definition.AllowNulls = false;
             definition.Size = 10;
-            var other = new MockVariableSizeColumnDefinition(ColumnName, SqlDbType.NVarChar)
-            {
-                AllowNulls = false,
-                Size = 20,
-            };
+            var other = MockVariableSizeColumnDefinition.GetColumn(ColumnName);
+            other.AllowNulls = false;
+            other.Size = 20;
 
             bool actual = definition.Equals(other);
 
@@ -47,11 +43,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             definition.AllowNulls = false;
             definition.IsMaximumSize = true;
-            var other = new MockVariableSizeColumnDefinition(ColumnName, SqlDbType.NVarChar)
-            {
-                AllowNulls = false,
-                IsMaximumSize = true,
-            };
+            var other = MockVariableSizeColumnDefinition.GetColumn(ColumnName);
+            other.AllowNulls = false;
+            other.IsMaximumSize = true;
 
             bool actual = definition.Equals(other);
 
@@ -106,7 +100,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             definition.AllowNulls = false;
             string expected = new StringBuilder()
                 .Append("Name: " + ColumnName)
-                .Append(", Type: NVarChar")
+                .Append(", Type: VarChar")
                 .Append(", Allow Nulls: False")
                 .Append(", Size: 10")
                 .ToString();

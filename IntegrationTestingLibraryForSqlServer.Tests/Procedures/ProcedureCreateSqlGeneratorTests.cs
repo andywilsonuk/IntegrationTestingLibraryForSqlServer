@@ -31,7 +31,8 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void CreateProcedureWithSingleParameter()
         {
-            procedure.Parameters.Add(new IntegerProcedureParameter(IntegerColumnName, SqlDbType.Int, ParameterDirection.Input));
+            procedure.Parameters.AddInteger(IntegerColumnName, SqlDbType.Int).Direction = ParameterDirection.Input;
+           
             string expected = $"create procedure {ProcedureName} {IntegerColumnName} Int as begin {ProcedureBody} end";
 
             string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
@@ -42,8 +43,8 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void CreateProcedureWithMultipleParameters()
         {
-            procedure.Parameters.Add(new IntegerProcedureParameter(IntegerColumnName, SqlDbType.Int, ParameterDirection.Input));
-            procedure.Parameters.Add(new StringProcedureParameter(StringColumnName, SqlDbType.NVarChar, ParameterDirection.Input));
+            procedure.Parameters.AddInteger(IntegerColumnName, SqlDbType.Int).Direction = ParameterDirection.Input;
+            procedure.Parameters.AddString(StringColumnName, SqlDbType.NVarChar).Direction = ParameterDirection.Input;
             string expected = $"create procedure {ProcedureName} {IntegerColumnName} Int,{StringColumnName} NVarChar(1) as begin {ProcedureBody} end";
 
             string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
@@ -54,7 +55,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void CreateProcedureWithNVarCharParameter()
         {
-            procedure.Parameters.Add(new StringProcedureParameter(StringColumnName, SqlDbType.NVarChar, ParameterDirection.Input) { Size = 100 });
+            var parameter = procedure.Parameters.AddString(StringColumnName, SqlDbType.NVarChar);
+            parameter.Direction = ParameterDirection.Input;
+            parameter.Size = 100;
             string expected = $"create procedure {ProcedureName} {StringColumnName} NVarChar(100) as begin {ProcedureBody} end";
 
             string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
@@ -65,7 +68,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void CreateProcedureWithNVarCharNoSizeParameter()
         {
-            procedure.Parameters.Add(new StringProcedureParameter(StringColumnName, SqlDbType.NVarChar, ParameterDirection.Input));
+            procedure.Parameters.AddString(StringColumnName, SqlDbType.NVarChar).Direction = ParameterDirection.Input;
             string expected = $"create procedure {ProcedureName} {StringColumnName} NVarChar(1) as begin {ProcedureBody} end";
 
             string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
@@ -76,7 +79,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void CreateProcedureWithMaxSizeNVarCharParameter()
         {
-            procedure.Parameters.Add(new StringProcedureParameter(StringColumnName, SqlDbType.NVarChar, ParameterDirection.Input) { IsMaximumSize = true });
+            var parameter = procedure.Parameters.AddString(StringColumnName, SqlDbType.NVarChar);
+            parameter.Direction = ParameterDirection.Input;
+            parameter.IsMaximumSize = true;
             string expected = $"create procedure {ProcedureName} {StringColumnName} NVarChar(max) as begin {ProcedureBody} end";
 
             string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
@@ -87,7 +92,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void CreateProcedureWithDecimalParameter()
         {
-            procedure.Parameters.Add(new DecimalProcedureParameter("money", ParameterDirection.Input) { Precision = 10, Scale = 5 });
+            var parameter = procedure.Parameters.AddDecimal("money");
+            parameter.Direction = ParameterDirection.Input;
+            parameter.Precision = 10;
+            parameter.Scale = 5;
             string expected = $"create procedure {ProcedureName} @money Decimal(10,5) as begin {ProcedureBody} end";
 
             string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
@@ -98,7 +106,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void CreateProcedureWithOutputParameter()
         {
-            procedure.Parameters.Add(new IntegerProcedureParameter(IntegerColumnName, SqlDbType.Int, ParameterDirection.Output));
+            procedure.Parameters.AddInteger(IntegerColumnName, SqlDbType.Int).Direction = ParameterDirection.Output;
             string expected = $"create procedure {ProcedureName} {IntegerColumnName} Int OUTPUT as begin {ProcedureBody} end";
 
             string actual = new ProcedureCreateSqlGenerator().Sql(procedure);

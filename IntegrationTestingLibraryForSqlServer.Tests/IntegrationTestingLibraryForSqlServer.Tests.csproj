@@ -114,6 +114,7 @@
     <Compile Include="Tables\Columns\MockColumnDefinition.cs" />
     <Compile Include="Tables\Columns\MockVariableSizeColumnDefinition.cs" />
     <Compile Include="Tables\Columns\StandardColumnDefinitionTests.cs" />
+    <Compile Include="Tables\ColumnDefinitionCollectionTests.cs" />
     <Compile Include="Tables\SchemaRowToColumnMapperTests.cs" />
     <Compile Include="Tables\DataRecordToColumnMapperTests.cs" />
     <Compile Include="Tables\Columns\BinaryColumnDefinitionTests.cs" />

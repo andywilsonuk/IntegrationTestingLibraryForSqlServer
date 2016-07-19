@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IntegrationTestingLibraryForSqlServer
 {
-    internal class ProcedureParameterCollection : DistinctCollection<ProcedureParameter>
+    public class ProcedureParameterCollection : DistinctCollection<ProcedureParameter>
     {
         private static IEqualityComparer<ProcedureParameter> comparer = new NameEqualityComparer<ProcedureParameter>(GetName);
 
@@ -16,9 +13,15 @@ namespace IntegrationTestingLibraryForSqlServer
         {
         }
 
-        public IEnumerable<ProcedureParameter> ExcludingReturnValue
+        public IEnumerable<ProcedureParameter> ExceptReturnValue
         {
             get { return Items.Where(x => x.Direction != ParameterDirection.ReturnValue); }
+        }
+
+        public void AddReturnValue()
+        {
+            if (Items.Any(x => x.Direction == ParameterDirection.ReturnValue)) return;
+            Add(new IntegerProcedureParameter("returnValue", SqlDbType.Int, ParameterDirection.ReturnValue));
         }
 
         internal static string GetName(ProcedureParameter parameter) => parameter?.Name;

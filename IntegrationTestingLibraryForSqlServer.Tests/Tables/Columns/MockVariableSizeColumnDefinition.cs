@@ -15,5 +15,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         protected override bool IsDataTypeAllowed => true;
+
+        public static MockVariableSizeColumnDefinition GetColumn(string name)
+        {
+            return new MockVariableSizeColumnDefinition(name, SqlDbType.VarChar);
+        }
     }
 }

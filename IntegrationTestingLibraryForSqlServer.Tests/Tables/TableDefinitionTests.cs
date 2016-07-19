@@ -132,11 +132,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void TableDefinitionToString()
         {
             source.Columns.Clear();
-            source.Columns.Add(new StringColumnDefinition(ColumnName, SqlDbType.NVarChar)
-            {
-                Size = 10,
-                AllowNulls = true,
-            });
+            var column = source.Columns.AddString(ColumnName, SqlDbType.NVarChar);
+            column.Size = 10;
+            column.AllowNulls = true;
 
             string expected = new StringBuilder()
                 .AppendLine("Name: [dbo].[table1]")
@@ -171,7 +169,8 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void TableDefinitionIsSubsetAdditionalColumn()
         {
-            var other = new TableDefinition(tableName, new[] { sourceColumn, new StringColumnDefinition(AlternativeColumnName, SqlDbType.NVarChar) });
+            var other = new TableDefinition(tableName, new[] { sourceColumn });
+            other.Columns.AddString(AlternativeColumnName, SqlDbType.NVarChar);
 
             bool actual = source.IsSubset(other);
 
@@ -182,7 +181,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void TableDefinitionIsNotSubsetMissingColumn()
         {
             var other = new TableDefinition(tableName, new[] { sourceColumn });
-            source.Columns.Add(new StringColumnDefinition(AlternativeColumnName, SqlDbType.NVarChar));
+            source.Columns.AddString(AlternativeColumnName, SqlDbType.NVarChar);
 
             bool actual = source.IsSubset(other);
 
@@ -192,8 +191,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void TableDefinitionIsSubsetEqualMixedOrder()
         {
-            var column2 = new StringColumnDefinition(AlternativeColumnName, SqlDbType.NVarChar);
-            source.Columns.Add(column2);
+            var column2 = source.Columns.AddString(AlternativeColumnName, SqlDbType.NVarChar);
             var other = new TableDefinition(tableName, new[] { column2, sourceColumn });
 
             bool actual = source.IsSubset(other);
@@ -239,7 +237,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void TableDefinitionVerifyNotSubsetMissingColumnThrows()
         {
             var superset = new TableDefinition(tableName, new[] { sourceColumn });
-            source.Columns.Add(new StringColumnDefinition(AlternativeColumnName, SqlDbType.NVarChar));
+            source.Columns.AddString(AlternativeColumnName, SqlDbType.NVarChar);
 
             source.VerifyEqualOrSubsetOf(superset);
         }

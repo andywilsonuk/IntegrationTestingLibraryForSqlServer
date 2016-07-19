@@ -20,7 +20,7 @@ namespace IntegrationTestingLibraryForSqlServer
 
         private string CreateCommaSeparatedParameters(ProcedureDefinition definition)
         {
-            return string.Join(",", definition.ParametersWithoutReturnValue.Select(x => GetFormattedParameterLine(x)));
+            return string.Join(",", definition.Parameters.ExceptReturnValue.Select(x => GetFormattedParameterLine(x)));
         }
 
         private string GetFormattedParameterLine(ProcedureParameter parameter)

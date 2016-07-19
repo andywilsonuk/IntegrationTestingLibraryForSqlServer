@@ -28,18 +28,23 @@ database.Drop();
 ###Creating tables
 Tables can be created with the same structure as the 'real' table.
 ```C#
-var column = new IntegerColumnDefinition("c1", SqlDbType.Int);
-var definition = new TableDefinition(tableName, new[] { column });
+var definition = new TableDefinition(tableName);
+definition.Columns.AddInteger("c1", SqlDbType.Int);
 definition.CreateOrReplace(database);
 ```
 ####Notes
-* The most convenient way to create columns of the correct type is to use the ```ColumnDefinitionFactory``` factory.
+* A convenient way to create columns of the correct type is to use the ```ColumnDefinitionFactory``` factory although the resultant 
+object will need to be casted to the specific type so that the extended properties can be changed.
 * A create ```TableDefinition``` statement can be generated from a 'real' table using the [C# code generator](#code-generation).
 
 ####Standard columns
 Most columns have no special properties. 
 ```C#
 var column = new StandardColumnDefinition("c1", SqlDbType.DateTime);
+```
+or
+```C#
+var column = tableDefinition.Columns.AddStandard("c1", SqlDbType.DateTime);
 ```
 ####Integer columns
 Columns that can be used as Identity columns have a ```SqlDbType``` of ```Int```, ```BigInt```, ```SmallInt```, ```TinyInt``` and provide an ```IdentitySeed``` column.
@@ -48,6 +53,12 @@ var column = new IntegerColumnDefinition("c1", SqlDbType.Int)
 {
     IdentitySeed = 1
 };
+tableDefinition.Columns.Add(column);
+```
+or
+```C#
+var column = tableDefinition.Columns.AddInteger("c1", SqlDbType.Int);
+column.IdentitySeed = 1;
 ```
 ####Decimal columns
 Columns with a ```SqlDbType``` of ```Decimal``` (also shown in SQL Server as Numeric) can include ```Precision``` and ```Scale```. See [decimal and numeric (Transact-SQL)](https://msdn.microsoft.com/en-us/library/ms187746.aspx) for more details on usage.
@@ -58,6 +69,10 @@ var column = new DecimalColumnDefinition("c1")
 	Scale = 0
 };
 ```
+or
+```C#
+var column = tableDefinition.Columns.AddDecimal("c1");
+```
 ####String columns
 String-like columns, that is with a ```SqlDbType``` of ```Char```, ```VarChar```, ```NChar```, ```NVarChar``` can include ```Size```.
 The property ```IsMaximumSize``` is a convenient way to set the column to the maximum size.
@@ -67,6 +82,10 @@ var column = new StringColumnDefinition("c1", SqlDbType.NVarChar)
     Size = 100
 };
 ```
+or
+```C#
+var column = tableDefinition.Columns.AddString("c1", SqlDbType.NVarChar);
+```
 ####Binary columns
 Variable length binary columns (```SqlDbType``` of ```Binary``` or ```VarBinary```) can include ```Size```.
 The property ```IsMaximumSize``` is a convenient way to set the column to the maximum size.
@@ -75,6 +94,10 @@ var column = new BinaryColumnDefinition("c1", SqlDbType.Binary)
 {
     Size = 1000
 };
+```
+or
+```C#
+var column = tableDefinition.Columns.AddBinary("c1", SqlDbType.Binary);
 ```
 ###Populating tables with data
 Tables can be loaded with initial data.
@@ -167,24 +190,31 @@ checker.VerifyMatch(viewDefinition);
 ##Procedures
 ###Creating procedures
 Procedures can be created with the same definition as the 'real' stored procedure but with predictable return values.
-The most convenient way to create parameters of the correct type is to use the ```ProcedureParameterFactory``` factory
 ```C#
-List<ProcedureParameter> parameters = new List<ProcedureParameter>();
-parameters.Add(new StandardProcedureParameter("@p1", SqlDbType.Int, ParameterDirection.Input));
-parameters.Add(new StringProcedureParameter("@p2", SqlDbType.NVarChar, ParameterDirection.InputOutput));
-ProcedureDefinition definition = new ProcedureDefinition(procedureName, parameters)
+ProcedureDefinition definition = new ProcedureDefinition(procedureName)
 {
     Body = @"set @p2 = 'ok'
              return 5"
 };
+definition.AddStandard("@p1", SqlDbType.Int).Direction = ParameterDirection.Input;
+definition.AddString("@p2", SqlDbType.NVarChar);
 definition.CreateOrReplace(database);
+
+####Notes
+* A convenient way to create parameters of the correct type is to use the ```ProcedureParameterFactory``` factory although the resultant 
+object will need to be casted to the specific type so that the extended properties can be changed.
+* The default direction when using AddStandard, AddString, etc is InputOutput.
 ```
 ####Standard parameters
 Most parameters have no special properties. 
 ```C#
 var parameter = new StandardProcedureParameter("c1", SqlDbType.DateTime, ParameterDirection.InputOutput);
+procedureDefinition.Parameters.Add(parameter);
 ```
-
+or
+```C#
+var parameter = procedureDefinition.Parameters.AddStandard("@c1", SqlDbType.DateTime);
+```
 ####Integer parameters
 Parameter for ```SqlDbType``` with values ```Int```, ```BigInt```, ```SmallInt``` and ```TinyInt```.
 ```C#
@@ -193,7 +223,11 @@ var parameter = new IntegerProcedureParameter("c1", SqlDbType.Int, ParameterDire
     IdentitySeed = 1
 };
 ```
-
+or
+```C#
+var parameter = procedureDefinition.Parameters.AddInteger("@c1", SqlDbType.Int);
+parameter.IdentitySeed = 1;
+```
 ####Decimal parameters
 Parameters with a ```SqlDbType``` of ```Decimal``` (and also can shown in SQL Server as Numeric) can include ```Precision``` and ```Scale```. See [decimal and numeric (Transact-SQL)](https://msdn.microsoft.com/en-us/library/ms187746.aspx) for more details on usage.
 ```C#
@@ -202,6 +236,10 @@ var parameter = new DecimalProcedureParameter("c1", ParameterDirection.InputOutp
     Precision = 18,
 	Scale = 0
 };
+```
+or
+```C#
+var parameter = procedureDefinition.Parameters.AddDecimal("@c1");
 ```
 ####String parameters
 Variable size string-like parameters, that is with a ```SqlDbType``` of ```Char```, ```VarChar```, ```NChar```, ```NVarChar``` can include ```Size```.
@@ -212,14 +250,22 @@ var parameter = new StringProcedureParameter("c1", SqlDbType.NVarChar, Parameter
     Size = 100
 };
 ```
+or
+```C#
+var parameter = procedureDefinition.Parameters.AddString("@c1", SqlDbType.NVarChar);
+```
 ####Binary parameters
 Variable length binary parameters (```SqlDbType``` of ```Binary``` or ```VarBinary```) can include ```Size```.
 The property ```IsMaximumSize``` is a convenient way to set the column to the maximum size.
 ```C#
-var column = new BinaryProcedureParameter("c1", SqlDbType.Binary, ParameterDirection.InputOutput)
+var parameter = new BinaryProcedureParameter("c1", SqlDbType.Binary, ParameterDirection.InputOutput)
 {
     Size = 1000
 };
+```
+or
+```C#
+var parameter = procedureDefinition.Parameters.AddBinary("@c1", SqlDbType.Binary);
 ```
 ###Verifying stored procedure structures
 Dependency tests can be created that will compare the expected stored procedure definition with that of the 'real' procedure to ensure that it has not changed definition (and therefore invalidating the primary test cases). ```VerifyMatch``` will throw an exception if the two definitions don't match.
