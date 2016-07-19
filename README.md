@@ -204,7 +204,6 @@ definition.CreateOrReplace(database);
 * A convenient way to create parameters of the correct type is to use the ```ProcedureParameterFactory``` factory although the resultant 
 object will need to be casted to the specific type so that the extended properties can be changed.
 * The default direction when using AddStandard, AddString, etc is InputOutput.
-```
 
 ####Standard parameters
 Most parameters have no special properties. 
