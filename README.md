@@ -199,7 +199,7 @@ ProcedureDefinition definition = new ProcedureDefinition(procedureName)
 definition.AddStandard("@p1", SqlDbType.Int).Direction = ParameterDirection.Input;
 definition.AddString("@p2", SqlDbType.NVarChar);
 definition.CreateOrReplace(database);
-
+```
 ####Notes
 * A convenient way to create parameters of the correct type is to use the ```ProcedureParameterFactory``` factory although the resultant 
 object will need to be casted to the specific type so that the extended properties can be changed.
