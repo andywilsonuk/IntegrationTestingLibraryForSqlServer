@@ -75,7 +75,9 @@
     <Compile Include="Procedures\Parameters\BinaryProcedureParameterTests.cs" />
     <Compile Include="Procedures\Parameters\MockVariableSizeProcedureParameter.cs" />
     <Compile Include="Procedures\Parameters\MockProcedureParameter.cs" />
-    <Compile Include="Procedures\Parameters\ProcedureParameterNameEqualityComparerTests.cs" />
+    <Compile Include="NameEqualityComparerTests.cs" />
+    <Compile Include="DistinctCollectionTests.cs" />
+    <Compile Include="Procedures\ProcedureParameterCollectionTests.cs" />
     <Compile Include="Procedures\ProcedureParameterFactoryTests.cs" />
     <Compile Include="Procedures\ProcedureParameterCollectionExtensionsTests.cs" />
     <Compile Include="Procedures\Parameters\VariableSizeProcedureParameterTests.cs" />
