@@ -112,7 +112,7 @@ var tableData = new TableData
     ColumnNames = new[] { "c1", "c2" },
     Rows = rows
 };
-tableActions.Insert(tableName, tableData, optionalSchemaName);
+tableActions.Insert(tableName, tableData);
 ```
 or, if you have a ```TableDefinition``` object:
 ```C#
@@ -126,7 +126,7 @@ tableActions.CreateView("t1", "v1");
 ```
 or, if you have a TableDefinition object:
 ```C#
-tableDefinition.CreateView(database, "v1", optionalSchemaName);
+tableDefinition.CreateView(database, "v1");
 ```
 ### Verifying table structures
 Dependency tests can be created that will compare the expected table structure with that of the 'real' table 
