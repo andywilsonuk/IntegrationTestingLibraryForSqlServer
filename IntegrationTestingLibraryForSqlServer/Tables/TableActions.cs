@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 
@@ -57,7 +58,6 @@ namespace IntegrationTestingLibraryForSqlServer
                 foreach (var row in tableData.Rows)
                 {
                     string command = hasColumnNames ? generator.Sql(tableName, tableData.ColumnNames) : generator.Sql(tableName, row.Count());
-
                     connection.ExecuteWithParameters(command, row);
                 }
             }

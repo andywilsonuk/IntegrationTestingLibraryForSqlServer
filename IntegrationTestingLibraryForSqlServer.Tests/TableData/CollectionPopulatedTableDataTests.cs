@@ -43,16 +43,13 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
-        public void CollectionPopulatedTableDataNullValueTransformer()
+        public void CollectionPopulatedWithStringDBNullConvertedToDBNull()
         {
-            var expectedColumnNames = new List<string> { "a", "b"};
-            var expectedRows = new List<IList<object>> { new List<object> { DBNull.Value, "2" } };
-            var sourceRows = new List<List<object>> { new List<object> { "NULL", "2" } };
+            var expectedRows = new List<IList<object>> { new List<object> { "1", null } };
+            var sourceRows = new List<List<object>> { new List<object> { "1", "DBNull" } };
 
             var tableData = new CollectionPopulatedTableData(columnNames, sourceRows);
-            tableData.TransformData(new TableDataNullValueTransformer());
 
-            Assert.IsTrue(expectedColumnNames.SequenceEqual(tableData.ColumnNames));
             Assert.IsTrue(expectedRows[0].SequenceEqual(tableData.Rows[0]));
         }
     }

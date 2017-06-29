@@ -63,8 +63,8 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         [TestMethod]
         public void TableDataToString()
         {
-            string expected = @"Column names: a, b
-1, 2
+            string expected = @"Column names: a, b. 
+1, 2. 
 ";
 
             string actual = tableData.ToString();
@@ -76,8 +76,8 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         public void TableDataToStringNoColumnNames()
         {
             tableData.ColumnNames = null;
-            string expected = @"Column names: 
-1, 2
+            string expected = @"Column names: . 
+1, 2. 
 ";
 
             string actual = tableData.ToString();

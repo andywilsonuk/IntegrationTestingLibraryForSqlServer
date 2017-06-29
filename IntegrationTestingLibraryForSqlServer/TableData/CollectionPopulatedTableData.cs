@@ -17,14 +17,12 @@ namespace IntegrationTestingLibraryForSqlServer
         public CollectionPopulatedTableData(IEnumerable<string> columnNames, IEnumerable<IEnumerable<object>> rows)
         {
             ColumnNames = columnNames.ToList();
-            Rows = rows.Select(x => (IList<object>)x.ToList()).ToList();
+            Rows = rows.Select(x => (IList<object>)ReplaceNullWithDbNull(x).ToList()).ToList();
         }
 
-        public void TransformData(TableDataValueTransformer transformer)
+        private IEnumerable<object> ReplaceNullWithDbNull(IEnumerable<object> row)
         {
-            foreach (var row in Rows)
-                for (int i = 0; i < row.Count; ++i)
-                    row[i] = transformer.Transform(row[i]);
+            return row.Select(x => x == null || x.ToString() == "DBNull" ? null : x);
         }
     }
 }

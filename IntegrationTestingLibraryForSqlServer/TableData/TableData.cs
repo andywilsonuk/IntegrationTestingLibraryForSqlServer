@@ -44,10 +44,10 @@ namespace IntegrationTestingLibraryForSqlServer
             StringBuilder sb = new StringBuilder();
             sb.Append("Column names: ");
             if (ColumnNames != null) sb.Append(string.Join(", ", ColumnNames));
-            sb.AppendLine();
+            sb.AppendLine(". ");
 
             foreach (var row in Rows)
-                sb.AppendLine(string.Join(", ", row));
+                sb.AppendLine(string.Join(", ", row) + ". ");
             return sb.ToString();
         }
 

@@ -11,15 +11,12 @@ namespace IntegrationTestingLibraryForSqlServer.TableDataComparison
         {
             if (args.MatchStatus != MatchedValueComparer.NotYetCompared) return;
 
-            if (args.X == null)
+            var xNormalised = args.X ?? DBNull.Value;
+            var yNormalised = args.Y ?? DBNull.Value;
+
+            if (xNormalised == DBNull.Value || yNormalised == DBNull.Value)
             {
-                args.MatchStatus = args.Y == null ? MatchedValueComparer.IsMatch : MatchedValueComparer.NoMatch;
-                return;
-            }
-            if (args.Y == null)
-            {
-                args.MatchStatus = MatchedValueComparer.NoMatch;
-                return;
+                args.MatchStatus = xNormalised == yNormalised ? MatchedValueComparer.IsMatch : MatchedValueComparer.NoMatch;
             }
         }
     }

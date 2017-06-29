@@ -89,11 +89,11 @@ Scenario: Table populate with null
 	When table "test" is populated supporting Null values
 	| Date       |
 	| 2015-10-10 |
-	| NULL       |
+	| DBNull     |
 	Then the table "test" should be populated with Id and dates
 	| Id | Date       |
 	| 70 | 2015-10-10 |
-	| 71 | NULL       |
+	| 71 | DBNull     |
 
 @db
 Scenario: Create a view based on a table

@@ -43,7 +43,6 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         {
             var tableActions = new TableActions(database.ConnectionString);
             var tableData = new CollectionPopulatedTableData(table.Header, table.Rows.Select(x => x.Values));
-            tableData.TransformData(new TableDataNullValueTransformer());
             tableActions.Insert(DatabaseObjectName.FromName(tableName), tableData);
         }
 
@@ -84,11 +83,6 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         public void ThenTheTableShouldBePopulatedWithIdAndDates(string tableName, Table table)
         {
             var expected = new CollectionPopulatedTableData(table.Header, table.Rows.Select(x => x.Values));
-            foreach (var row in expected.Rows)
-            {
-                if (row[1].ToString() == "NULL")
-                    row[1] = DBNull.Value;
-            }
 
             var actual = LoadTableDataFromSql(string.Format("SELECT * FROM {0}", tableName));
 

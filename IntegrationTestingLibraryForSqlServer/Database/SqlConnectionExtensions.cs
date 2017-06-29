@@ -17,7 +17,7 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public static void ExecuteWithParameters(this SqlConnection connection, string commandText, IEnumerable<object> parameterValues)
         {
-            var parameters = parameterValues == null ? new SqlParameter[0] : parameterValues.Select((x, i) => new SqlParameter("@" + i, x)).ToArray();
+            var parameters = parameterValues == null ? new SqlParameter[0] : parameterValues.Select((x, i) => new SqlParameter("@" + i, x ?? DBNull.Value)).ToArray();
 
             using (SqlCommand command = connection.CreateCommand())
             {

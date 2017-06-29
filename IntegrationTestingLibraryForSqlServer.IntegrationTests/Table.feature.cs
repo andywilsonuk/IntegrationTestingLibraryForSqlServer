@@ -516,7 +516,7 @@ this.ScenarioSetup(scenarioInfo);
             table14.AddRow(new string[] {
                         "2015-10-10"});
             table14.AddRow(new string[] {
-                        "NULL"});
+                        "DBNull"});
 #line 89
  testRunner.When("table \"test\" is populated supporting Null values", ((string)(null)), table14, "When ");
 #line hidden
@@ -528,7 +528,7 @@ this.ScenarioSetup(scenarioInfo);
                         "2015-10-10"});
             table15.AddRow(new string[] {
                         "71",
-                        "NULL"});
+                        "DBNull"});
 #line 93
  testRunner.Then("the table \"test\" should be populated with Id and dates", ((string)(null)), table15, "Then ");
 #line hidden
