@@ -1,5 +1,4 @@
-﻿using System;
-namespace IntegrationTestingLibraryForSqlServer
+﻿namespace IntegrationTestingLibraryForSqlServer
 {
     public interface TableDefinitionInterrogationStrategy
     {

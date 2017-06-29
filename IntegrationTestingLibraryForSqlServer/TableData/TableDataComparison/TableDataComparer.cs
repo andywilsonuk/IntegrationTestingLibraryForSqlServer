@@ -1,5 +1,4 @@
-﻿using System;
-namespace IntegrationTestingLibraryForSqlServer.TableDataComparison
+﻿namespace IntegrationTestingLibraryForSqlServer.TableDataComparison
 {
     public interface TableDataComparer
     {

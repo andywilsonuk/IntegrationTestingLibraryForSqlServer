@@ -1,7 +1,4 @@
-﻿using System;
-using System.Data;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {

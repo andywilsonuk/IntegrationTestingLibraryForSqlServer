@@ -2,7 +2,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using IntegrationTestingLibraryForSqlServer.TableDataComparison;
-using System.Collections.Generic;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {

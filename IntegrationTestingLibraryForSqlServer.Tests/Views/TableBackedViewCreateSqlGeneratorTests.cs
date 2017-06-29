@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Data;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
