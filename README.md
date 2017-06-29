@@ -99,8 +99,8 @@ or
 ```C#
 var column = tableDefinition.Columns.AddBinary("c1", SqlDbType.Binary);
 ```
-### Populating tables with data
-Tables can be loaded with initial data.
+### Populating tables with data - list of objects
+Tables can be loaded with initial data using List<object>.
 ```C#
 var tableActions = new TableActions(database.ConnectionString);
 var rows = new List<List<object>>();
@@ -112,6 +112,31 @@ var tableData = new TableData
     ColumnNames = new[] { "c1", "c2" },
     Rows = rows
 };
+tableActions.Insert(tableName, tableData);
+```
+or, if you have a ```TableDefinition``` object:
+```C#
+tableDefinition.Insert(database, tableData);
+```
+```
+### Populating tables with data - object properties
+Tables can be loaded with initial data using the properties on objects.
+```C#
+class Custom
+{
+    public int Value1 { get; set; }
+	public string Value2 { get; set; }
+}
+
+var tableActions = new TableActions(database.ConnectionString);
+var items = new List<Custom>
+{
+    new Custom { Value1 = 10, Value2 = "a" },
+	new Custom { Value2 = 20, Value2 = "b" }
+};
+
+var tableData = new ObjectPopulatedTableData(items);
+
 tableActions.Insert(tableName, tableData);
 ```
 or, if you have a ```TableDefinition``` object:
