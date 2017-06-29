@@ -6,16 +6,16 @@ namespace IntegrationTestingLibraryForSqlServer
 {
     public class TableActions
     {
-        private string connectionString;
-
         public TableActions(string connectionString)
         {
-            this.connectionString = connectionString;
+            ConnectionString = connectionString;
         }
+
+        public string ConnectionString { get; private set; }
 
         public void Create(TableDefinition definition)
         {
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(ConnectionString))
             {
                 connection.Execute(new TableCreateSqlGenerator().Sql(definition));
             }
@@ -28,7 +28,7 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public void Drop(DatabaseObjectName name)
         {
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(ConnectionString))
             {
                 connection.Execute(dropTableCommand, name.Qualified);
             }
@@ -52,7 +52,7 @@ namespace IntegrationTestingLibraryForSqlServer
 
             bool hasColumnNames = tableData.ColumnNames != null && !tableData.ColumnNames.Equals(Enumerable.Empty<string>());
             var generator = new TableInsertSqlGenerator();
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(ConnectionString))
             {
                 foreach (var row in tableData.Rows)
                 {
@@ -70,7 +70,7 @@ namespace IntegrationTestingLibraryForSqlServer
 
             var definition = new TableBackedViewDefinition(viewName, tableName);
 
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(ConnectionString))
             {
                 connection.Execute(new TableBackedViewCreateSqlGenerator().Sql(definition));
             }

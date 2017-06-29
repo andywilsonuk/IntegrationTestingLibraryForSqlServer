@@ -32,7 +32,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
     new BinaryColumnDefinition(""c6"", SqlDbType.VarBinary) { AllowNulls = true, Size = 1000 },
 });";
             // GitHub stores this source file with \n line breaks not \r\n so update it to use the windows format
-            expected = expected.Replace("\n", Environment.NewLine);
+            expected = expected.Replace(Environment.NewLine, "\n").Replace("\n", Environment.NewLine);
 
             Assert.AreEqual(expected, actual);
         }

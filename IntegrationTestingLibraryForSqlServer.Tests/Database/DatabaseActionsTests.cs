@@ -29,6 +29,29 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         }
 
         [TestMethod]
+        public void ConstructorWithoutInitialCatalogInConnectionString()
+        {
+            var database = new DatabaseActions(@"server=(localdb)\MSSQLLocalDB;integrated security=True", "Test");
+
+            Assert.AreEqual("Test", database.Name);
+        }
+
+        [TestMethod]
+        public void ConstructorWithInitialCatalogInConnectionString()
+        {
+            var database = new DatabaseActions(connectionDetails.ToString(), "Test3");
+
+            Assert.AreEqual("Test3", database.Name);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ConstructorWithBlankDatabaseName()
+        {
+            new DatabaseActions(connectionDetails.ToString(), null);
+        }
+
+        [TestMethod]
         public void IsLocalDb()
         {
             DatabaseActions databaseActions = new DatabaseActions(connectionDetails.ToString());

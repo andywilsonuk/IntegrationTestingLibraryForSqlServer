@@ -19,6 +19,16 @@ namespace IntegrationTestingLibraryForSqlServer
             masterConnectionDetails = connectionDetails.ToMasterCatalog();
         }
 
+        public DatabaseActions(string connectionString, string databaseName)
+        {
+            if (string.IsNullOrEmpty(databaseName)) throw new ArgumentException("Database name cannot be blank");
+            connectionDetails = new SqlConnectionStringBuilder(connectionString)
+            {
+                InitialCatalog = databaseName,
+            };
+            masterConnectionDetails = connectionDetails.ToMasterCatalog();
+        }
+
         public string ConnectionString
         {
             get { return connectionDetails.ToString(); }
@@ -27,6 +37,11 @@ namespace IntegrationTestingLibraryForSqlServer
         public bool IsLocalDB
         {
             get { return connectionDetails.DataSource.Contains("(localdb)"); }
+        }
+
+        public string Name
+        {
+            get { return connectionDetails.InitialCatalog; }
         }
 
         public void Create()

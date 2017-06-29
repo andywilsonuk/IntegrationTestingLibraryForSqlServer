@@ -70,6 +70,7 @@
     <Compile Include="Database\DomainAccountTests.cs" />
     <Compile Include="Database\SqlConnectionStringBuilderExtensionsTests.cs" />
     <Compile Include="Database\DatabaseObjectNameTests.cs" />
+    <Compile Include="Database\DatabaseActionsExtensionsTests.cs" />
     <Compile Include="Procedures\Parameters\IntegerProcedureParameterTests.cs" />
     <Compile Include="Procedures\Parameters\StringProcedureParameterTests.cs" />
     <Compile Include="Procedures\Parameters\BinaryProcedureParameterTests.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="Tables\SchemaRowToColumnMapperTests.cs" />
     <Compile Include="Tables\DataRecordToColumnMapperTests.cs" />
     <Compile Include="Tables\Columns\BinaryColumnDefinitionTests.cs" />
+    <Compile Include="Tables\TableActionsTests.cs" />
     <Compile Include="Tables\TableCreateSqlGeneratorTests.cs" />
     <Compile Include="Tables\TableDefinitionExtensionsTests.cs" />
     <Compile Include="Tables\TableDefinitionTests.cs" />

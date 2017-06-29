@@ -96,6 +96,10 @@ this.ScenarioSetup(scenarioInfo);
                         "DELETE"});
             table1.AddRow(new string[] {
                         "EXECUTE"});
+            table1.AddRow(new string[] {
+                        "VIEW ANY COLUMN ENCRYPTION KEY DEFINITION"});
+            table1.AddRow(new string[] {
+                        "VIEW ANY COLUMN MASTER KEY DEFINITION"});
 #line 9
  testRunner.Then("the permissions for \'Administrator\' should be", ((string)(null)), table1, "Then ");
 #line hidden

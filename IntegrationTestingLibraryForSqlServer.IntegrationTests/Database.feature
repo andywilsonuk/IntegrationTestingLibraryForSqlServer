@@ -7,10 +7,12 @@ Scenario: Grant user access
 	When the user 'Administrator' is granted access to the database 
 	# change user to be sql auth
 	Then the permissions for 'Administrator' should be
-	| Permission |
-	| CONNECT    |
-	| SELECT     |
-	| INSERT     |
-	| UPDATE     |
-	| DELETE     |
-	| EXECUTE    |
+	| Permission                                |
+	| CONNECT                                   |
+	| SELECT                                    |
+	| INSERT                                    |
+	| UPDATE                                    |
+	| DELETE                                    |
+	| EXECUTE                                   |
+	| VIEW ANY COLUMN ENCRYPTION KEY DEFINITION |
+	| VIEW ANY COLUMN MASTER KEY DEFINITION     |
