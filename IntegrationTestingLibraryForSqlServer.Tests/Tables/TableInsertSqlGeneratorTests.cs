@@ -1,41 +1,38 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Xunit;
 using System.Collections.Generic;
 
-namespace IntegrationTestingLibraryForSqlServer.Tests.Tables
+namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class TableInsertSqlGeneratorTests
     {
         private DatabaseObjectName tableName = DatabaseObjectName.FromName("t1");
         private List<string> columnNames = new List<string> { "c1" };
         private TableInsertSqlGenerator generator = new TableInsertSqlGenerator();
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void InsertTableNullNameThrowsException()
         {
-            generator.Sql(null, columnNames);
+            Assert.Throws<ArgumentNullException>(() => generator.Sql(null, columnNames));
         }
 
-        [TestMethod]
+        [Fact]
         public void InsertTable()
         {
             string expected = string.Format("INSERT INTO {0} (c1) SELECT @0", tableName.Qualified);
 
             string actual = generator.Sql(tableName, columnNames);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void InsertTableNullColumnNames()
         {
-            generator.Sql(tableName, null);
+            Assert.Throws<ArgumentNullException>(() => generator.Sql(tableName, null));
         }
 
-        [TestMethod]
+        [Fact]
         public void InsertTableMultipleColumns()
         {
             string expected = string.Format("INSERT INTO {0} (c1,c2) SELECT @0,@1", tableName.Qualified);
@@ -43,31 +40,29 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Tables
 
             string actual = generator.Sql(tableName, columnNames);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void InsertTableNoColumnNamesNullNameThrowsException()
         {
-            generator.Sql(null, 2);
+            Assert.Throws<ArgumentNullException>(() => generator.Sql(null, 2));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void InsertTableNoColumnNamesInvalidCountThrowsException()
         {
-            generator.Sql(tableName, -1);
+            Assert.Throws<ArgumentException>(() => generator.Sql(tableName, -1));
         }
 
-        [TestMethod]
+        [Fact]
         public void InsertTableNoColumnNames()
         {
             string expected = string.Format("INSERT INTO {0} SELECT @0", tableName.Qualified);
 
             string actual = generator.Sql(tableName, 1);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
     }
 }

@@ -1,60 +1,58 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Xunit;
 using System.Data;
 using System.Text;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class ColumnDefinitionTests
     {
         private const string ColumnName = "c1";
         private ColumnDefinition definition = MockColumnDefinition.GetColumn(ColumnName);
 
-        [TestMethod]
+        [Fact]
         public void ColumnDefinitionConstructor()
         {
-            Assert.AreEqual(ColumnName, definition.Name);
-            Assert.AreEqual(SqlDbType.Int, definition.DataType.SqlType);
+            Assert.Equal(ColumnName, definition.Name);
+            Assert.Equal(SqlDbType.Int, definition.DataType.SqlType);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void ColumnDefinitionConstructorNullName()
         {
-            new MockColumnDefinition(null, SqlDbType.Int);
+            Assert.Throws<ArgumentNullException>(() => new MockColumnDefinition(null, SqlDbType.Int));
         }
 
 
-        [TestMethod]
+        [Fact]
         public void ColumnDefinitionNotEqualsNull()
         {
             bool actual = definition.Equals(null);
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void ColumnDefinitionNotEqualsName()
         {
             var other = MockColumnDefinition.GetColumn("other");
 
             bool actual = definition.Equals(other);
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void ColumnDefinitionNotEqualsDataType()
         {
             var other = new MockColumnDefinition(ColumnName, SqlDbType.SmallDateTime);
 
             bool actual = definition.Equals(other);
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void ColumnDefinitionNotEqualsAllowNulls()
         {
             definition.AllowNulls = false;
@@ -63,20 +61,20 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = definition.Equals(other);
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void ColumnDefinitionGetHashCode()
         {
             int expected = ColumnName.ToLowerInvariant().GetHashCode();
 
             int actual = definition.GetHashCode();
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void ColumnDefinitionToString()
         {
             definition.AllowNulls = false;
@@ -88,7 +86,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             string actual = definition.ToString();
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
     }
 }

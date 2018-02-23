@@ -1,80 +1,76 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Xunit;
 using System.Data;
 using System.Text;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class DecimalColumnDefinitionTests
     {
         private DecimalColumnDefinition column = new DecimalColumnDefinition("D1");
 
-        [TestMethod]
+        [Fact]
         public void ConstructorBasics()
         {
-            Assert.AreEqual(SqlDbType.Decimal, column.DataType.SqlType);
-            Assert.AreEqual("D1", column.Name);
-            Assert.AreEqual(18, column.Precision);
-            Assert.AreEqual(0, column.Scale);
+            Assert.Equal(SqlDbType.Decimal, column.DataType.SqlType);
+            Assert.Equal("D1", column.Name);
+            Assert.Equal(18, column.Precision);
+            Assert.Equal(0, column.Scale);
         }
-        [TestMethod]
+        [Fact]
         public void PrecisionIncrease()
         {
             column.Precision = 28;
 
-            Assert.AreEqual(28, column.Precision);
+            Assert.Equal(28, column.Precision);
         }
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void PrecisionZero()
         {
-            column.Precision = 0;
+            Assert.Throws<ArgumentException>(() => column.Precision = 0);
         }
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void PrecisionExceedsMaximum()
         {
-            column.Precision = 39;
+            Assert.Throws<ArgumentException>(() => column.Precision = 39);
         }
-        [TestMethod]
+        [Fact]
         public void PrecisionMaximum()
         {
             column.Precision = 38;
 
-            Assert.AreEqual(38, column.Precision);
+            Assert.Equal(38, column.Precision);
         }
-        [TestMethod]
+        [Fact]
         public void PrecisionMinimum()
         {
             column.Precision = 1;
 
-            Assert.AreEqual(1, column.Precision);
+            Assert.Equal(1, column.Precision);
         }
-        [TestMethod]
+        [Fact]
         public void PrecisionDecreaseReducesScale()
         {
             column.Scale = 5;
             column.Precision = 2;
 
-            Assert.AreEqual(2, column.Precision);
-            Assert.AreEqual(2, column.Scale);
+            Assert.Equal(2, column.Precision);
+            Assert.Equal(2, column.Scale);
         }
-        [TestMethod]
+        [Fact]
         public void ScaleIncrease()
         {
             column.Scale = 2;
 
-            Assert.AreEqual(2, column.Scale);
+            Assert.Equal(2, column.Scale);
         }
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void ScaleExceedsPrecision()
         {
             column.Precision = 5;
-            column.Scale = 6;
+            Assert.Throws<ArgumentException>(() => column.Scale = 6);
         }
-        [TestMethod]
+        [Fact]
         public void DecimalColumnDefinitionToString()
         {
             column.Precision = 10;
@@ -91,9 +87,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             string actual = column.ToString();
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
-        [TestMethod]
+        [Fact]
         public void DecimalColumnDefinitionWithIdentityToString()
         {
             column.Precision = 10;
@@ -109,56 +105,59 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             string actual = column.ToString();
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void ScaleCannotBeSetWithIdentity()
         {
             column.IdentitySeed = 1;
-            column.Scale = 2;
+            Assert.Throws<ArgumentException>(() => column.Scale = 2);
         }
-        [TestMethod]
+        [Fact]
         public void EqualsInvalidBase()
         {
             DecimalColumnDefinition other = new DecimalColumnDefinition("D2");
 
             bool actual = column.Equals(other);
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
-        [TestMethod]
+        [Fact]
         public void EqualsWrongTypeCompare()
         {
             ColumnDefinition other = new StandardColumnDefinition("D1", SqlDbType.DateTime);
 
             bool actual = column.Equals(other);
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
-        [TestMethod]
+        [Fact]
         public void EqualsInvalidPrecision()
         {
-            DecimalColumnDefinition other = new DecimalColumnDefinition(column.Name);
-            other.Precision = 10;
+            DecimalColumnDefinition other = new DecimalColumnDefinition(column.Name)
+            {
+                Precision = 10
+            };
             column.Precision = 8;
 
             bool actual = column.Equals(other);
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
-        [TestMethod]
+        [Fact]
         public void EqualsInvalidScale()
         {
-            DecimalColumnDefinition other = new DecimalColumnDefinition(column.Name);
-            other.Scale = 2;
+            DecimalColumnDefinition other = new DecimalColumnDefinition(column.Name)
+            {
+                Scale = 2
+            };
             column.Scale = 0;
 
             bool actual = column.Equals(other);
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
-        [TestMethod]
+        [Fact]
         public void EqualsValid()
         {
             DecimalColumnDefinition other = new DecimalColumnDefinition(column.Name);
@@ -167,7 +166,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = column.Equals(other);
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
     }
 }

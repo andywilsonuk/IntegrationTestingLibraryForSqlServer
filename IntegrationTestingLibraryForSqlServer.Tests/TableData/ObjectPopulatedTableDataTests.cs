@@ -1,13 +1,12 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Xunit;
 using System.Collections.Generic;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class ObjectPopulatedTableDataTests
     {
-        [TestMethod]
+        [Fact]
         public void PopulateFromObject()
         {
             var source = new List<Tuple<string, int>>
@@ -18,13 +17,13 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             var tableData = new ObjectPopulatedTableData<Tuple<string, int>>(source);
 
-            Assert.AreEqual(2, tableData.ColumnNames.Count);
-            Assert.IsTrue(tableData.ColumnNames.Contains("Item1"));
-            Assert.IsTrue(tableData.ColumnNames.Contains("Item2"));
-            Assert.AreEqual("a", tableData.Rows[0][0]);
-            Assert.AreEqual(1, tableData.Rows[0][1]);
-            Assert.AreEqual("b", tableData.Rows[1][0]);
-            Assert.AreEqual(2, tableData.Rows[1][1]);
+            Assert.Equal(2, tableData.ColumnNames.Count);
+            Assert.True(tableData.ColumnNames.Contains("Item1"));
+            Assert.True(tableData.ColumnNames.Contains("Item2"));
+            Assert.Equal("a", tableData.Rows[0][0]);
+            Assert.Equal(1, tableData.Rows[0][1]);
+            Assert.Equal("b", tableData.Rows[1][0]);
+            Assert.Equal(2, tableData.Rows[1][1]);
         }
     }
 }

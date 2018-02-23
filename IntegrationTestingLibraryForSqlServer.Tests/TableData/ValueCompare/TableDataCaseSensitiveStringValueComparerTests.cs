@@ -1,20 +1,18 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using IntegrationTestingLibraryForSqlServer.TableDataComparison;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class TableDataCaseSensitiveStringValueComparerTests
     {
         private TableDataCaseSensitiveStringValueComparer comparer;
 
-        [TestInitialize]
-        public void TestInitialize()
+        public TableDataCaseSensitiveStringValueComparerTests()
         {
             comparer = new TableDataCaseSensitiveStringValueComparer();
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataCaseSensitiveStringValueComparerIsMatchTrue()
         {
             string x = "a";
@@ -22,10 +20,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = comparer.IsMatch(x, y);
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataCaseSensitiveStringValueComparerIsMatchTrueForInteger()
         {
             int x = 1;
@@ -33,10 +31,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = comparer.IsMatch(x, y);
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataCaseSensitiveStringValueComparerIsMatchFalse()
         {
             string x = "a";
@@ -44,10 +42,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = comparer.IsMatch(x, y);
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataCaseSensitiveStringValueComparerIsMatchFalseNullX()
         {
             string x = null;
@@ -55,10 +53,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = comparer.IsMatch(x, y);
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataCaseSensitiveStringValueComparerIsMatchFalseNullY()
         {
             string x = "a";
@@ -66,10 +64,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = comparer.IsMatch(x, y);
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataCaseSensitiveStringValueComparerIsMatchTrueBothNull()
         {
             string x = null;
@@ -77,7 +75,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = comparer.IsMatch(x, y);
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
     }
 }

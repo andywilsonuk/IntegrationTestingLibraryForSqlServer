@@ -1,26 +1,24 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Xunit;
 using System.Collections.Generic;
 using IntegrationTestingLibraryForSqlServer.TableDataComparison;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class TableDataOrdinalRowComparerTests
     {
         private TableDataOrdinalRowComparer comparer;
         private TableDataCaseSensitiveStringValueComparer valueComparer;
         private IList<int> indexMappings;
 
-        [TestInitialize]
-        public void TestInitialize()
+        public TableDataOrdinalRowComparerTests()
         {
             indexMappings = new List<int> { 0, 1, 2 };
             comparer = new TableDataOrdinalRowComparer();
             valueComparer = new TableDataCaseSensitiveStringValueComparer();
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataOrdinalRowComparerIsMatchTrue()
         {
             var rowsX = new List<IList<object>> { new List<object> { "a", "b", "c" }, new List<object> { "d", "e", "f" } };
@@ -29,10 +27,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = comparer.IsMatch();
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataOrdinalRowComparerIsMatchMismatchedRows()
         {
             var rowsX = new List<IList<object>> { new List<object> { "a", "b", "c" }, new List<object> { "d", "e", "f" } };
@@ -41,10 +39,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = comparer.IsMatch();
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataOrdinalRowComparerIsMatchFalse()
         {
             var rowsX = new List<IList<object>> { new List<object> { "a", "b", "c" } };
@@ -53,10 +51,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = comparer.IsMatch();
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataOrdinalRowComparerIsMatchWithIndexMappingTrue()
         {
             indexMappings = new List<int> { 1, 0, 2 };
@@ -66,10 +64,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = comparer.IsMatch();
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataOrdinalRowComparerIsMatchMismatchedRowsY()
         {
             var rowsX = new List<IList<object>> { new List<object> { "a", "b", "c" } };
@@ -78,25 +76,23 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = comparer.IsMatch();
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void TableDataOrdinalRowComparerIsMatchMismatchedColumnValuesX()
         {
             var rowsX = new List<IList<object>> { new List<object> { "a", "b" } };
             var rowsY = new List<IList<object>> { new List<object> { "a", "b", "c" } };
-            comparer.Initialise(rowsX, rowsY, indexMappings, valueComparer);
+            Assert.Throws<ArgumentException>(() => comparer.Initialise(rowsX, rowsY, indexMappings, valueComparer));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void TableDataOrdinalRowComparerIsMatchMismatchedColumnsValueY()
         {
             var rowsX = new List<IList<object>> { new List<object> { "a", "b", "c" } };
             var rowsY = new List<IList<object>> { new List<object> { "a", "b" } };
-            comparer.Initialise(rowsX, rowsY, indexMappings, valueComparer);
+            Assert.Throws<ArgumentException>(() => comparer.Initialise(rowsX, rowsY, indexMappings, valueComparer));
         }
     }
 }

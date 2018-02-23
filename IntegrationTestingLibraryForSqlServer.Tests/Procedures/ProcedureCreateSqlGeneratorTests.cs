@@ -1,10 +1,9 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Xunit;
 using System.Data;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class ProcedureCreateSqlGeneratorTests
     {
         private const string ProcedureName = "[dbo].[testproc]";
@@ -13,22 +12,20 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         private const string ProcedureBody = "return 5";
         private ProcedureDefinition procedure = new ProcedureDefinition(ProcedureName) { Body = ProcedureBody };
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void CreateProcedureNullThrowsException()
         {
-            new ProcedureCreateSqlGenerator().Sql(null);
+            Assert.Throws<ArgumentNullException>(() => new ProcedureCreateSqlGenerator().Sql(null));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void CreateProcedureWithoutBodyThrowsException()
         {
             procedure.Body = null;
-            new ProcedureCreateSqlGenerator().Sql(procedure);
+            Assert.Throws<ArgumentException>(() => new ProcedureCreateSqlGenerator().Sql(procedure));
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateProcedureWithSingleParameter()
         {
             procedure.Parameters.AddInteger(IntegerColumnName, SqlDbType.Int).Direction = ParameterDirection.Input;
@@ -37,10 +34,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateProcedureWithMultipleParameters()
         {
             procedure.Parameters.AddInteger(IntegerColumnName, SqlDbType.Int).Direction = ParameterDirection.Input;
@@ -49,10 +46,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateProcedureWithNVarCharParameter()
         {
             var parameter = procedure.Parameters.AddString(StringColumnName, SqlDbType.NVarChar);
@@ -62,10 +59,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateProcedureWithNVarCharNoSizeParameter()
         {
             procedure.Parameters.AddString(StringColumnName, SqlDbType.NVarChar).Direction = ParameterDirection.Input;
@@ -73,10 +70,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateProcedureWithMaxSizeNVarCharParameter()
         {
             var parameter = procedure.Parameters.AddString(StringColumnName, SqlDbType.NVarChar);
@@ -86,10 +83,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateProcedureWithDecimalParameter()
         {
             var parameter = procedure.Parameters.AddDecimal("money");
@@ -100,10 +97,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateProcedureWithOutputParameter()
         {
             procedure.Parameters.AddInteger(IntegerColumnName, SqlDbType.Int).Direction = ParameterDirection.Output;
@@ -111,7 +108,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             string actual = new ProcedureCreateSqlGenerator().Sql(procedure);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
     }
 }

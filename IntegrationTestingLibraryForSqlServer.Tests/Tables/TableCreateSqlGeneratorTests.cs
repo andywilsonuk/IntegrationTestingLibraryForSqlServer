@@ -1,30 +1,27 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Xunit;
 using System.Data;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class TableCreateSqlGeneratorTests
     {
         TableCreateSqlGenerator generator = new TableCreateSqlGenerator();
         TableDefinition definition = new TableDefinition("t1");
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void CreateTableNullThrowsException()
         {
-            generator.Sql(null);
+            Assert.Throws<ArgumentNullException>(() => generator.Sql(null));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void CreateTableZeroColumnsThrowsException()
         {
-            generator.Sql(definition);
+            Assert.Throws<ArgumentException>(() => generator.Sql(definition));
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateTableNullableColumn()
         {
             string expected = "CREATE TABLE [dbo].[t1] ([c1] Int NULL)";
@@ -32,10 +29,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             string actual = generator.Sql(definition);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateTableWithMultipleColumns()
         {
             string expected = "CREATE TABLE [dbo].[t1] ([c1] Int NULL,[c2] NVarChar(1) NULL)";
@@ -44,10 +41,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             string actual = generator.Sql(definition);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateTableWithStringLikeColumn()
         {
             string expected = "CREATE TABLE [dbo].[t1] ([c1] NVarChar(100) NULL)";
@@ -55,10 +52,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             string actual = generator.Sql(definition);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateTableWithStringLikeColumnNoSize()
         {
             string expected = "CREATE TABLE [dbo].[t1] ([c1] NVarChar(1) NULL)";
@@ -66,10 +63,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             string actual = generator.Sql(definition);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateTableWithStringLikeColumnMaxSize()
         {
             string expected = "CREATE TABLE [dbo].[t1] ([c1] NVarChar(max) NULL)";
@@ -77,10 +74,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             string actual = generator.Sql(definition);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateTableWithBinaryColumn()
         {
             string expected = "CREATE TABLE [dbo].[t1] ([c1] Binary(10) NULL)";
@@ -88,10 +85,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             string actual = generator.Sql(definition);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateTableWithDecimalColumn()
         {
             string expected = "CREATE TABLE [dbo].[t1] ([c1] Decimal(10,5) NULL)";
@@ -101,10 +98,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             string actual = generator.Sql(definition);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateTableWithIdentity()
         {
             string expected = "CREATE TABLE [dbo].[t1] ([c1] Int IDENTITY(8,1) NOT NULL)";
@@ -114,7 +111,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             string actual = generator.Sql(definition);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
     }
 }

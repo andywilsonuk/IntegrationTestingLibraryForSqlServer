@@ -1,13 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Data;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class ProcedureParameterFactoryTests
     {
-        [TestMethod]
+        [Fact]
         public void FromRawDateTime()
         {
             var source = new ProcedureParameterRaw
@@ -20,14 +19,14 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             var actual = factory.FromRaw(new[] { source }).ToList();
 
-            Assert.AreEqual(1, actual.Count);
-            Assert.AreEqual(source.Name, actual[0].Name);
-            Assert.IsInstanceOfType(actual[0], typeof(StandardProcedureParameter));
-            Assert.AreEqual(SqlDbType.DateTime, actual[0].DataType.SqlType);
-            Assert.AreEqual(source.Direction, actual[0].Direction);
+            Assert.Single(actual);
+            Assert.Equal(source.Name, actual[0].Name);
+            Assert.IsType<StandardProcedureParameter>(actual[0]);
+            Assert.Equal(SqlDbType.DateTime, actual[0].DataType.SqlType);
+            Assert.Equal(source.Direction, actual[0].Direction);
         }
 
-        [TestMethod]
+        [Fact]
         public void FromRawDecimal()
         {
             var source = new ProcedureParameterRaw
@@ -41,12 +40,12 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             var actual = factory.FromRaw(new[] { source }).ToList();
 
-            Assert.AreEqual(SqlDbType.Decimal, actual[0].DataType.SqlType);
-            Assert.IsInstanceOfType(actual[0], typeof(DecimalProcedureParameter));
-            Assert.AreEqual(source.Size, ((DecimalProcedureParameter)actual[0]).Precision);
-            Assert.AreEqual(source.DecimalPlaces, ((DecimalProcedureParameter)actual[0]).Scale);
+            Assert.Equal(SqlDbType.Decimal, actual[0].DataType.SqlType);
+            Assert.IsType<DecimalProcedureParameter>(actual[0]);
+            Assert.Equal(source.Size, ((DecimalProcedureParameter)actual[0]).Precision);
+            Assert.Equal(source.DecimalPlaces, ((DecimalProcedureParameter)actual[0]).Scale);
         }
-        [TestMethod]
+        [Fact]
         public void FromRawNumeric()
         {
             var source = new ProcedureParameterRaw
@@ -58,9 +57,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             var actual = factory.FromRaw(new[] { source }).ToList();
 
-            Assert.AreEqual(SqlDbType.Decimal, actual[0].DataType.SqlType);
+            Assert.Equal(SqlDbType.Decimal, actual[0].DataType.SqlType);
         }
-        [TestMethod]
+        [Fact]
         public void FromRawStringWithSize()
         {
             var source = new ProcedureParameterRaw
@@ -73,13 +72,13 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             var actual = factory.FromRaw(new[] { source }).ToList();
 
-            Assert.AreEqual(1, actual.Count);
-            Assert.AreEqual(SqlDbType.VarChar, actual[0].DataType.SqlType);
-            Assert.IsInstanceOfType(actual[0], typeof(VariableSizeProcedureParameter));
-            Assert.AreEqual(source.Size, ((VariableSizeProcedureParameter)actual[0]).Size);
+            Assert.Single(actual);
+            Assert.Equal(SqlDbType.VarChar, actual[0].DataType.SqlType);
+            Assert.IsAssignableFrom<VariableSizeProcedureParameter>(actual[0]);
+            Assert.Equal(source.Size, ((VariableSizeProcedureParameter)actual[0]).Size);
         }
 
-        [TestMethod]
+        [Fact]
         public void FromDataTypeBinary()
         {
             var factory = new ProcedureParameterFactory();
@@ -87,10 +86,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             ProcedureParameter actual = factory.FromDataType(dataType, "n1", ParameterDirection.Input);
 
-            Assert.IsInstanceOfType(actual, typeof(BinaryProcedureParameter));
+            Assert.IsType<BinaryProcedureParameter>(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void FromDataTypeString()
         {
             var factory = new ProcedureParameterFactory();
@@ -98,10 +97,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             ProcedureParameter actual = factory.FromDataType(dataType, "n1", ParameterDirection.Input);
 
-            Assert.IsInstanceOfType(actual, typeof(StringProcedureParameter));
+            Assert.IsType<StringProcedureParameter>(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void FromDataTypeDecimal()
         {
             var factory = new ProcedureParameterFactory();
@@ -109,10 +108,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             ProcedureParameter actual = factory.FromDataType(dataType, "n1", ParameterDirection.Input);
 
-            Assert.IsInstanceOfType(actual, typeof(DecimalProcedureParameter));
+            Assert.IsType<DecimalProcedureParameter>(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void FromDataTypeInteger()
         {
             var factory = new ProcedureParameterFactory();
@@ -120,10 +119,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             ProcedureParameter actual = factory.FromDataType(dataType, "n1", ParameterDirection.Input);
 
-            Assert.IsInstanceOfType(actual, typeof(IntegerProcedureParameter));
+            Assert.IsType<IntegerProcedureParameter>(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void FromDataTypeDateTime()
         {
             var factory = new ProcedureParameterFactory();
@@ -131,7 +130,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             ProcedureParameter actual = factory.FromDataType(dataType, "n1", ParameterDirection.Input);
 
-            Assert.IsInstanceOfType(actual, typeof(StandardProcedureParameter));
+            Assert.IsType<StandardProcedureParameter>(actual);
         }
     }
 }

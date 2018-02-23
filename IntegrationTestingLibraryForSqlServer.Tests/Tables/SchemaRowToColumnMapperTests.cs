@@ -1,17 +1,15 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Data;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class SchemaRowToColumnMapperTests
     {
         private SchemaRowToColumnMapper mapper = new SchemaRowToColumnMapper();
         private DataRow dataRow;
         private ColumnDefinition expected;
         
-        [TestInitialize]
-        public void TestInitialize()
+        public SchemaRowToColumnMapperTests()
         {
             var table = new DataTable();
             table.Columns.AddRange(new[] 
@@ -35,15 +33,15 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             };
         }
 
-        [TestMethod]
+        [Fact]
         public void SchemaRowToColumnDefinition()
         {
             ColumnDefinition actual = mapper.ToColumnDefinition(dataRow);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void SchemaRowToColumnDefinitionNullable()
         {
             dataRow[SchemaRowToColumnMapper.Columns.IsNullable]  = true;
@@ -51,10 +49,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             ColumnDefinition actual = mapper.ToColumnDefinition(dataRow);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void SchemaRowToColumnDecimal()
         {
             dataRow[SchemaRowToColumnMapper.Columns.DataType] = SqlDbType.Decimal;
@@ -69,10 +67,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             ColumnDefinition actual = mapper.ToColumnDefinition(dataRow);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void SchemaRowToColumnSizeVarChar()
         {
             dataRow[SchemaRowToColumnMapper.Columns.DataType] = SqlDbType.VarChar;
@@ -85,10 +83,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             ColumnDefinition actual = mapper.ToColumnDefinition(dataRow);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void SchemaRowToColumnMaxSizeVarChar()
         {
             dataRow[SchemaRowToColumnMapper.Columns.DataType] = SqlDbType.VarChar;
@@ -101,10 +99,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             ColumnDefinition actual = mapper.ToColumnDefinition(dataRow);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void SchemaRowToColumnMaxSizeAltVarChar()
         {
             dataRow[SchemaRowToColumnMapper.Columns.DataType] = SqlDbType.VarChar;
@@ -117,7 +115,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             ColumnDefinition actual = mapper.ToColumnDefinition(dataRow);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
     }
 }

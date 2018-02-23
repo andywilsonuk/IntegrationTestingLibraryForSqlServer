@@ -14,8 +14,10 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public static SqlConnectionStringBuilder ToMasterCatalog(this SqlConnectionStringBuilder builder)
         {
-            var masterBuilder = new SqlConnectionStringBuilder(builder.ToString());
-            masterBuilder.InitialCatalog = MasterCatalog;
+            var masterBuilder = new SqlConnectionStringBuilder(builder.ToString())
+            {
+                InitialCatalog = MasterCatalog
+            };
             return masterBuilder;
         }
     }

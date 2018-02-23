@@ -1,186 +1,184 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Xunit;
 using System.Data;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class DataTypeTests
     {
-        [TestMethod]
+        [Fact]
         public void IsStringForStringLikeDataType()
         {
             var dataType = new DataType(SqlDbType.NVarChar);
 
-            Assert.IsTrue(dataType.IsString);
+            Assert.True(dataType.IsString);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsStringForIntegerDataType()
         {
             var dataType = new DataType(SqlDbType.Int);
 
-            Assert.IsFalse(dataType.IsString);
+            Assert.False(dataType.IsString);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsUnicodeStringForStringLikeDataType()
         {
             var dataType = new DataType(SqlDbType.NVarChar);
 
-            Assert.IsTrue(dataType.IsUnicodeString);
+            Assert.True(dataType.IsUnicodeString);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsUnicodeStringForCharDataType()
         {
             var dataType = new DataType(SqlDbType.Char);
 
-            Assert.IsFalse(dataType.IsUnicodeString);
+            Assert.False(dataType.IsUnicodeString);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsMaximumSizeIndicatorFor1()
         {
             var dataType = new DataType(SqlDbType.NVarChar);
 
             bool actual = dataType.IsMaximumSizeIndicator(1);
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsMaximumSizeIndicatorFor0()
         {
             var dataType = new DataType(SqlDbType.NVarChar);
 
             bool actual = dataType.IsMaximumSizeIndicator(0);
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsMaximumSizeIndicatorForNull()
         {
             var dataType = new DataType(SqlDbType.NVarChar);
 
             bool actual = dataType.IsMaximumSizeIndicator(null);
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsIntegerTrue()
         {
             var dataType = new DataType(SqlDbType.Int);
 
             bool actual = dataType.IsInteger;
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsIntegerFalse()
         {
             var dataType = new DataType(SqlDbType.VarChar);
 
             bool actual = dataType.IsInteger;
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsDecimalTrue()
         {
             var dataType = new DataType(SqlDbType.Decimal);
 
             bool actual = dataType.IsDecimal;
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsDecimalFalse()
         {
             var dataType = new DataType(SqlDbType.VarChar);
 
             bool actual = dataType.IsDecimal;
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsBinaryTrue()
         {
             var dataType = new DataType(SqlDbType.Binary);
 
             bool actual = dataType.IsBinary;
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsBinaryFalse()
         {
             var dataType = new DataType(SqlDbType.VarChar);
 
             bool actual = dataType.IsBinary;
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsValidPrecisionTrue()
         {
             var dataType = new DataType(SqlDbType.Decimal);
 
             bool actual = dataType.IsValidPrecision(10);
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsValidPrecisionFalseMinBound()
         {
             var dataType = new DataType(SqlDbType.VarChar);
 
             bool actual = dataType.IsValidPrecision(0);
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsValidPrecisionFalseMaxBound()
         {
             var dataType = new DataType(SqlDbType.VarChar);
 
             bool actual = dataType.IsValidPrecision(39);
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void ConstructorStringDataType()
         {
             var dataType = new DataType("VarChar");
 
-            Assert.AreEqual(SqlDbType.VarChar, dataType.SqlType);
+            Assert.Equal(SqlDbType.VarChar, dataType.SqlType);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void ConstructorStringDataTypeBadType()
         {
-            var dataType = new DataType("aaVarChar");
+            Assert.Throws<ArgumentException>(() => new DataType("aaVarChar"));
         }
-        [TestMethod]
+        [Fact]
         public void ConstructorStringDataTypeNumericAsDecimal()
         {
             var dataType = new DataType("Numeric");
 
-            Assert.AreEqual(SqlDbType.Decimal, dataType.SqlType);
+            Assert.Equal(SqlDbType.Decimal, dataType.SqlType);
         }
-        [TestMethod]
+        [Fact]
         public void DataTypeGetHashCode()
         {
             var dataType = new DataType(SqlDbType.VarChar);
@@ -188,9 +186,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             int actual = dataType.GetHashCode();
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
-        [TestMethod]
+        [Fact]
         public void DataTypeEquals()
         {
             var dataTypeA = new DataType(SqlDbType.VarChar);
@@ -198,9 +196,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = dataTypeA.Equals(dataTypeB);
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
-        [TestMethod]
+        [Fact]
         public void DataTypeEqualsObject()
         {
             var dataTypeA = new DataType(SqlDbType.VarChar);
@@ -208,16 +206,16 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = dataTypeA.Equals((object)dataTypeB);
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
-        [TestMethod]
+        [Fact]
         public void DataTypeNotEqualsWrongType()
         {
             var dataType = new DataType(SqlDbType.VarChar);
 
             bool actual = dataType.Equals(string.Empty);
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
     }
 }

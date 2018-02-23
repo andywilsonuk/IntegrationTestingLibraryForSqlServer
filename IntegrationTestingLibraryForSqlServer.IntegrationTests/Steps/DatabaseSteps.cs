@@ -1,16 +1,22 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using TechTalk.SpecFlow;
+using Xunit;
 
 namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
 {
     [Binding]
     public class DatabaseSteps
     {
+        private readonly ScenarioContext scenarioContext;
         private DatabaseActions database;
+
+        public DatabaseSteps(ScenarioContext scenarioContext)
+        {
+            this.scenarioContext = scenarioContext;
+        }
 
         [AfterScenario("db")]
         public void AfterScenario()
@@ -22,9 +28,9 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         [Given(@"there is a test database")]
         public void GivenThereIsATestDatabase()
         {
-            database = new DatabaseActions(@"server=(localdb)\MSSQLLocalDB;database=Test2;integrated security=True");
+            database = new DatabaseActions($@"server=(localdb)\MSSQLLocalDB;database={Guid.NewGuid()};integrated security=True");
             database.CreateOrReplace();
-            ScenarioContext.Current["Database"] = database;
+            scenarioContext["Database"] = database;
         }
 
         [When(@"the user '(.*)' is granted access to the database")]
@@ -50,8 +56,7 @@ SELECT permission_name FROM fn_my_permissions (NULL, 'DATABASE');";
                     using (var reader = command.ExecuteReader())
                         while(reader.Read())
                         {
-                            if (!expected.Contains(reader.GetString(0)))
-                                Assert.Fail("Permission not granted: " + reader.GetString(0));
+                            Assert.Contains(reader.GetString(0), expected);
                         }
                 }
             }

@@ -1,21 +1,19 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Xunit;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class TableBackedViewCreateSqlGeneratorTests
     {
         TableBackedViewCreateSqlGenerator generator = new TableBackedViewCreateSqlGenerator();
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void CreateTableNullThrowsException()
         {
-            generator.Sql(null);
+            Assert.Throws<ArgumentNullException>(() => generator.Sql(null));
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateView()
         {
             var viewDefinition = new TableBackedViewDefinition(DatabaseObjectName.FromName("v1"), DatabaseObjectName.FromName("t1"));
@@ -23,7 +21,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             string actual = generator.Sql(viewDefinition);
              
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
     }
 }

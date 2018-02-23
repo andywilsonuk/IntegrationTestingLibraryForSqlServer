@@ -1,81 +1,80 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using IntegrationTestingLibraryForSqlServer.TableDataComparison;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class TableDataBooleanValueComparerTests
     {
         private TableDataBooleanValueComparer comparer = new TableDataBooleanValueComparer();
 
-        [TestMethod]
+        [Fact]
         public void BoolXBoolYMatching()
         {
             var args = new TableDataValueComparerPipeElementArguments { X = true, Y = true };
 
             comparer.Process(args);
 
-            Assert.AreEqual(MatchedValueComparer.IsMatch, args.MatchStatus);
+            Assert.Equal(MatchedValueComparer.IsMatch, args.MatchStatus);
         }
 
-        [TestMethod]
+        [Fact]
         public void BoolXBoolYNotMatching()
         {
             var args = new TableDataValueComparerPipeElementArguments { X = true, Y = false };
 
             comparer.Process(args);
 
-            Assert.AreEqual(MatchedValueComparer.NoMatch, args.MatchStatus);
+            Assert.Equal(MatchedValueComparer.NoMatch, args.MatchStatus);
         }
 
-        [TestMethod]
+        [Fact]
         public void StringXBoolY()
         {
             var args = new TableDataValueComparerPipeElementArguments { X = "true", Y = true };
 
             comparer.Process(args);
 
-            Assert.AreEqual(MatchedValueComparer.IsMatch, args.MatchStatus);
+            Assert.Equal(MatchedValueComparer.IsMatch, args.MatchStatus);
         }
 
-        [TestMethod]
+        [Fact]
         public void BoolXStringY()
         {
             var args = new TableDataValueComparerPipeElementArguments { X = true, Y = "true" };
 
             comparer.Process(args);
 
-            Assert.AreEqual(MatchedValueComparer.IsMatch, args.MatchStatus);
+            Assert.Equal(MatchedValueComparer.IsMatch, args.MatchStatus);
         }
 
-        [TestMethod]
+        [Fact]
         public void StringXStringY()
         {
             var args = new TableDataValueComparerPipeElementArguments { X = "True", Y = "true" };
 
             comparer.Process(args);
 
-            Assert.AreEqual(MatchedValueComparer.IsMatch, args.MatchStatus);
+            Assert.Equal(MatchedValueComparer.IsMatch, args.MatchStatus);
         }
 
-        [TestMethod]
+        [Fact]
         public void BoolXIntY()
         {
             var args = new TableDataValueComparerPipeElementArguments { X = true, Y = 5 };
 
             comparer.Process(args);
 
-            Assert.AreEqual(MatchedValueComparer.NotYetCompared, args.MatchStatus);
+            Assert.Equal(MatchedValueComparer.NotYetCompared, args.MatchStatus);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataBoolAlreadyCompared()
         {
             var args = new TableDataValueComparerPipeElementArguments { MatchStatus = MatchedValueComparer.NoMatch, X = null, Y = null };
 
             comparer.Process(args);
 
-            Assert.AreEqual(MatchedValueComparer.NoMatch, args.MatchStatus);
+            Assert.Equal(MatchedValueComparer.NoMatch, args.MatchStatus);
         }
     }
 }

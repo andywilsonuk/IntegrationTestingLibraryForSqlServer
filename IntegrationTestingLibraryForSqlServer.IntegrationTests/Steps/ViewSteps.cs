@@ -6,7 +6,14 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
     [Binding]
     public class ViewSteps
     {
-        private DatabaseActions database = ScenarioContext.Current.Get<DatabaseActions>("Database");
+        private readonly ScenarioContext scenarioContext;
+        private readonly DatabaseActions database;
+
+        public ViewSteps(ScenarioContext scenarioContext)
+        {
+            this.scenarioContext = scenarioContext;
+            database = scenarioContext.Get<DatabaseActions>("Database");
+        }
 
         [When(@"the table-backed view ""(.*)"" is created")]
         public void WhenTheTable_BackedViewIsCreated(string viewName, Table table)

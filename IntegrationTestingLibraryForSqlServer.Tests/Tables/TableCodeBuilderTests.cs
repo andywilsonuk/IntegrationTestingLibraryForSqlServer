@@ -1,13 +1,12 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Xunit;
 using System.Data;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class TableCodeBuilderTests
     {
-        [TestMethod]
+        [Fact]
         public void TableDefinitionToCSharp()
         {
             var table = new TableDefinition(DatabaseObjectName.FromName("table1"), new ColumnDefinition[]
@@ -34,7 +33,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             // GitHub stores this source file with \n line breaks not \r\n so update it to use the windows format
             expected = expected.Replace(Environment.NewLine, "\n").Replace("\n", Environment.NewLine);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
     }
 }

@@ -1,67 +1,63 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Xunit;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class DomainAccountTests
     {
         const string domainName = "mydomain";
         const string accountName = "myaccount";
         readonly string qualifiedAccount = $"{domainName}\\{accountName}";
 
-        [TestMethod]
+        [Fact]
         public void QualifiedConstructor()
         {
             DomainAccount account = new DomainAccount(qualifiedAccount);
 
-            Assert.AreEqual(qualifiedAccount, account.Qualified);
+            Assert.Equal(qualifiedAccount, account.Qualified);
         }
 
-        [TestMethod]
+        [Fact]
         public void QualifiedConstructorMissingDomain()
         {
             DomainAccount account = new DomainAccount(accountName);
 
-            Assert.AreEqual(Environment.UserDomainName + '\\' + accountName, account.Qualified);
+            Assert.Equal(Environment.UserDomainName + '\\' + accountName, account.Qualified);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ValidationException))]
+        [Fact]
         public void QualifiedConstructorBlankQualified()
         {
-            new DomainAccount(null);
+            Assert.Throws<ValidationException>(() => new DomainAccount(null));
         }
 
-        [TestMethod]
+        [Fact]
         public void SplitConstructor()
         {
             DomainAccount account = new DomainAccount(domainName, accountName);
 
-            Assert.AreEqual(qualifiedAccount, account.Qualified);
+            Assert.Equal(qualifiedAccount, account.Qualified);
         }
 
-        [TestMethod]
+        [Fact]
         public void Equality()
         {
             DomainAccount account1 = new DomainAccount(qualifiedAccount);
             DomainAccount account2 = new DomainAccount(qualifiedAccount);
 
-            Assert.IsTrue(account1.Equals(account2));
+            Assert.True(account1.Equals(account2));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ValidationException))]
+        [Fact]
         public void SplitConstructorMissingDomain()
         {
-            new DomainAccount(null, accountName);
+            Assert.Throws<ValidationException>(() => new DomainAccount(null, accountName));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ValidationException))]
+        [Fact]
         public void SplitConstructorMissingAccount()
         {
-            new DomainAccount(domainName, null);
+            Assert.Throws<ValidationException>(() => new DomainAccount(domainName, null));
         }
     }
 }

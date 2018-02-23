@@ -1,11 +1,10 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Xunit;
 using Moq;
 using IntegrationTestingLibraryForSqlServer.TableDataComparison;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class TableDataCompositeComparerTests
     {
         private Mock<TableDataColumnComparer> columnComparer;
@@ -15,8 +14,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         private TableData x;
         private TableData y;
 
-        [TestInitialize]
-        public void TestInitialize()
+        public TableDataCompositeComparerTests()
         {
             columnComparer = new Mock<TableDataColumnComparer>();
             rowComparer = new Mock<TableDataRowComparer>();
@@ -26,7 +24,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             y = new TableData();
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataCompositeComparerIsMatchTrue()
         {
             columnComparer.Setup(x => x.IsMatch()).Returns(true);
@@ -34,42 +32,40 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = comparer.IsMatch(this.x, y);
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
             columnComparer.Verify(x => x.Initialise(this.x, y), Times.Once);
             columnComparer.Verify(x => x.IsMatch(), Times.Once);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void TableDataCompositeComparerIsMatchFalseNullRowsX()
         {
             x.Rows = null;
 
-            comparer.IsMatch(x, y);
+            Assert.Throws<ArgumentNullException>(() => comparer.IsMatch(x, y));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void TableDataCompositeComparerIsMatchFalseNullRowsY()
         {
             y.Rows = null;
 
-            comparer.IsMatch(x, y);
+            Assert.Throws<ArgumentNullException>(() => comparer.IsMatch(x, y));
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataCompositeComparerIsMatchFalseMismatchedColumns()
         {
             columnComparer.Setup(x => x.IsMatch()).Returns(false);
 
             bool actual = comparer.IsMatch(this.x, y);
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
             columnComparer.Verify(x => x.Initialise(this.x, y), Times.Once);
             columnComparer.Verify(x => x.IsMatch(), Times.Once);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataCompositeComparerIsMatchFalse()
         {
             columnComparer.Setup(x => x.IsMatch()).Returns(true);
@@ -77,7 +73,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = comparer.IsMatch(this.x, y);
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
     }
 }

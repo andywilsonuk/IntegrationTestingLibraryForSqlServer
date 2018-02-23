@@ -8,7 +8,14 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
     [Binding]
     public class TableSteps
     {
-        private DatabaseActions database = ScenarioContext.Current.Get<DatabaseActions>("Database");
+        private readonly ScenarioContext scenarioContext;
+        private readonly DatabaseActions database;
+
+        public TableSteps(ScenarioContext scenarioContext)
+        {
+            this.scenarioContext = scenarioContext;
+            database = scenarioContext.Get<DatabaseActions>("Database");
+        }
 
         [Given(@"the table ""(.*)"" is created")]
         [When(@"the table ""(.*)"" is created")]

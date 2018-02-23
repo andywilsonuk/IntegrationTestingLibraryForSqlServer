@@ -1,15 +1,14 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Data;
 using Moq;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class DataReaderPopulatedTableDataTests
     {
         private Mock<IDataReader> reader;
 
-        [TestMethod]
+        [Fact]
         public void DataReaderPopulatedTableData2x2Reader()
         {
             reader = new Mock<IDataReader>();
@@ -22,14 +21,14 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             TableData tableData = new DataReaderPopulatedTableData(reader.Object);
 
-            Assert.AreEqual(2, tableData.ColumnNames.Count);
-            Assert.AreEqual("a", tableData.ColumnNames[0]);
-            Assert.AreEqual("b", tableData.ColumnNames[1]);
-            Assert.AreEqual(2, tableData.Rows.Count);
-            Assert.AreEqual(1, tableData.Rows[0][0]);
-            Assert.AreEqual(2, tableData.Rows[0][1]);
-            Assert.AreEqual(3, tableData.Rows[1][0]);
-            Assert.AreEqual(4, tableData.Rows[1][1]);
+            Assert.Equal(2, tableData.ColumnNames.Count);
+            Assert.Equal("a", tableData.ColumnNames[0]);
+            Assert.Equal("b", tableData.ColumnNames[1]);
+            Assert.Equal(2, tableData.Rows.Count);
+            Assert.Equal(1, tableData.Rows[0][0]);
+            Assert.Equal(2, tableData.Rows[0][1]);
+            Assert.Equal(3, tableData.Rows[1][0]);
+            Assert.Equal(4, tableData.Rows[1][1]);
         }
     }
 }

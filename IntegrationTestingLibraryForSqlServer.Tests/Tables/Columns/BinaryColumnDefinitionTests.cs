@@ -1,28 +1,26 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Xunit;
 using System.Data;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class BinaryColumnDefinitionTests
     {
         private const string ColumnName = "c1";
         private BinaryColumnDefinition definition = new BinaryColumnDefinition(ColumnName, SqlDbType.VarBinary);
 
-        [TestMethod]
+        [Fact]
         public void ConstructorBasics()
         {
-            Assert.AreEqual(SqlDbType.VarBinary, definition.DataType.SqlType);
-            Assert.AreEqual(ColumnName, definition.Name);
-            Assert.AreEqual(1, definition.Size);
+            Assert.Equal(SqlDbType.VarBinary, definition.DataType.SqlType);
+            Assert.Equal(ColumnName, definition.Name);
+            Assert.Equal(1, definition.Size);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void ConstructorWithWrongDataTypeThrowsException()
         {
-            definition = new BinaryColumnDefinition(ColumnName, SqlDbType.Int);
+            Assert.Throws<ArgumentException>(() => new BinaryColumnDefinition(ColumnName, SqlDbType.Int));
         }
     }
 }

@@ -1,25 +1,23 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Collections.Generic;
 using IntegrationTestingLibraryForSqlServer.TableDataComparison;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class TableDataMatchEqualColumnComparerTests
     {
         private TableDataMatchEqualColumnComparer comparer;
         private TableData x;
         private TableData y;
 
-        [TestInitialize]
-        public void TestInitialize()
+        public TableDataMatchEqualColumnComparerTests()
         {
             comparer = new TableDataMatchEqualColumnComparer();
             x = new TableData();
             y = new TableData();
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataMatchEqualColumnComparerIsMatchTrue()
         {
             x.ColumnNames = new List<string> { "1", "2", "3" };
@@ -28,10 +26,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = comparer.IsMatch();
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataMatchEqualColumnComparerIsMatchFalse()
         {
             x.ColumnNames = new List<string> { "1", "2", "3" };
@@ -40,10 +38,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = comparer.IsMatch();
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataMatchEqualColumnComparerIsMatchFalse2()
         {
             x.ColumnNames = new List<string> { "1", "2" };
@@ -52,7 +50,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = comparer.IsMatch();
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
     }
 }

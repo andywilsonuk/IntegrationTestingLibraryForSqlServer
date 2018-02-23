@@ -1,109 +1,107 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Xunit;
 using IntegrationTestingLibraryForSqlServer.TableDataComparison;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class TableDataComparerStrategyFactoryTests
     {
         private TableDataComparerStrategyFactory factory = new TableDataComparerStrategyFactory();
 
-        [TestMethod]
+        [Fact]
         public void TableDataComparerStrategyFactoryComparerOrdinalRowOrdinalColumn()
         {
             var actual = (TableDataCompositeComparer)factory.Comparer(TableDataComparers.OrdinalRowOrdinalColumn);
 
-            Assert.IsInstanceOfType(actual.ColumnComparer, typeof(TableDataOrdinalColumnComparer));
-            Assert.IsInstanceOfType(actual.RowComparer, typeof(TableDataOrdinalRowComparer));
-            Assert.IsInstanceOfType(actual.ValueComparer, typeof(TableDataValueComparerPipeline));
+            Assert.IsType<TableDataOrdinalColumnComparer>(actual.ColumnComparer);
+            Assert.IsType<TableDataOrdinalRowComparer>(actual.RowComparer);
+            Assert.IsType<TableDataValueComparerPipeline>(actual.ValueComparer);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataComparerStrategyFactoryComparerOrdinalRowNamedColumn()
         {
             var actual = (TableDataCompositeComparer)factory.Comparer(TableDataComparers.OrdinalRowNamedColumn);
 
-            Assert.IsInstanceOfType(actual.ColumnComparer, typeof(TableDataMatchEqualColumnComparer));
-            Assert.IsInstanceOfType(actual.RowComparer, typeof(TableDataOrdinalRowComparer));
-            Assert.IsInstanceOfType(actual.ValueComparer, typeof(TableDataValueComparerPipeline));
+            Assert.IsType<TableDataMatchEqualColumnComparer>(actual.ColumnComparer);
+            Assert.IsType<TableDataOrdinalRowComparer>(actual.RowComparer);
+            Assert.IsType<TableDataValueComparerPipeline>(actual.ValueComparer);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataComparerStrategyFactoryComparerOrdinalRowSubsetColumn()
         {
             var actual = (TableDataCompositeComparer)factory.Comparer(TableDataComparers.OrdinalRowSubsetNamedColumn);
 
-            Assert.IsInstanceOfType(actual.ColumnComparer, typeof(TableDataMatchSubsetColumnComparer));
-            Assert.IsInstanceOfType(actual.RowComparer, typeof(TableDataOrdinalRowComparer));
-            Assert.IsInstanceOfType(actual.ValueComparer, typeof(TableDataValueComparerPipeline));
+            Assert.IsType<TableDataMatchSubsetColumnComparer>(actual.ColumnComparer);
+            Assert.IsType<TableDataOrdinalRowComparer>(actual.RowComparer);
+            Assert.IsType<TableDataValueComparerPipeline>(actual.ValueComparer);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataComparerStrategyFactoryComparerSubsetRowNamedColumn()
         {
             var actual = (TableDataCompositeComparer)factory.Comparer(TableDataComparers.SubsetRowNamedColumn);
 
-            Assert.IsInstanceOfType(actual.ColumnComparer, typeof(TableDataMatchEqualColumnComparer));
-            Assert.IsInstanceOfType(actual.RowComparer, typeof(TableDataMatchSubsetRowComparer));
-            Assert.IsInstanceOfType(actual.ValueComparer, typeof(TableDataValueComparerPipeline));
+            Assert.IsType<TableDataMatchEqualColumnComparer>(actual.ColumnComparer);
+            Assert.IsType<TableDataMatchSubsetRowComparer>(actual.RowComparer);
+            Assert.IsType<TableDataValueComparerPipeline>(actual.ValueComparer);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataComparerStrategyFactoryComparerSubsetRowOrdinalColumn()
         {
             var actual = (TableDataCompositeComparer)factory.Comparer(TableDataComparers.SubsetRowOrdinalColumn);
 
-            Assert.IsInstanceOfType(actual.ColumnComparer, typeof(TableDataOrdinalColumnComparer));
-            Assert.IsInstanceOfType(actual.RowComparer, typeof(TableDataMatchSubsetRowComparer));
-            Assert.IsInstanceOfType(actual.ValueComparer, typeof(TableDataValueComparerPipeline));
+            Assert.IsType<TableDataOrdinalColumnComparer>(actual.ColumnComparer);
+            Assert.IsType<TableDataMatchSubsetRowComparer>(actual.RowComparer);
+            Assert.IsType<TableDataValueComparerPipeline>(actual.ValueComparer);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataComparerStrategyFactoryComparerSubsetRowSubsetNamedColumn()
         {
             var actual = (TableDataCompositeComparer)factory.Comparer(TableDataComparers.SubsetRowSubsetNamedColumn);
 
-            Assert.IsInstanceOfType(actual.ColumnComparer, typeof(TableDataMatchSubsetColumnComparer));
-            Assert.IsInstanceOfType(actual.RowComparer, typeof(TableDataMatchSubsetRowComparer));
-            Assert.IsInstanceOfType(actual.ValueComparer, typeof(TableDataValueComparerPipeline));
+            Assert.IsType<TableDataMatchSubsetColumnComparer>(actual.ColumnComparer);
+            Assert.IsType<TableDataMatchSubsetRowComparer>(actual.RowComparer);
+            Assert.IsType<TableDataValueComparerPipeline>(actual.ValueComparer);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataComparerStrategyFactoryComparerUnorderedRowNamedColumn()
         {
             var actual = (TableDataCompositeComparer)factory.Comparer(TableDataComparers.UnorderedRowNamedColumn);
 
-            Assert.IsInstanceOfType(actual.ColumnComparer, typeof(TableDataMatchEqualColumnComparer));
-            Assert.IsInstanceOfType(actual.RowComparer, typeof(TableDataMatchEqualRowComparer));
-            Assert.IsInstanceOfType(actual.ValueComparer, typeof(TableDataValueComparerPipeline));
+            Assert.IsType<TableDataMatchEqualColumnComparer>(actual.ColumnComparer);
+            Assert.IsType<TableDataMatchEqualRowComparer>(actual.RowComparer);
+            Assert.IsType<TableDataValueComparerPipeline>(actual.ValueComparer);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataComparerStrategyFactoryComparerUnorderedRowOrdinalColumn()
         {
             var actual = (TableDataCompositeComparer)factory.Comparer(TableDataComparers.UnorderedRowOrdinalColumn);
 
-            Assert.IsInstanceOfType(actual.ColumnComparer, typeof(TableDataOrdinalColumnComparer));
-            Assert.IsInstanceOfType(actual.RowComparer, typeof(TableDataMatchEqualRowComparer));
-            Assert.IsInstanceOfType(actual.ValueComparer, typeof(TableDataValueComparerPipeline));
+            Assert.IsType<TableDataOrdinalColumnComparer>(actual.ColumnComparer);
+            Assert.IsType<TableDataMatchEqualRowComparer>(actual.RowComparer);
+            Assert.IsType<TableDataValueComparerPipeline>(actual.ValueComparer);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataComparerStrategyFactoryComparerUnorderedRowSubsetNamedColumn()
         {
             var actual = (TableDataCompositeComparer)factory.Comparer(TableDataComparers.UnorderedRowSubsetNamedColumn);
 
-            Assert.IsInstanceOfType(actual.ColumnComparer, typeof(TableDataMatchSubsetColumnComparer));
-            Assert.IsInstanceOfType(actual.RowComparer, typeof(TableDataMatchEqualRowComparer));
-            Assert.IsInstanceOfType(actual.ValueComparer, typeof(TableDataValueComparerPipeline));
+            Assert.IsType<TableDataMatchSubsetColumnComparer>(actual.ColumnComparer);
+            Assert.IsType<TableDataMatchEqualRowComparer>(actual.RowComparer);
+            Assert.IsType<TableDataValueComparerPipeline>(actual.ValueComparer);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void TableDataComparerStrategyFactoryComparerBadEnum()
         {
-            factory.Comparer((TableDataComparers)int.MaxValue);
+            Assert.Throws<ArgumentException>(() => factory.Comparer((TableDataComparers)int.MaxValue));
         }
     }
 }

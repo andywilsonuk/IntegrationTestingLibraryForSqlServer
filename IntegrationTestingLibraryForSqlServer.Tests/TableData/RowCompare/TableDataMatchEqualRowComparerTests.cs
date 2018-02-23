@@ -1,25 +1,23 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Collections.Generic;
 using IntegrationTestingLibraryForSqlServer.TableDataComparison;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class TableDataMatchEqualRowComparerTests
     {
         private TableDataMatchEqualRowComparer comparer;
         private TableDataCaseSensitiveStringValueComparer valueComparer;
         private IList<int> indexMappings;
         
-        [TestInitialize]
-        public void TestInitialize()
+        public TableDataMatchEqualRowComparerTests()
         {
             indexMappings = new List<int> { 0, 1, 2 };
             comparer = new TableDataMatchEqualRowComparer();
             valueComparer = new TableDataCaseSensitiveStringValueComparer();
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataMatchEqualRowComparerIsMatchTrue()
         {
             var rowsX = new List<IList<object>> { new List<object> { "a", "b", "c" }, new List<object> { "d", "e", "f" } };
@@ -28,10 +26,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = comparer.IsMatch();
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataMatchEqualRowComparerIsMatchFalseMismatchedRows()
         {
             var rowsX = new List<IList<object>> { new List<object> { "a", "b", "c" }, new List<object> { "d", "e", "f" } };
@@ -41,10 +39,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = comparer.IsMatch();
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataMatchEqualRowComparerIsMatchTrueExtraColumns()
         {
             var rowsX = new List<IList<object>> { new List<object> { "a", "b" } };
@@ -54,7 +52,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = comparer.IsMatch();
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
     }
 }

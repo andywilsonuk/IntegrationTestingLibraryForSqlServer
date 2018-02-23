@@ -1,36 +1,39 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using IntegrationTestingLibraryForSqlServer.TableDataComparison;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class TableDataValueComparerPipeElementArgumentsTests
     {
-        [TestMethod]
+        [Fact]
         public void DefaultConstructor()
         {
             var actual = new TableDataValueComparerPipeElementArguments();
 
-            Assert.AreEqual(MatchedValueComparer.NotYetCompared, actual.MatchStatus);
-            Assert.IsFalse(actual.IsCompared);
+            Assert.Equal(MatchedValueComparer.NotYetCompared, actual.MatchStatus);
+            Assert.False(actual.IsCompared);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsComparedSetOnMatch()
         {
-            var actual = new TableDataValueComparerPipeElementArguments();
-            actual.MatchStatus = MatchedValueComparer.IsMatch;
+            var actual = new TableDataValueComparerPipeElementArguments
+            {
+                MatchStatus = MatchedValueComparer.IsMatch
+            };
 
-            Assert.IsTrue(actual.IsCompared);
+            Assert.True(actual.IsCompared);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsComparedSetOnNotMatch()
         {
-            var actual = new TableDataValueComparerPipeElementArguments();
-            actual.MatchStatus = MatchedValueComparer.NoMatch;
+            var actual = new TableDataValueComparerPipeElementArguments
+            {
+                MatchStatus = MatchedValueComparer.NoMatch
+            };
 
-            Assert.IsTrue(actual.IsCompared);
+            Assert.True(actual.IsCompared);
         }
     }
 }

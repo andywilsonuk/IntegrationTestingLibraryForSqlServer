@@ -1,55 +1,52 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Xunit;
 using System.Data;
 using System.Text;
 
-namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
+namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class ProcedureDefinitionTests
     {
         private readonly static DatabaseObjectName procedureName = DatabaseObjectName.FromName("testproc");
         ProcedureParameter parameter1;
         ProcedureDefinition definition;
 
-        [TestInitialize]
-        public void TestInitialize()
+        public ProcedureDefinitionTests()
         {
             parameter1 = new StandardProcedureParameter("p1", SqlDbType.DateTime, ParameterDirection.Input);
             definition = new ProcedureDefinition(procedureName, new[] { parameter1 });
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void ProcedureDefinitionConstructorNullName()
         {
-            var definition = new ProcedureDefinition((DatabaseObjectName)null);
+            Assert.Throws<ArgumentNullException>(() => new ProcedureDefinition((DatabaseObjectName)null));
         }
 
-        [TestMethod]
+        [Fact]
         public void ProcedureDefinitionConstructorNullParameters()
         {
             var definition = new ProcedureDefinition(procedureName, null);
 
-            Assert.IsNotNull(definition.Parameters);
+            Assert.NotNull(definition.Parameters);
         }
 
-        [TestMethod]
+        [Fact]
         public void ProcedureDefinitionConstructor()
         {
-            Assert.AreEqual(procedureName, definition.Name);
-            Assert.AreEqual(1, definition.Parameters.Count);
+            Assert.Equal(procedureName, definition.Name);
+            Assert.Single(definition.Parameters);
         }
 
-        [TestMethod]
+        [Fact]
         public void ProcedureDefinitionGetHashcode()
         {
             int expected = procedureName.GetHashCode();
 
-            Assert.AreEqual(expected, definition.GetHashCode());
+            Assert.Equal(expected, definition.GetHashCode());
         }
 
-        [TestMethod]
+        [Fact]
         public void ProcedureDefinitionToString()
         {
             definition.Body = "return 5";
@@ -61,34 +58,34 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
 
             string actual = definition.ToString();
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void ProcedureDefinitionEqualsNull()
         {
             bool actual = definition.Equals((ProcedureDefinition)null);
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void ProcedureDefinitionEquals()
         {
             bool actual = definition.Equals(definition);
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void ProcedureDefinitionEqualsAsObject()
         {
             bool actual = definition.Equals((object)definition);
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void ProcedureDefinitionEqualsWithBody()
         {
             definition.Body = "return 5";
@@ -96,19 +93,19 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
 
             bool actual = definition.Equals(other);
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void ProcedureDefinitionNotEqualsName()
         {
             var other = new ProcedureDefinition("other");
             bool actual = definition.Equals(other);
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void ProcedureDefinitionNotEqualsBody()
         {
             definition.Body = "return 10";
@@ -116,10 +113,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
 
             bool actual = definition.Equals(other);
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void ProcedureDefinitionNotEqualsParameters()
         {
             var other = new ProcedureDefinition(procedureName);
@@ -127,10 +124,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
             other.Parameters.Add(MockProcedureParameter.GetParameter("p2"));
             bool actual = definition.Equals(other);
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void Equals_YParametersContainReturnValue_True()
         {
             var other = new ProcedureDefinition(procedureName, new[] { parameter1 });
@@ -138,41 +135,40 @@ namespace IntegrationTestingLibraryForSqlServer.Tests.Procedures
 
             bool actual = definition.Equals(other);
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void ProcedureDefinitionVerifyEqual()
         {
 
             definition.VerifyEqual(definition);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(EquivalenceException))]
+        [Fact]
         public void ProcedureDefinitionVerifyNotEqualsBodyThrowsException()
         {
             definition.Body = "return 10";
             var other = new ProcedureDefinition(procedureName) { Body = "return 5" };
 
-            definition.VerifyEqual(other);
+            Assert.Throws<EquivalenceException>(() => definition.VerifyEqual(other));
         }
 
 
-        [TestMethod]
+        [Fact]
         public void ProcedureDefinitionHasBodyFalse()
         {
             definition.Body = null;
 
-            Assert.IsFalse(definition.HasBody);
+            Assert.False(definition.HasBody);
         }
 
-        [TestMethod]
+        [Fact]
         public void ProcedureDefinitionHasBodyTrue()
         {
             definition.Body = "return 10";
 
-            Assert.IsTrue(definition.HasBody);
+            Assert.True(definition.HasBody);
         }
     }
 }

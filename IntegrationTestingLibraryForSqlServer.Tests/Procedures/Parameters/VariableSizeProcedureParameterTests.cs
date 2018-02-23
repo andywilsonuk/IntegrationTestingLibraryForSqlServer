@@ -1,116 +1,113 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Xunit;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class VariableSizeProcedureParameterTests
     {
         private const string ParameterName = "@p1";
         private MockVariableSizeProcedureParameter parameter = MockVariableSizeProcedureParameter.GetParameter(ParameterName);
 
-        [TestInitialize]
-        public void TestInitialize()
+        public VariableSizeProcedureParameterTests()
         {
             parameter.Size = 10;
         }
 
-        [TestMethod]
+        [Fact]
         public void VariableSizeProcedureParameterEquals()
         {
             var other = MockVariableSizeProcedureParameter.GetParameter(ParameterName);
             other.Size = 10;
 
-            Assert.AreEqual(parameter, other);
+            Assert.Equal(parameter, other);
         }
 
-        [TestMethod]
+        [Fact]
         public void VariableSizeProcedureParameterEqualsMaxSize()
         {
             parameter.IsMaximumSize = true;
             var other = MockVariableSizeProcedureParameter.GetParameter(ParameterName);
             other.IsMaximumSize = true;
 
-            Assert.AreEqual(parameter, other);
+            Assert.Equal(parameter, other);
         }
 
-        [TestMethod]
+        [Fact]
         public void VariableSizeProcedureParameterNotEqualsSize()
         {
             var other = MockVariableSizeProcedureParameter.GetParameter(ParameterName);
             other.Size = 50;
 
-            Assert.AreNotEqual(parameter, other);
+            Assert.NotEqual(parameter, other);
         }
 
-        [TestMethod]
+        [Fact]
         public void VariableSizeProcedureParameterNotEqualsName()
         {
             var other = MockVariableSizeProcedureParameter.GetParameter("other");
             other.Size = 10;
 
-            Assert.AreNotEqual(parameter, other);
+            Assert.NotEqual(parameter, other);
         }
 
-        [TestMethod]
+        [Fact]
         public void VariableSizeProcedureParameterNotEqualsMaxSize()
         {
             var other = MockVariableSizeProcedureParameter.GetParameter(ParameterName);
             other.IsMaximumSize = true;
 
-            Assert.AreNotEqual(parameter, other);
+            Assert.NotEqual(parameter, other);
         }
 
-        [TestMethod]
+        [Fact]
         public void VariableSizeProcedureParameterNotEqualsMaxSize2()
         {
             parameter.IsMaximumSize = true;
             var other = MockVariableSizeProcedureParameter.GetParameter(ParameterName);
             other.Size = 10;
 
-            Assert.AreNotEqual(parameter, other);
+            Assert.NotEqual(parameter, other);
         }
 
-        [TestMethod]
+        [Fact]
         public void VariableSizeProcedureParameterGetMaximumSize0()
         {
             parameter.Size = 0;
 
-            Assert.IsTrue(parameter.IsMaximumSize);
+            Assert.True(parameter.IsMaximumSize);
         }
 
-        [TestMethod]
+        [Fact]
         public void VariableSizeProcedureParameterGetMaximumSizeNegativeOne()
         {
             parameter.Size = -1;
 
-            Assert.IsTrue(parameter.IsMaximumSize);
-            Assert.AreEqual(0, parameter.Size);
+            Assert.True(parameter.IsMaximumSize);
+            Assert.Equal(0, parameter.Size);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void VariableSizeProcedureParameterSetSizeInvalidThrows()
         {
-            parameter.Size = -2;
+            Assert.Throws<ArgumentException>(() => parameter.Size = -2);
         }
 
-        [TestMethod]
+        [Fact]
         public void VariableSizeProcedureParameterSetMaximumSize()
         {
             parameter.IsMaximumSize = true;
 
-            Assert.AreEqual(0, parameter.Size);
+            Assert.Equal(0, parameter.Size);
         }
 
-        [TestMethod]
+        [Fact]
         public void VariableSizeProcedureParameterToString()
         {
             string expected = $"Name: {ParameterName}, Data type: VarChar, Direction: InputOutput, Size: 10";
 
             string actual = parameter.ToString();
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
     }
 }

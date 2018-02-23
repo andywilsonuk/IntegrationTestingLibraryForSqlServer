@@ -1,82 +1,80 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Xunit;
 using System.Data;
 using System.Text;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class IntegerColumnDefinitionTests
     {
         private const string ColumnName = "c1";
         private IntegerColumnDefinition column = new IntegerColumnDefinition(ColumnName, SqlDbType.Int);
 
-        [TestMethod]
+        [Fact]
         public void ConstructorBasics()
         {
-            Assert.AreEqual(SqlDbType.Int, column.DataType.SqlType);
-            Assert.AreEqual(ColumnName, column.Name);
+            Assert.Equal(SqlDbType.Int, column.DataType.SqlType);
+            Assert.Equal(ColumnName, column.Name);
         }
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void ConstructorInvalidDataType()
         {
-            new IntegerColumnDefinition(ColumnName, SqlDbType.DateTime);
+            Assert.Throws<ArgumentException>(() => new IntegerColumnDefinition(ColumnName, SqlDbType.DateTime));
         }
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void ConstructorInvalidDataType2()
         {
-            new IntegerColumnDefinition(ColumnName, SqlDbType.Decimal);
+            Assert.Throws<ArgumentException>(() => new IntegerColumnDefinition(ColumnName, SqlDbType.Decimal));
         }
-        [TestMethod]
+        [Fact]
         public void IdentitySeedSetsAllowNull()
         {
             column.IdentitySeed = 1;
 
-            Assert.IsFalse(column.AllowNulls);
+            Assert.False(column.AllowNulls);
         }
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void ColumnDefinitionIsNotValidWhenNullIsAllowedOnIdentity()
         {
-            var definition = new IntegerColumnDefinition(ColumnName, SqlDbType.Int)
+            Assert.Throws<ArgumentException>(() => new IntegerColumnDefinition(ColumnName, SqlDbType.Int)
             {
                 IdentitySeed = 1,
                 AllowNulls = true
-            };
+            });
         }
-        [TestMethod]
+        [Fact]
         public void ColumnDefinitionIdentityColumnsDoNotAllowNulls()
         {
             column.AllowNulls = true;
             column.IdentitySeed = 1;
 
-            Assert.IsFalse(column.AllowNulls);
+            Assert.False(column.AllowNulls);
         }
-        [TestMethod]
+        [Fact]
         public void ColumnDefinitionNotEqualsWrongType()
         {
             var other = new StringColumnDefinition(ColumnName, SqlDbType.VarChar);
 
             bool actual = column.Equals(other);
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void ColumnDefinitionNotEqualsIdentity()
         {
             column.IdentitySeed = 1;
 
-            var other = new IntegerColumnDefinition(ColumnName, SqlDbType.Int);
-            other.AllowNulls = false;
+            var other = new IntegerColumnDefinition(ColumnName, SqlDbType.Int)
+            {
+                AllowNulls = false
+            };
 
             bool actual = column.Equals(other);
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
-        [TestMethod]
+        [Fact]
         public void IntegerColumnDefinitionToString()
         {
             column.AllowNulls = false;
@@ -90,7 +88,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             string actual = column.ToString();
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
     }
 }

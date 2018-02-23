@@ -1,26 +1,28 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Xunit;
 using System.Collections.Generic;
 using System.Linq;
 using IntegrationTestingLibraryForSqlServer.TableDataComparison;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class TableDataMatchSubsetColumnComparerTests
     {
         private TableDataMatchSubsetColumnComparer comparer;
         private TableData x;
         private TableData y;
 
-        [TestInitialize]
-        public void TestInitialize()
+        public TableDataMatchSubsetColumnComparerTests()
         {
             comparer = new TableDataMatchSubsetColumnComparer();
-            x = new TableData();
-            x.ColumnNames = GetDefaultColumnNames();
-            y = new TableData();
-            y.ColumnNames = GetDefaultColumnNames();
+            x = new TableData
+            {
+                ColumnNames = GetDefaultColumnNames()
+            };
+            y = new TableData
+            {
+                ColumnNames = GetDefaultColumnNames()
+            };
         }
 
         private IList<string> GetDefaultColumnNames()
@@ -28,43 +30,39 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             return new List<string> { "1", "2", "3" };
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void TableDataMatchEqualColumnComparerInitialiseFailMissingXColumnNames()
         {
             x.ColumnNames = null;
 
-            comparer.Initialise(x, y);
+            Assert.Throws<ArgumentNullException>(() => comparer.Initialise(x, y));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void TableDataMatchEqualColumnComparerInitialiseFailMissingYColumnNames()
         {
             y.ColumnNames = null;
 
-            comparer.Initialise(x, y);
+            Assert.Throws<ArgumentNullException>(() => comparer.Initialise(x, y));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void TableDataMatchEqualColumnComparerInitialiseFailEmptyXColumnNames()
         {
             x.ColumnNames = new List<string>();
 
-            comparer.Initialise(x, y);
+            Assert.Throws<ArgumentNullException>(() => comparer.Initialise(x, y));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void TableDataMatchEqualColumnComparerInitialiseFailEmptyYColumnNames()
         {
             y.ColumnNames = new List<string>();
 
-            comparer.Initialise(x, y);
+            Assert.Throws<ArgumentNullException>(() => comparer.Initialise(x, y));
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataMatchEqualColumnComparerColumnMappingsNumberedCorrectly()
         {
             var expected = new List<int> { 1, 0, 2 };
@@ -75,10 +73,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             var actual = comparer.ColumnMappings;
 
-            Assert.IsTrue(expected.SequenceEqual(actual));
+            Assert.True(expected.SequenceEqual(actual));
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataMatchEqualColumnComparerIsMatchTrue()
         {
             x.ColumnNames = new List<string> { "1", "2", "3" };
@@ -87,10 +85,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = comparer.IsMatch();
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataMatchEqualColumnComparerIsMatchFalse()
         {
             x.ColumnNames = new List<string> { "1", "2", "3" };
@@ -99,10 +97,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = comparer.IsMatch();
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataMatchEqualColumnComparerIsMatchTrue2()
         {
             x.ColumnNames = new List<string> { "1", "2" };
@@ -111,7 +109,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = comparer.IsMatch();
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
     }
 }

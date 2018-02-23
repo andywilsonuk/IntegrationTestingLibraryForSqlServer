@@ -1,26 +1,24 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Xunit;
 using System.Data;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class StandardColumnDefinitionTests
     {
         private const string ColumnName = "c1";
         private StandardColumnDefinition column = new StandardColumnDefinition(ColumnName, SqlDbType.DateTime);
 
-        [TestMethod]
+        [Fact]
         public void ConstructorBasics()
         {
-            Assert.AreEqual(SqlDbType.DateTime, column.DataType.SqlType);
-            Assert.AreEqual(ColumnName, column.Name);
+            Assert.Equal(SqlDbType.DateTime, column.DataType.SqlType);
+            Assert.Equal(ColumnName, column.Name);
         }
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void ConstructorInvalidDataType()
         {
-            new StandardColumnDefinition(ColumnName, SqlDbType.Int);
+            Assert.Throws<ArgumentException>(() => new StandardColumnDefinition(ColumnName, SqlDbType.Int));
         }
     }
 }

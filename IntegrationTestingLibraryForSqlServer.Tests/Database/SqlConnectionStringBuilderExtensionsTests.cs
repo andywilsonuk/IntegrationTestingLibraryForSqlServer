@@ -1,36 +1,35 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Data.SqlClient;
 
-namespace IntegrationTestingLibraryForSqlServer.Tests.Database
+namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class SqlConnectionStringBuilderExtensionsTests
     {
-        [TestMethod]
+        [Fact]
         public void IsMasterCatalog()
         {
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(@"server=(localdb)\MSSQLLocalDB;database=master;integrated security=True");
 
-            Assert.IsTrue(builder.IsMasterCatalog());
+            Assert.True(builder.IsMasterCatalog());
         }
 
-        [TestMethod]
+        [Fact]
         public void IsMasterCatalogFalse()
         {
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(@"server=(localdb)\MSSQLLocalDB;database=Test2;integrated security=True");
 
-            Assert.IsFalse(builder.IsMasterCatalog());
+            Assert.False(builder.IsMasterCatalog());
         }
 
-        [TestMethod]
+        [Fact]
         public void ToMasterCatalog()
         {
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(@"server=(localdb)\MSSQLLocalDB;database=Test2;integrated security=True");
 
             SqlConnectionStringBuilder actual = builder.ToMasterCatalog();
 
-            Assert.AreEqual(builder.DataSource, actual.DataSource);
-            Assert.AreEqual("master", actual.InitialCatalog);
+            Assert.Equal(builder.DataSource, actual.DataSource);
+            Assert.Equal("master", actual.InitialCatalog);
         }
     }
 }

@@ -1,13 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Data;
 using System.Data.SqlClient;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class SqlParameterToProcedureParameterMapperTests
     {
-        [TestMethod]
+        [Fact]
         public void ProcedureParameterFromSqlParameterDecimal()
         {
             // Arrange
@@ -19,10 +18,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             ProcedureParameter actual = mapper.FromSqlParameter(sqlParameter);
 
             // Assert
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void ProcedureParameterFromSqlParameterVarChar()
         {
             // Arrange
@@ -39,14 +38,14 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             var parameter = mapper.FromSqlParameter(sqlParameter) as VariableSizeProcedureParameter;
 
             // Assert
-            Assert.IsNotNull(parameter);
-            Assert.AreEqual(sqlParameter.ParameterName, parameter.Name);
-            Assert.AreEqual(sqlParameter.SqlDbType, parameter.DataType.SqlType);
-            Assert.AreEqual(10, parameter.Size);
-            Assert.AreEqual(sqlParameter.Direction, parameter.Direction);
+            Assert.NotNull(parameter);
+            Assert.Equal(sqlParameter.ParameterName, parameter.Name);
+            Assert.Equal(sqlParameter.SqlDbType, parameter.DataType.SqlType);
+            Assert.Equal(10, parameter.Size);
+            Assert.Equal(sqlParameter.Direction, parameter.Direction);
         }
 
-        [TestMethod]
+        [Fact]
         public void ProcedureParameterFromSqlParameterDateTime()
         {
             // Arrange
@@ -62,9 +61,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             var parameter = mapper.FromSqlParameter(sqlParameter);
 
             // Assert
-            Assert.AreEqual(sqlParameter.ParameterName, parameter.Name);
-            Assert.AreEqual(sqlParameter.SqlDbType, parameter.DataType.SqlType);
-            Assert.AreEqual(sqlParameter.Direction, parameter.Direction);
+            Assert.Equal(sqlParameter.ParameterName, parameter.Name);
+            Assert.Equal(sqlParameter.SqlDbType, parameter.DataType.SqlType);
+            Assert.Equal(sqlParameter.Direction, parameter.Direction);
         }
     }
 }

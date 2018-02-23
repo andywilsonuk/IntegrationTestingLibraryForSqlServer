@@ -19,4 +19,3 @@ Scenario: View setup and verify
 	| Id       | int       |      |                | false       |
 	| Name     | nvarchar  | 50   |                | true        |
 	| Decimal1 | decimal   | 10   | 5              | true        |
-

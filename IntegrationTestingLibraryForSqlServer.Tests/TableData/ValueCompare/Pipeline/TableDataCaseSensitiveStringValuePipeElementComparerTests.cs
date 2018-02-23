@@ -1,61 +1,60 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using IntegrationTestingLibraryForSqlServer.TableDataComparison;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class TableDataCaseSensitiveStringValuePipeElementComparerTests
     {
         private TableDataCaseSensitiveStringValuePipeElementComparer comparer = new TableDataCaseSensitiveStringValuePipeElementComparer();
 
-        [TestMethod]
+        [Fact]
         public void StringXStringYMatch()
         {
             var args = new TableDataValueComparerPipeElementArguments { X = "a", Y = "a" };
 
             comparer.Process(args);
 
-            Assert.AreEqual(MatchedValueComparer.IsMatch, args.MatchStatus);
+            Assert.Equal(MatchedValueComparer.IsMatch, args.MatchStatus);
         }
 
-        [TestMethod]
+        [Fact]
         public void StringXStringYNoMatch()
         {
             var args = new TableDataValueComparerPipeElementArguments { X = "a", Y = "A" };
 
             comparer.Process(args);
 
-            Assert.AreEqual(MatchedValueComparer.NoMatch, args.MatchStatus);
+            Assert.Equal(MatchedValueComparer.NoMatch, args.MatchStatus);
         }
 
-        [TestMethod]
+        [Fact]
         public void NullXStringYMatch()
         {
             var args = new TableDataValueComparerPipeElementArguments { X = (string)null, Y = "a" };
 
             comparer.Process(args);
 
-            Assert.AreEqual(MatchedValueComparer.NotYetCompared, args.MatchStatus);
+            Assert.Equal(MatchedValueComparer.NotYetCompared, args.MatchStatus);
         }
 
-        [TestMethod]
+        [Fact]
         public void StringXNullYMatch()
         {
             var args = new TableDataValueComparerPipeElementArguments { X = "a", Y = (string)null };
 
             comparer.Process(args);
 
-            Assert.AreEqual(MatchedValueComparer.NotYetCompared, args.MatchStatus);
+            Assert.Equal(MatchedValueComparer.NotYetCompared, args.MatchStatus);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataDefaultValueAlreadyCompared()
         {
             var args = new TableDataValueComparerPipeElementArguments { MatchStatus = MatchedValueComparer.NoMatch, X = null, Y = null };
 
             comparer.Process(args);
 
-            Assert.AreEqual(MatchedValueComparer.NoMatch, args.MatchStatus);
+            Assert.Equal(MatchedValueComparer.NoMatch, args.MatchStatus);
         }
     }
 }

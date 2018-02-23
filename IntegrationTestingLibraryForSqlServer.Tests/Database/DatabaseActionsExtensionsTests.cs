@@ -1,11 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class DatabaseActionsExtensionsTests
     {
-        [TestMethod]
+        [Fact]
         public void TableActionsReturnsCorrectlyScopedObject()
         {
             string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Test2;Integrated Security=True";
@@ -13,7 +12,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             var actual = target.TableActions();
 
-            Assert.AreEqual(connectionString, actual.ConnectionString);
+            Assert.Equal(connectionString, actual.ConnectionString);
         }
     }
 }

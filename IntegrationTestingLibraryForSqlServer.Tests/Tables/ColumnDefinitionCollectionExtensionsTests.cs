@@ -1,15 +1,14 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Data;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class ColumnDefinitionCollectionExtensionsTests
     {
         private const string ColumnName = "C1";
         ColumnDefinitionCollection columns = new ColumnDefinitionCollection();
 
-        [TestMethod]
+        [Fact]
         public void AddFromRaw()
         {
             var expected = new IntegerColumnDefinition(ColumnName, SqlDbType.Int) { AllowNulls = true };
@@ -17,58 +16,58 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             
             columns.AddFromRaw(source);
 
-            Assert.AreEqual(1, columns.Count);
-            Assert.AreEqual(expected, columns[0]);
+            Assert.Single(columns);
+            Assert.Equal(expected, columns[0]);
         }
-        [TestMethod]
+        [Fact]
         public void AddBinary_Valid_Added()
         {
             var expected = new BinaryColumnDefinition(ColumnName, SqlDbType.Binary);
 
             var actual = columns.AddBinary(ColumnName, SqlDbType.Binary);
 
-            Assert.AreEqual(1, columns.Count);
-            Assert.AreEqual(expected, actual);
+            Assert.Single(columns);
+            Assert.Equal(expected, actual);
         }
-        [TestMethod]
+        [Fact]
         public void AddDecimal_Valid_Added()
         {
             var expected = new DecimalColumnDefinition(ColumnName);
 
             var actual = columns.AddDecimal(ColumnName);
 
-            Assert.AreEqual(1, columns.Count);
-            Assert.AreEqual(expected, actual);
+            Assert.Single(columns);
+            Assert.Equal(expected, actual);
         }
-        [TestMethod]
+        [Fact]
         public void AddInteger_Valid_Added()
         {
             var expected = new IntegerColumnDefinition(ColumnName, SqlDbType.Int);
 
             var actual = columns.AddInteger(ColumnName, SqlDbType.Int);
 
-            Assert.AreEqual(1, columns.Count);
-            Assert.AreEqual(expected, actual);
+            Assert.Single(columns);
+            Assert.Equal(expected, actual);
         }
-        [TestMethod]
+        [Fact]
         public void AddString_Valid_Added()
         {
             var expected = new StringColumnDefinition(ColumnName, SqlDbType.VarChar);
 
             var actual = columns.AddString(ColumnName, SqlDbType.VarChar);
 
-            Assert.AreEqual(1, columns.Count);
-            Assert.AreEqual(expected, actual);
+            Assert.Single(columns);
+            Assert.Equal(expected, actual);
         }
-        [TestMethod]
+        [Fact]
         public void AddStandard_Valid_Added()
         {
             var expected = new StandardColumnDefinition(ColumnName, SqlDbType.DateTime);
 
             var actual = columns.AddStandard(ColumnName, SqlDbType.DateTime);
 
-            Assert.AreEqual(1, columns.Count);
-            Assert.AreEqual(expected, actual);
+            Assert.Single(columns);
+            Assert.Equal(expected, actual);
         }
     }
 }

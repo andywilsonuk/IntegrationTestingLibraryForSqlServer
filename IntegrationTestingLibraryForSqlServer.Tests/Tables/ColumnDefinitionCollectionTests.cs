@@ -1,26 +1,25 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class ColumnDefinitionCollectionTests
     {
         private const string columnName = "c1";
 
-        [TestMethod]
+        [Fact]
         public void GetName_Null_ReturnsNull()
         {
             string actual = ColumnDefinitionCollection.GetName(null);
 
-            Assert.IsNull(actual);
+            Assert.Null(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetName_Column_ReturnsName()
         {
             string actual = ColumnDefinitionCollection.GetName(MockColumnDefinition.GetColumn(columnName));
 
-            Assert.AreEqual(columnName, actual);
+            Assert.Equal(columnName, actual);
         }
     }
 }

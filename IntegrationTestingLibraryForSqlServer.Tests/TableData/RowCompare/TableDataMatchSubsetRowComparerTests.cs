@@ -1,25 +1,23 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Collections.Generic;
 using IntegrationTestingLibraryForSqlServer.TableDataComparison;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class TableDataMatchSubsetRowComparerTests
     {
         private TableDataMatchSubsetRowComparer comparer;
         private TableDataCaseSensitiveStringValueComparer valueComparer;
         private IList<int> indexMappings;
 
-        [TestInitialize]
-        public void TestInitialize()
+        public TableDataMatchSubsetRowComparerTests()
         {
             indexMappings = new List<int> { 0, 1, 2 };
             comparer = new TableDataMatchSubsetRowComparer();
             valueComparer = new TableDataCaseSensitiveStringValueComparer();
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataMatchSubsetRowComparerIsMatchTrue()
         {
             var rowsX = new List<IList<object>> { new List<object> { "a", "b", "c" }, new List<object> { "d", "e", "f" } };
@@ -28,10 +26,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = comparer.IsMatch();
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataMatchSubsetRowComparerIsMatchFalseMissingRow()
         {
             var rowsX = new List<IList<object>> { new List<object> { "a", "b", "c" }, new List<object> { "d", "e", "f" } };
@@ -40,10 +38,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = comparer.IsMatch();
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataMatchSubsetRowComparerIsMatchFalseMismatchedValues()
         {
             var rowsX = new List<IList<object>> { new List<object> { "a", "b", "c" }, new List<object> { "d", "e", "f" } };
@@ -52,10 +50,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = comparer.IsMatch();
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataMatchSubsetComparerIsMatchWithIndexMappingTrue()
         {
             indexMappings = new List<int> { 1, 0, 2 };
@@ -65,10 +63,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = comparer.IsMatch();
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void TableDataMatchSubsetRowComparerIsMatchTrueExtraColumns()
         {
             var rowsX = new List<IList<object>> { new List<object> { "a", "b" } };
@@ -78,7 +76,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = comparer.IsMatch();
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
     }
 }

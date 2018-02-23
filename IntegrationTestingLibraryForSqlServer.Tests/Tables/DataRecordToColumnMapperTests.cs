@@ -1,18 +1,16 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Data;
 using Moq;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class DataRecordToColumnMapperTests
     {
         private DataRecordToColumnMapper mapper = new DataRecordToColumnMapper();
         private Mock<IDataRecord> mockDataRecord;
         private ColumnDefinition expected;
         
-        [TestInitialize]
-        public void TestInitialize()
+        public DataRecordToColumnMapperTests()
         {
             mockDataRecord = new Mock<IDataRecord>();
             mockDataRecord.Setup(x => x.GetString(DataRecordToColumnMapper.Columns.Name)).Returns("r1");
@@ -26,15 +24,15 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             };
         }
 
-        [TestMethod]
+        [Fact]
         public void DataRecordToColumnDefinition()
         {
             ColumnDefinition actual = mapper.ToColumnDefinition(mockDataRecord.Object);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void DataRecordToColumnDefinitionNullable()
         {
             mockDataRecord.Setup(x => x.GetBoolean(DataRecordToColumnMapper.Columns.IsNullable)).Returns(true);
@@ -42,10 +40,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             ColumnDefinition actual = mapper.ToColumnDefinition(mockDataRecord.Object);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void DataRecordToColumnIdentity()
         {
             mockDataRecord.Setup(x => x.GetBoolean(DataRecordToColumnMapper.Columns.IsIdentity)).Returns(true);
@@ -58,10 +56,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             ColumnDefinition actual = mapper.ToColumnDefinition(mockDataRecord.Object);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void DataRecordToColumnSizeVarChar()
         {
             mockDataRecord.Setup(x => x.GetString(DataRecordToColumnMapper.Columns.DataType)).Returns("VarChar");
@@ -74,10 +72,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             ColumnDefinition actual = mapper.ToColumnDefinition(mockDataRecord.Object);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void DataRecordToColumnSizeNVarChar()
         {
             mockDataRecord.Setup(x => x.GetString(DataRecordToColumnMapper.Columns.DataType)).Returns("NVarChar");
@@ -90,9 +88,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             ColumnDefinition actual = mapper.ToColumnDefinition(mockDataRecord.Object);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
-        [TestMethod]
+        [Fact]
         public void DataRecordToColumnMaxSizeVarChar()
         {
             mockDataRecord.Setup(x => x.GetString(DataRecordToColumnMapper.Columns.DataType)).Returns("VarChar");
@@ -106,9 +104,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             ColumnDefinition actual = mapper.ToColumnDefinition(mockDataRecord.Object);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
-        [TestMethod]
+        [Fact]
         public void DataRecordToColumnMaxAltSizeVarChar()
         {
             mockDataRecord.Setup(x => x.GetString(DataRecordToColumnMapper.Columns.DataType)).Returns("VarChar");
@@ -122,9 +120,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             ColumnDefinition actual = mapper.ToColumnDefinition(mockDataRecord.Object);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
-        [TestMethod]
+        [Fact]
         public void DataRecordToColumnDecimal()
         {
             mockDataRecord.Setup(x => x.GetString(DataRecordToColumnMapper.Columns.DataType)).Returns("Decimal");
@@ -139,7 +137,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             ColumnDefinition actual = mapper.ToColumnDefinition(mockDataRecord.Object);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
     }
 }

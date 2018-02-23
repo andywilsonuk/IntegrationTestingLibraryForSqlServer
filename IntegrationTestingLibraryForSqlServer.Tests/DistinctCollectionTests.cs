@@ -1,55 +1,57 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class DistinctCollectionTests
     {
         private readonly IEqualityComparer<string> comparer = StringComparer.CurrentCultureIgnoreCase;
         private const string DefaultName = "p1";
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void Constructor_NullComparer_Throws()
         {
-            new DistinctCollection<string>(null);
+            Assert.Throws<ArgumentNullException>(() => new DistinctCollection<string>(null));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void Add_DuplicateInsert_Throws()
         {
-            var names = new DistinctCollection<string>(comparer);
-            names.Add(DefaultName);
+            var names = new DistinctCollection<string>(comparer)
+            {
+                DefaultName
+            };
 
-            names.Add(DefaultName);
+            Assert.Throws<ArgumentException>(() => names.Add(DefaultName));
         }
 
-        [TestMethod]
+        [Fact]
         public void Add_UniqueInsert_Added()
         {
-            var names = new DistinctCollection<string>(comparer);
-            names.Add(DefaultName);
+            var names = new DistinctCollection<string>(comparer)
+            {
+                DefaultName,
 
-            names.Add("p2");
+                "p2"
+            };
 
-            Assert.AreEqual(2, names.Count);
+            Assert.Equal(2, names.Count);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void Set_DuplicateInsert_Throws()
         {
-            var names = new DistinctCollection<string>(comparer);
-            names.Add(DefaultName);
-            names.Add("p2");
+            var names = new DistinctCollection<string>(comparer)
+            {
+                DefaultName,
+                "p2"
+            };
 
-            names[1] = DefaultName;
+            Assert.Throws<ArgumentException>(() => names[1] = DefaultName);
         }
 
-        [TestMethod]
+        [Fact]
         public void AddRange_Single_Added()
         {
             var nameRange = new[] { DefaultName };
@@ -57,19 +59,16 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
             var names = new DistinctCollection<string>(comparer);
             names.AddRange(nameRange);
 
-            Assert.AreEqual(1, names.Count);
+            Assert.Single(names);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void AddRange_Duplicate_Throws()
         {
             var nameRange = new[] { DefaultName, DefaultName };
             
             var names = new DistinctCollection<string>(comparer);
-            names.AddRange(nameRange);
-
-            Assert.AreEqual(1, names.Count);
+            Assert.Throws<ArgumentException>(() => names.AddRange(nameRange));
         }
     }
 }

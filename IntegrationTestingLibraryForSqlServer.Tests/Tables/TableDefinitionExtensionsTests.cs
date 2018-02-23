@@ -1,57 +1,50 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class TableDefinitionExtensionsTests
     {
         private string connectionString = @"server=(localdb)\MSSQLLocalDB;database=notreal;integrated security=True";
         private TableDefinition tableDefinition = new TableDefinition("test");
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void CreateOrReplaceNullDatabase()
         {
-            tableDefinition.CreateOrReplace(null);
+            Assert.Throws<ArgumentNullException>(() => tableDefinition.CreateOrReplace(null));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void InsertNullDatabase()
         {
             TableData table = new TableData();
 
-            tableDefinition.Insert(null, table);
+            Assert.Throws<ArgumentNullException>(() => tableDefinition.Insert(null, table));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void InsertNullTableData()
         {
             DatabaseActions database = new DatabaseActions(connectionString);
-            tableDefinition.Insert(database, null);
+            Assert.Throws<ArgumentNullException>(() => tableDefinition.Insert(database, null));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void VerifyMatchNullDatabase()
         {
-            tableDefinition.VerifyMatch(null);
+            Assert.Throws<ArgumentNullException>(() => tableDefinition.VerifyMatch(null));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void VerifyMatchOrSubsetNullDatabase()
         {
-            tableDefinition.VerifyMatchOrSubset(null);
+            Assert.Throws<ArgumentNullException>(() => tableDefinition.VerifyMatchOrSubset(null));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void CreateViewNullDatabase()
         {
-            tableDefinition.CreateView(null, "v1");
+            Assert.Throws<ArgumentNullException>(() => tableDefinition.CreateView(null, "v1"));
         }
     }
 }

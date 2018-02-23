@@ -1,151 +1,41 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2F3DD475-685E-4688-8DC4-63919D9CAD3A}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>IntegrationTestingLibraryForSqlServer</RootNamespace>
+    <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
+	<Title>IntegrationTestingLibraryForSqlServer</Title>
     <AssemblyName>IntegrationTestingLibraryForSqlServer</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <RootNamespace>IntegrationTestingLibraryForSqlServer</RootNamespace>
+    <PackageReleaseNotes>See https://github.com/andywilsonuk/IntegrationTestingLibraryForSqlServer/releases</PackageReleaseNotes>
+    <Version>2.2.0</Version>
+	<AssemblyVersion>2.2.0</AssemblyVersion>
+	<FileVersion>2.2.0</FileVersion>
+    <Product>Integration Testing Library for SQL Server</Product>
+    <Authors>Andy Wilson and contributors</Authors>
+    <Company>Andy Wilson</Company>
+    <Description>Provides helper functions for setting up and tearing down SQL Server database fakes for use in integration testing.</Description>
+	<Summary>Provides helper functions for setting up and tearing down SQL Server database fakes for use in integration testing.</Summary>
+    <Copyright>Andy Wilson</Copyright>
+    <PackageLicenseUrl>http://opensource.org/licenses/Apache-2.0</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/andywilsonuk/IntegrationTestingLibraryForSqlServer</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/andywilsonuk/IntegrationTestingLibraryForSqlServer</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>testing sqlserver sql server continuous integration database automation utility</PackageTags>
+	<NetStandardImplicitPackageVersion>2.0.0</NetStandardImplicitPackageVersion>
+	<MinClientVersion>2.12</MinClientVersion>
+	<SignAssembly>false</SignAssembly>
+	<AssemblyOriginatorKeyFile>IntegrationTestingLibraryForSqlServer.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>  
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <AssemblyTitle>Integration Testing Library for SQL Server .NET Standard 2.0</AssemblyTitle>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net45'">
+    <AssemblyTitle>Integration Testing Library for SQL Server .NET 4.5</AssemblyTitle>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Properties\IntegrationTestingLibraryForSqlServer.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Data.SqlClient">
+      <Version>4.4.2</Version>
+    </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Database\DatabaseActionsExtensions.cs" />
-    <Compile Include="Database\DatabaseObjectName.cs" />
-    <Compile Include="Database\DataType.cs" />
-    <Compile Include="Database\DomainAccount.cs" />
-    <Compile Include="Database\SqlConnectionStringBuilderExtensions.cs" />
-    <Compile Include="DistinctCollection.cs" />
-    <Compile Include="Procedures\ProcedureParameterCollection.cs" />
-    <Compile Include="NameEqualityComparer.cs" />
-    <Compile Include="Procedures\Parameters\StringProcedureParameter.cs" />
-    <Compile Include="Procedures\Parameters\BinaryProcedureParameter.cs" />
-    <Compile Include="Procedures\ProcedureParameterCollectionExtensions.cs" />
-    <Compile Include="Procedures\Parameters\ProcedureParameterRaw.cs" />
-    <Compile Include="Procedures\ProcedureParameterFactory.cs" />
-    <Compile Include="Procedures\Parameters\DecimalProcedureParameter.cs" />
-    <Compile Include="Procedures\Parameters\IntegerProcedureParameter.cs" />
-    <Compile Include="Procedures\Parameters\VariableSizeProcedureParameter.cs" />
-    <Compile Include="Procedures\Parameters\StandardProcedureParameter.cs" />
-    <Compile Include="Procedures\ProcedureCreateSqlGenerator.cs" />
-    <Compile Include="Procedures\ProcedureDefinitionExtensions.cs" />
-    <Compile Include="Procedures\Parameters\ProcedureParameter.cs" />
-    <Compile Include="Procedures\SqlParameterToProcedureParameterMapper.cs" />
-    <Compile Include="TableData\CollectionPopulatedTableData.cs" />
-    <Compile Include="TableData\ObjectPopulatedTableData.cs" />
-    <Compile Include="TableData\TableDataComparison\TableDataComparer.cs" />
-    <Compile Include="TableData\TableDataComparers.cs" />
-    <Compile Include="TableData\TableDataComparison\ValueCompare\Pipeline\TableDataNumberValueComparer.cs" />
-    <Compile Include="TableData\TableDataComparison\ValueCompare\Pipeline\TableDataCaseSensitiveStringValuePipeElementComparer.cs" />
-    <Compile Include="TableData\TableDataComparison\ValueCompare\Pipeline\TableDataBooleanValueComparer.cs" />
-    <Compile Include="TableData\TableDataComparison\ValueCompare\Pipeline\TableDataDefaultValueComparer.cs" />
-    <Compile Include="TableData\TableDataComparison\ValueCompare\Pipeline\TableDataDateTimeValueComparer.cs" />
-    <Compile Include="TableData\TableDataComparison\ValueCompare\Pipeline\TableDataNullValueComparer.cs" />
-    <Compile Include="TableData\TableDataComparison\ValueCompare\TableDataCaseSensitiveStringValueComparer.cs" />
-    <Compile Include="TableData\TableDataComparison\ValueCompare\Pipeline\TableDataGuidValueComparer.cs" />
-    <Compile Include="TableData\TableDataComparison\ValueCompare\TableDataValueComparer.cs" />
-    <Compile Include="TableData\TableDataComparison\ValueCompare\Pipeline\TableDataValueComparerPipeElement.cs" />
-    <Compile Include="TableData\TableDataComparison\ValueCompare\Pipeline\TableDataValueComparerPipeElementArguments.cs" />
-    <Compile Include="TableData\TableDataComparison\ValueCompare\Pipeline\TableDataValueComparerPipeline.cs" />
-    <Compile Include="Tables\ColumnDefinitionCollection.cs" />
-    <Compile Include="Tables\Columns\StringColumnDefinition.cs" />
-    <Compile Include="Tables\Columns\BinaryColumnDefinition.cs" />
-    <Compile Include="Tables\Columns\ColumnDefinition.cs" />
-    <Compile Include="TableData\DataReaderPopulatedTableData.cs" />
-    <Compile Include="TableData\TableDataComparison\RowCompare\TableDataMatchEqualRowComparer.cs" />
-    <Compile Include="TableData\TableDataComparison\RowCompare\TableDataMatchSubsetRowComparer.cs" />
-    <Compile Include="TableData\TableDataComparison\RowCompare\TableDataOrdinalRowComparer.cs" />
-    <Compile Include="TableData\TableDataComparison\ColumnCompare\TableDataColumnComparer.cs" />
-    <Compile Include="TableData\TableDataComparison\TableDataCompositeComparer.cs" />
-    <Compile Include="TableData\TableDataComparison\ColumnCompare\TableDataMatchEqualColumnComparer.cs" />
-    <Compile Include="TableData\TableDataComparison\TableDataComparerStrategyFactory.cs" />
-    <Compile Include="TableData\TableDataComparison\ColumnCompare\TableDataOrdinalColumnComparer.cs" />
-    <Compile Include="TableData\TableDataComparison\RowCompare\TableDataRowComparer.cs" />
-    <Compile Include="TableData\TableDataComparison\ColumnCompare\TableDataMatchSubsetColumnComparer.cs" />
-    <Compile Include="Tables\ColumnDefinitionCollectionExtensions.cs" />
-    <Compile Include="Tables\ColumnDefinitionFactory.cs" />
-    <Compile Include="Tables\Columns\ColumnDefinitionRaw.cs" />
-    <Compile Include="Tables\Columns\StandardColumnDefinition.cs" />
-    <Compile Include="Tables\DataReaderSchemaTableDefinitionInterrogationStrategy.cs" />
-    <Compile Include="Tables\Columns\DecimalColumnDefinition.cs" />
-    <Compile Include="Tables\Columns\IntegerColumnDefinition.cs" />
-    <Compile Include="Tables\SchemaRowToColumnMapper.cs" />
-    <Compile Include="Tables\Columns\VariableSizeColumnDefinition.cs" />
-    <Compile Include="Tables\SystemTablesTableDefinitionInterrogationStrategy.cs" />
-    <Compile Include="Database\TableCodeBuilder.cs" />
-    <Compile Include="Tables\TableDefinitionExtensions.cs" />
-    <Compile Include="Tables\TableDefinition.cs" />
-    <Compile Include="Database\DatabaseActions.cs" />
-    <Compile Include="Procedures\ProcedureCheck.cs" />
-    <Compile Include="Database\SqlConnectionExtensions.cs" />
-    <Compile Include="Tables\DataRecordToColumnMapper.cs" />
-    <Compile Include="Tables\TableDefinitionInterrogationStrategy.cs" />
-    <Compile Include="Tables\TableDefinitionInterrogationStrategyFactory.cs" />
-    <Compile Include="Tables\TableDefinitionInterrogationStrategyType.cs" />
-    <Compile Include="Tables\TableInsertSqlGenerator.cs" />
-    <Compile Include="Tables\TableCreateSqlGenerator.cs" />
-    <Compile Include="TableData\TableData.cs" />
-    <Compile Include="Tables\TableActions.cs" />
-    <Compile Include="Procedures\ProcedureActions.cs" />
-    <Compile Include="Procedures\ProcedureDefinition.cs" />
-    <Compile Include="Tables\TableCheck.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\ViewCheck.cs" />
-    <Compile Include="Views\TableBackedViewCreateSqlGenerator.cs" />
-    <Compile Include="Views\TableBackedViewDefinition.cs" />
-    <Compile Include="ValidationException.cs" />
-    <Compile Include="EquivalenceException.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\IntegrationTestingLibraryForSqlServer.snk" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>xcopy "$(ProjectDir)bin\$(ConfigurationName)\*.dll" "$(SolutionDir)IntegrationTestingLibraryForSqlServer.Packager\lib\net45" /Ys</PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

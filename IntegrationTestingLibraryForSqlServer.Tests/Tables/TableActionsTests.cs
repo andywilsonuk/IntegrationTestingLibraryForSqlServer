@@ -1,11 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class TableActionsTests
     {
-        [TestMethod]
+        [Fact]
         public void TableActionsConnectionStringSet()
         {
             string connectionString = @"server=(localdb)\MSSQLLocalDB;database=Test2;integrated security=True";
@@ -13,7 +12,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             var actual = target.ConnectionString;
 
-            Assert.AreEqual(connectionString, actual);
+            Assert.Equal(connectionString, actual);
         }
     }
 }

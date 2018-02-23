@@ -1,18 +1,25 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
+using Xunit;
 
 namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
 {
     [Binding]
     public class ProcedureSteps
     {
-        private DatabaseActions database = ScenarioContext.Current.Get<DatabaseActions>("Database");
+        private readonly ScenarioContext scenarioContext;
+        private readonly DatabaseActions database;
+
+        public ProcedureSteps(ScenarioContext scenarioContext)
+        {
+            this.scenarioContext = scenarioContext;
+            database = scenarioContext.Get<DatabaseActions>("Database");
+        }
 
         [Then(@"the definition of procedure ""(.*)"" should match")]
         public void ThenTheDefinitionOfProcedureShouldMatch(string procedureName, Table table)
@@ -62,7 +69,7 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         [Then(@"the return value should be (.*)")]
         public void ThenTheReturnValueShouldBe(int returnValue)
         {
-            Assert.AreEqual(returnValue, this.returnValue);
+            Assert.Equal(returnValue, this.returnValue);
         }
     }
 }

@@ -1,14 +1,21 @@
 ﻿using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Data.SqlClient;
+using Xunit;
 
 namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
 {
     [Binding]
     public class SchemaSteps
     {
-        private DatabaseActions database = ScenarioContext.Current.Get<DatabaseActions>("Database");
+        private readonly ScenarioContext scenarioContext;
+        private readonly DatabaseActions database;
+
+        public SchemaSteps(ScenarioContext scenarioContext)
+        {
+            this.scenarioContext = scenarioContext;
+            database = scenarioContext.Get<DatabaseActions>("Database");
+        }
 
         [Given(@"the schema ""(.*)"" is created")]
         [When(@"the schema ""(.*)"" is created")]
@@ -20,7 +27,7 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         [Then(@"the schema ""(.*)"" exists")]
         public void ThenTheSchemaExists(string schemaName)
         {
-            Assert.IsTrue(SchemaExists(schemaName));
+            Assert.True(SchemaExists(schemaName));
         }
 
         public bool SchemaExists(string schemaName)
@@ -57,7 +64,7 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
         [Then(@"the table ""(.*)"" exists in the schema ""(.*)""")]
         public void ThenTheTableExistsInTheSchema(string tableName, string schemaName)
         {
-            Assert.IsTrue(TableInSchemaExists(tableName, schemaName));
+            Assert.True(TableInSchemaExists(tableName, schemaName));
         }
 
         public bool TableInSchemaExists(string tableName, string schemaName)

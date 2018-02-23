@@ -1,40 +1,39 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Data;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class ProcedureParameterTests
     {
         private const string ParameterName = "p1";
         private const string QualifiedParameterName = "@" + ParameterName;
 
-        [TestMethod]
+        [Fact]
         public void Constructor_PassedValues_SetAgainstProperties()
         {
             var parameter = GetParameter(ParameterName, SqlDbType.DateTime);
 
-            Assert.AreEqual(SqlDbType.DateTime, parameter.DataType.SqlType);
-            Assert.AreEqual(ParameterDirection.Input, parameter.Direction);
+            Assert.Equal(SqlDbType.DateTime, parameter.DataType.SqlType);
+            Assert.Equal(ParameterDirection.Input, parameter.Direction);
         }
 
-        [TestMethod]
+        [Fact]
         public void Name_NotQualified_True()
         {
             var parameter = GetParameter(ParameterName, SqlDbType.DateTime);
 
-            Assert.AreEqual(QualifiedParameterName, parameter.Name);
+            Assert.Equal(QualifiedParameterName, parameter.Name);
         }
 
-        [TestMethod]
+        [Fact]
         public void Name_AlreadyQualified_True()
         {
             var parameter = GetParameter(QualifiedParameterName, SqlDbType.DateTime);
 
-            Assert.AreEqual(QualifiedParameterName, parameter.Name);
+            Assert.Equal(QualifiedParameterName, parameter.Name);
         }
 
-        [TestMethod]
+        [Fact]
         public void Equals_Equivalent_True()
         {
             var x = GetParameter(QualifiedParameterName, SqlDbType.DateTime);
@@ -42,20 +41,20 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = x.Equals(y);
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void Equals_Null_False()
         {
             var parameter = GetParameter(QualifiedParameterName, SqlDbType.DateTime);
 
             bool actual = parameter.Equals(null);
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void Equals_DifferentName_False()
         {
             var parameter = GetParameter(QualifiedParameterName, SqlDbType.DateTime);
@@ -63,10 +62,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = parameter.Equals(other);
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void Equals_DifferentDataType_False()
         {
             var parameter = GetParameter(QualifiedParameterName, SqlDbType.DateTime);
@@ -74,10 +73,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = parameter.Equals(other);
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void Equals_DifferentDirection_False()
         {
             var parameter = GetParameter(QualifiedParameterName, SqlDbType.DateTime);
@@ -86,10 +85,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = parameter.Equals(other);
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void Equals_EquivalentDirectionsLeft_True()
         {
             var parameter = GetParameter(QualifiedParameterName, SqlDbType.DateTime);
@@ -99,10 +98,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = parameter.Equals(other);
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void Equals_EquivalentDirectionsRight_True()
         {
             var parameter = GetParameter(QualifiedParameterName, SqlDbType.DateTime);
@@ -112,10 +111,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = parameter.Equals(other);
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetHashCode_Lowered_Equal()
         {
             var parameter = GetParameter(QualifiedParameterName, SqlDbType.DateTime);
@@ -123,20 +122,20 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             int actual = parameter.GetHashCode();
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetHashCode_Qualified_Equal()
         {
             var expected = GetParameter(QualifiedParameterName, SqlDbType.Date);
 
             var actual = GetParameter(ParameterName, SqlDbType.Date);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void ToString_Overridden_Equal()
         {
             var parameter = GetParameter(QualifiedParameterName, SqlDbType.DateTime);
@@ -144,7 +143,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             string actual = parameter.ToString();
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
         private ProcedureParameter GetParameter(string name, SqlDbType type)

@@ -1,28 +1,26 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Xunit;
 using System.Data;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class StringProcedureParameterTests
     {
         private const string parameterName = "@p1";
         private StringProcedureParameter parameter = new StringProcedureParameter(parameterName, SqlDbType.VarChar, ParameterDirection.Input);
 
-        [TestMethod]
+        [Fact]
         public void ConstructorBasics()
         {
-            Assert.AreEqual(SqlDbType.VarChar, parameter.DataType.SqlType);
-            Assert.AreEqual(parameterName, parameter.Name);
-            Assert.AreEqual(1, parameter.Size);
+            Assert.Equal(SqlDbType.VarChar, parameter.DataType.SqlType);
+            Assert.Equal(parameterName, parameter.Name);
+            Assert.Equal(1, parameter.Size);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void ConstructorWithWrongDataTypeThrows()
         {
-            new StringProcedureParameter(parameterName, SqlDbType.Int, ParameterDirection.Input);
+            Assert.Throws<ArgumentException>(() => new StringProcedureParameter(parameterName, SqlDbType.Int, ParameterDirection.Input));
         }
     }
 }

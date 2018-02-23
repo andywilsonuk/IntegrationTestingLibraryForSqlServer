@@ -1,16 +1,15 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Xunit;
 using System.Text;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class VariableSizeColumnDefinitionTests
     {
         private const string ColumnName = "c1";
         private MockVariableSizeColumnDefinition definition = MockVariableSizeColumnDefinition.GetColumn(ColumnName);
 
-        [TestMethod]
+        [Fact]
         public void VariableSizeColumnDefinitionEquals()
         {
             definition.AllowNulls = false;
@@ -21,10 +20,10 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = definition.Equals(other);
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void VariableSizeColumnDefinitionNotEqualsSize()
         {
             definition.AllowNulls = false;
@@ -35,9 +34,9 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = definition.Equals(other);
 
-            Assert.IsFalse(actual);
+            Assert.False(actual);
         }
-        [TestMethod]
+        [Fact]
         public void VariableSizeColumnDefinitionEqualsMaxSize()
         {
             definition.AllowNulls = false;
@@ -48,51 +47,50 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             bool actual = definition.Equals(other);
 
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void VariableSizeColumnDefinitionNegativeOneSizeSetToZero()
         {
             definition.Size = -1;
 
-            Assert.AreEqual(0, definition.Size);
+            Assert.Equal(0, definition.Size);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void VariableSizeColumnDefinitionNegativeSize()
         {
-            definition.Size = -10;
+            Assert.Throws<ArgumentException>(() => definition.Size = -10);
         }
 
-        [TestMethod]
+        [Fact]
         public void VariableSizeColumnDefinitionZeroAsMaxSize()
         {
             definition.Size = 0;
 
-            Assert.IsTrue(definition.IsMaximumSize);
-            Assert.AreEqual(0, definition.Size);
+            Assert.True(definition.IsMaximumSize);
+            Assert.Equal(0, definition.Size);
         }
 
-        [TestMethod]
+        [Fact]
         public void VariableSizeColumnDefinitionNegativeOneAsMaxSize()
         {
             definition.Size = -1;
 
-            Assert.IsTrue(definition.IsMaximumSize);
-            Assert.AreEqual(0, definition.Size);
+            Assert.True(definition.IsMaximumSize);
+            Assert.Equal(0, definition.Size);
         }
 
-        [TestMethod]
+        [Fact]
         public void VariableSizeColumnColumnDefinitionSetMaximumSize()
         {
             definition.IsMaximumSize = true;
 
-            Assert.AreEqual(0, definition.Size);
+            Assert.Equal(0, definition.Size);
         }
 
-        [TestMethod]
+        [Fact]
         public void VariableSizeColumnColumnDefinitionToString()
         {
             definition.Size = 10;
@@ -106,7 +104,7 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
 
             string actual = definition.ToString();
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
     }
 }

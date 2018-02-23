@@ -1,97 +1,94 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Xunit;
 
 namespace IntegrationTestingLibraryForSqlServer.Tests
 {
-    [TestClass]
     public class DatabaseObjectNameTests
     {
         private static string qualified = "[s1].[t1]";
 
-        [TestMethod]
+        [Fact]
         public void NoBrackets()
         {
             var objectName = new DatabaseObjectName("s1", "t1");
 
-            Assert.AreEqual(qualified, objectName.Qualified);
-            Assert.AreEqual("[s1]", objectName.SchemaName);
-            Assert.AreEqual("[t1]", objectName.ObjectName);
+            Assert.Equal(qualified, objectName.Qualified);
+            Assert.Equal("[s1]", objectName.SchemaName);
+            Assert.Equal("[t1]", objectName.ObjectName);
         }
-        [TestMethod]
+        [Fact]
         public void WithBrackets()
         {
             var objectName = new DatabaseObjectName("[s1]", "[t1]");
 
-            Assert.AreEqual(qualified, objectName.Qualified);
+            Assert.Equal(qualified, objectName.Qualified);
         }
-        [TestMethod]
+        [Fact]
         public void MissingSchema()
         {
             var objectName = new DatabaseObjectName(null, "t1");
 
-            Assert.AreEqual("[dbo].[t1]", objectName.Qualified);
-            Assert.AreEqual("[dbo]", objectName.SchemaName);
-            Assert.AreEqual("[t1]", objectName.ObjectName);
+            Assert.Equal("[dbo].[t1]", objectName.Qualified);
+            Assert.Equal("[dbo]", objectName.SchemaName);
+            Assert.Equal("[t1]", objectName.ObjectName);
         }
-        [TestMethod]
+        [Fact]
         public void QualifiedToString()
         {
             var objectName = new DatabaseObjectName("[s1]", "[t1]");
 
-            Assert.AreEqual(qualified, objectName.ToString());
+            Assert.Equal(qualified, objectName.ToString());
         }
-        [TestMethod]
+        [Fact]
         public void FromNameWithSchema()
         {
             var objectName = DatabaseObjectName.FromName(qualified);
 
-            Assert.AreEqual(qualified, objectName.Qualified);
-            Assert.AreEqual("[s1]", objectName.SchemaName);
-            Assert.AreEqual("[t1]", objectName.ObjectName);
+            Assert.Equal(qualified, objectName.Qualified);
+            Assert.Equal("[s1]", objectName.SchemaName);
+            Assert.Equal("[t1]", objectName.ObjectName);
         }
-        [TestMethod]
+        [Fact]
         public void FromNameWithoutSchema()
         {
             var objectName = DatabaseObjectName.FromName("t1");
 
-            Assert.AreEqual("[dbo]", objectName.SchemaName);
-            Assert.AreEqual("[t1]", objectName.ObjectName);
+            Assert.Equal("[dbo]", objectName.SchemaName);
+            Assert.Equal("[t1]", objectName.ObjectName);
         }
-        [TestMethod]
+        [Fact]
         public void HashCodeSame()
         {
             var objectName1 = new DatabaseObjectName("s1", "t1");
             var objectName2 = new DatabaseObjectName("s1", "t1");
 
-            Assert.AreEqual(objectName1.GetHashCode(), objectName2.GetHashCode());
+            Assert.Equal(objectName1.GetHashCode(), objectName2.GetHashCode());
         }
-        [TestMethod]
+        [Fact]
         public void HashCodeSameMixedCase()
         {
             var objectName1 = new DatabaseObjectName("s1", "T1");
             var objectName2 = new DatabaseObjectName("S1", "t1");
 
-            Assert.AreEqual(objectName1.GetHashCode(), objectName2.GetHashCode());
+            Assert.Equal(objectName1.GetHashCode(), objectName2.GetHashCode());
         }
-        [TestMethod]
+        [Fact]
         public void HashCodeDifferent()
         {
             var objectName1 = new DatabaseObjectName("s1", "t2");
             var objectName2 = new DatabaseObjectName("s1", "t1");
 
-            Assert.AreNotEqual(objectName1.GetHashCode(), objectName2.GetHashCode());
+            Assert.NotEqual(objectName1.GetHashCode(), objectName2.GetHashCode());
         }
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void FromNameNull()
         {
-            DatabaseObjectName.FromName(null);
+            Assert.Throws<ArgumentNullException>(() => DatabaseObjectName.FromName(null));
         }
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void ConstructorNullObjectName()
         {
-            new DatabaseObjectName("dbo", null);
+            Assert.Throws<ArgumentException>(() => new DatabaseObjectName("dbo", null));
         }
     }
 }
