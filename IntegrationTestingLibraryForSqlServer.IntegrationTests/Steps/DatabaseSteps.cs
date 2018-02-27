@@ -12,6 +12,7 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
     {
         private readonly ScenarioContext scenarioContext;
         private DatabaseActions database;
+        private string username;
 
         public DatabaseSteps(ScenarioContext scenarioContext)
         {
@@ -33,16 +34,25 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
             scenarioContext["Database"] = database;
         }
 
-        [When(@"the user '(.*)' is granted access to the database")]
-        public void WhenTheUserIsGrantedAccessToTheDatabase(string username)
+        [When(@"the domain user '(.*)' is granted access to the database")]
+        public void WhenTheDomainUserIsGrantedAccessToTheDatabase(string username)
         {
-            database.GrantUserAccess(new DomainAccount(username));
+            DomainAccount account = new DomainAccount(username);
+            database.GrantUserAccess(account);
+            this.username = account.Qualified;
         }
 
-        [Then(@"the permissions for '(.*)' should be")]
-        public void ThenThePermissionsForShouldBe(string username, Table table)
+        [When(@"the SQL user '(.*)' with password '(.*)' is granted access to the database")]
+        public void WhenTheSQLUserWithPasswordIsGrantedAccessToTheDatabase(string username, string password)
         {
-            string commandFormat = @"EXECUTE AS USER = '{0}\{1}';
+            database.GrantUserAccess(new SqlAccount(username, password));
+            this.username = username;
+        }
+
+        [Then(@"the permissions should be")]
+        public void ThenThePermissionsShouldBe(Table table)
+        {
+            string commandFormat = @"EXECUTE AS USER = '{0}';
 SELECT permission_name FROM fn_my_permissions (NULL, 'DATABASE');";
 
             HashSet<string> expected = new HashSet<string>(table.Rows.Select(x => x[0]), StringComparer.CurrentCultureIgnoreCase);
@@ -51,7 +61,7 @@ SELECT permission_name FROM fn_my_permissions (NULL, 'DATABASE');";
             {
                 using (SqlCommand command = connection.CreateCommand())
                 {
-                    command.CommandText = string.Format(commandFormat, Environment.UserDomainName, username);
+                    command.CommandText = string.Format(commandFormat, this.username);
                     connection.Open();
                     using (var reader = command.ExecuteReader())
                         while(reader.Read())

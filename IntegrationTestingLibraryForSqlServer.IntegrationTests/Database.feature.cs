@@ -71,20 +71,20 @@ namespace IntegrationTestingLibraryForSqlServer.IntegrationTests
             this.ScenarioTearDown();
         }
         
-        [Xunit.FactAttribute(DisplayName="Grant user access")]
+        [Xunit.FactAttribute(DisplayName="Grant Domain user access")]
         [Xunit.TraitAttribute("FeatureTitle", "Database")]
-        [Xunit.TraitAttribute("Description", "Grant user access")]
+        [Xunit.TraitAttribute("Description", "Grant Domain user access")]
         [Xunit.TraitAttribute("Category", "db")]
-        public virtual void GrantUserAccess()
+        public virtual void GrantDomainUserAccess()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Grant user access", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Grant Domain user access", new string[] {
                         "db"});
 #line 5
 this.ScenarioSetup(scenarioInfo);
 #line 6
  testRunner.Given("there is a test database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 7
- testRunner.When("the user \'Administrator\' is granted access to the database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("the domain user \'Administrator\' is granted access to the database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "Permission"});
@@ -104,8 +104,48 @@ this.ScenarioSetup(scenarioInfo);
                         "VIEW ANY COLUMN ENCRYPTION KEY DEFINITION"});
             table1.AddRow(new string[] {
                         "VIEW ANY COLUMN MASTER KEY DEFINITION"});
-#line 9
- testRunner.Then("the permissions for \'Administrator\' should be", ((string)(null)), table1, "Then ");
+#line 8
+ testRunner.Then("the permissions should be", ((string)(null)), table1, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.FactAttribute(DisplayName="Grant SQL user access")]
+        [Xunit.TraitAttribute("FeatureTitle", "Database")]
+        [Xunit.TraitAttribute("Description", "Grant SQL user access")]
+        [Xunit.TraitAttribute("Category", "db")]
+        public virtual void GrantSQLUserAccess()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Grant SQL user access", new string[] {
+                        "db"});
+#line 20
+this.ScenarioSetup(scenarioInfo);
+#line 21
+ testRunner.Given("there is a test database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 22
+ testRunner.When("the SQL user \'testaccount\' with password \'abc123\' is granted access to the databa" +
+                    "se", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Permission"});
+            table2.AddRow(new string[] {
+                        "CONNECT"});
+            table2.AddRow(new string[] {
+                        "SELECT"});
+            table2.AddRow(new string[] {
+                        "INSERT"});
+            table2.AddRow(new string[] {
+                        "UPDATE"});
+            table2.AddRow(new string[] {
+                        "DELETE"});
+            table2.AddRow(new string[] {
+                        "EXECUTE"});
+            table2.AddRow(new string[] {
+                        "VIEW ANY COLUMN ENCRYPTION KEY DEFINITION"});
+            table2.AddRow(new string[] {
+                        "VIEW ANY COLUMN MASTER KEY DEFINITION"});
+#line 23
+ testRunner.Then("the permissions should be", ((string)(null)), table2, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

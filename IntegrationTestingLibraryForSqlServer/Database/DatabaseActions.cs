@@ -74,6 +74,17 @@ namespace IntegrationTestingLibraryForSqlServer
             }
         }
 
+        public void GrantUserAccess(SqlAccount account)
+        {
+            if (account == null) throw new ArgumentNullException("account");
+
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Execute(AddSqlUserCommand, account.Username, account.Password);
+                connection.Execute(GrantPermissions, account.Username);
+            }
+        }
+
         public void CreateSchema(string name)
         {
             using (var connection = new SqlConnection(ConnectionString))
@@ -91,7 +102,10 @@ namespace IntegrationTestingLibraryForSqlServer
             end";
         private const string AddDomainUserCommand = @"
             if not exists(select loginname from syslogins where loginname = '{0}') create login [{0}] from windows;";
+        private const string AddSqlUserCommand = @"
+            if not exists(select loginname from syslogins where loginname = '{0}') create login [{0}] WITH password=N'{1}';";
         private const string GrantPermissions = @"
+            create user [{0}] for login [{0}]
             grant connect to [{0}]
             alter role db_datareader add member [{0}]
             alter role db_datawriter add member [{0}]
