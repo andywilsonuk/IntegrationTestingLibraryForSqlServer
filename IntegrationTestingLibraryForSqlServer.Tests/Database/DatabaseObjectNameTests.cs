@@ -90,6 +90,13 @@ namespace IntegrationTestingLibraryForSqlServer.Tests
         {
             Assert.Throws<ArgumentException>(() => new DatabaseObjectName("dbo", null));
         }
+        [Fact]
+        public void Object_With_Brackets_Are_Removed_When_Calling_ObjectNameWithoutBrackets()
+        {
+            var objectName = new DatabaseObjectName("[s1]", "[t1]");
+
+            Assert.Equal("t1", objectName.ObjectNameWithoutBrackets);
+        }
     }
 }
 

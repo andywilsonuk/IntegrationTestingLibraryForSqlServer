@@ -10,14 +10,14 @@ namespace IntegrationTestingLibraryForSqlServer
         private const string derviceParameters = @"
 SELECT  
     pa.name,
-    ty.name as typename,
+    ty.name,
     pa.max_length,
     pa.precision,
     pa.scale,
     pa.is_output
 FROM sys.procedures pr
-INNER JOIN sys.parameters pa ON pa.object_id = pr.object_id
-INNER JOIN sys.types ty ON ty.user_type_id = pa.user_type_id
+JOIN sys.parameters pa ON pa.object_id = pr.object_id
+JOIN sys.types ty ON ty.user_type_id = pa.user_type_id
 WHERE pr.name = '{0}'
 ORDER BY pa.parameter_id";
         private string connectionString;
@@ -44,20 +44,23 @@ ORDER BY pa.parameter_id";
         private IEnumerable<ProcedureParameter> DeriveParameters(DatabaseObjectName name)
         {
             var mapper = new ProcedureParameterFactory();
+            string sql = string.Format(derviceParameters, name.ObjectNameWithoutBrackets);
 
             using (var connection = new SqlConnection(connectionString))
             {
                 var rawItems = connection.Execute(reader =>
                 {
+                    var dataType = new DataType(reader.GetString(1));
+
                     return new ProcedureParameterRaw
                     {
                         Name = reader.GetString(0),
                         DataType = reader.GetString(1),
-                        Size = new DataType(reader.GetString(1)).IsDecimal ? reader.GetInt32(3) : reader.GetInt32(2),
+                        Size = dataType.IsDecimal ? reader.GetByte(3) : dataType.IsUnicodeString ? reader.GetInt16(2) / 2 : reader.GetInt16(2),
                         DecimalPlaces = reader.GetByte(4),
                         Direction = reader.GetBoolean(5) ? ParameterDirection.InputOutput : ParameterDirection.Input,
                     };
-                }, derviceParameters, name.ObjectName);
+                }, sql, name.ObjectName).ToList();
 
                 return mapper.FromRaw(rawItems);
             }

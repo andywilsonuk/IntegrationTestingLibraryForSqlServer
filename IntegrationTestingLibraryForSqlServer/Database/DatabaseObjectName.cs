@@ -9,10 +9,13 @@ namespace IntegrationTestingLibraryForSqlServer
             if (string.IsNullOrWhiteSpace(schemaName)) schemaName = "dbo";
             SchemaName = NormalisedName(schemaName);
             ObjectName = NormalisedName(objectName);
+            ObjectNameWithoutBrackets = ObjectName.TrimStart('[').TrimEnd(']');
         }
         public string ObjectName { get; private set; }
         public string SchemaName { get; private set; }
         public string Qualified => $"{SchemaName}.{ObjectName}";
+        public object ObjectNameWithoutBrackets { get; private set; }
+
         public override string ToString()
         {
             return Qualified;

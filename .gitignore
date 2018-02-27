@@ -26,3 +26,4 @@
 *.log
 *.bak
 *.nupkg
+/.vs/IntegrationTestingLibraryForSqlServer/v15/Server/sqlite3
