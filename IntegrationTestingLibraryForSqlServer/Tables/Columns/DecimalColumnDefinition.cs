@@ -14,6 +14,13 @@ namespace IntegrationTestingLibraryForSqlServer
         {
         }
 
+        public DecimalColumnDefinition(string name, byte precision, byte scale)
+            : this(name)
+        {
+            Precision = precision;
+            Scale = scale;
+        }
+
         protected override bool IsDataTypeAllowed => DataType.IsDecimal;
 
         public byte Precision

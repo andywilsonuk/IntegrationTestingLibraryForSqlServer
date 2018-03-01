@@ -11,6 +11,10 @@ namespace IntegrationTestingLibraryForSqlServer
             ObjectName = NormalisedName(objectName);
             ObjectNameWithoutBrackets = ObjectName.TrimStart('[').TrimEnd(']');
         }
+        public DatabaseObjectName(string objectName)
+            : this (null, objectName)
+        {
+        }
         public string ObjectName { get; private set; }
         public string SchemaName { get; private set; }
         public string Qualified => $"{SchemaName}.{ObjectName}";

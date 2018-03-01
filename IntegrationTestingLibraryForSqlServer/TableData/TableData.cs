@@ -49,6 +49,14 @@ namespace IntegrationTestingLibraryForSqlServer
             return sb.ToString();
         }
 
+        public static TableData FromRows(IList<IList<object>> rows)
+        {
+            return new TableData
+            {
+                Rows = rows,
+            };
+        }
+
         private string EquivalenceDetails(TableData actual)
         {
             return new StringBuilder()

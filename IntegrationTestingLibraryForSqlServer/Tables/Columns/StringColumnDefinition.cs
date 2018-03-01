@@ -9,6 +9,12 @@ namespace IntegrationTestingLibraryForSqlServer
         {
         }
 
+        public StringColumnDefinition(string name, SqlDbType dataType, int size)
+            : base(name, dataType)
+        {
+            Size = size;
+        }
+
         protected override bool IsDataTypeAllowed => DataType.IsString;
     }
 }

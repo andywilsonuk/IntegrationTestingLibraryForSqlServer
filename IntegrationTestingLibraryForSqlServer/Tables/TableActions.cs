@@ -50,7 +50,7 @@ namespace IntegrationTestingLibraryForSqlServer
             if (tableName == null) throw new ArgumentNullException(nameof(tableName));
             if (tableData == null) throw new ArgumentNullException(nameof(tableData));
 
-            bool hasColumnNames = tableData.ColumnNames != null && !tableData.ColumnNames.Equals(Enumerable.Empty<string>());
+            bool hasColumnNames = tableData.ColumnNames?.Count != 0;
             var generator = new TableInsertSqlGenerator();
             using (var connection = new SqlConnection(ConnectionString))
             {

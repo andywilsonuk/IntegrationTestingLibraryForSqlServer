@@ -18,10 +18,14 @@ namespace IntegrationTestingLibraryForSqlServer
 
         public TableDefinition(DatabaseObjectName name, IEnumerable<ColumnDefinition> columns)
         {
-            if (name == null) throw new ArgumentNullException("name");
-            Name = name;
+            Name = name ?? throw new ArgumentNullException("name");
             Columns = new ColumnDefinitionCollection();
             if (columns != null) Columns.AddRange(columns);
+        }
+
+        public TableDefinition(string name, IEnumerable<ColumnDefinition> columns)
+            : this(DatabaseObjectName.FromName(name), columns)
+        {
         }
 
         public DatabaseObjectName Name { get; private set; }

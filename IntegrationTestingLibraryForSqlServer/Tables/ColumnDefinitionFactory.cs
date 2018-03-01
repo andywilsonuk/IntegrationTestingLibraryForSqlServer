@@ -11,19 +11,17 @@ namespace IntegrationTestingLibraryForSqlServer
                 ColumnDefinition column = FromDataType(new DataType(rawColumn.DataType), rawColumn.Name);
                 column.AllowNulls = rawColumn.AllowNulls;
 
-                var decimalColumn = column as DecimalColumnDefinition;
-                if (decimalColumn != null)
+                if (column is DecimalColumnDefinition decimalColumn)
                 {
                     if (rawColumn.Size.HasValue) decimalColumn.Precision = (byte)rawColumn.Size.Value;
                     if (rawColumn.DecimalPlaces.HasValue) decimalColumn.Scale = rawColumn.DecimalPlaces.Value;
                 }
-                var numberColumn = column as IntegerColumnDefinition;
-                if (numberColumn != null)
+                if (column is IntegerColumnDefinition numberColumn)
                 {
                     numberColumn.IdentitySeed = rawColumn.IdentitySeed;
                 }
-                var sizeColumn = column as VariableSizeColumnDefinition;
-                if (sizeColumn != null && rawColumn.Size.HasValue) sizeColumn.Size = rawColumn.Size.Value;
+                if (column is VariableSizeColumnDefinition sizeColumn && rawColumn.Size.HasValue)
+                    sizeColumn.Size = rawColumn.Size.Value;
 
                 yield return column;
             }

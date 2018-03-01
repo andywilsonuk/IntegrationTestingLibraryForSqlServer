@@ -77,6 +77,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Database.feature</DependentUpon>
     </Compile>
+    <Compile Include="FluentSyntaxTests.cs" />
     <Compile Include="Models\ProcedureParameterWithValue.cs" />
     <Compile Include="Procedure.feature.cs">
       <AutoGen>True</AutoGen>
