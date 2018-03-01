@@ -6,9 +6,9 @@
     <AssemblyName>IntegrationTestingLibraryForSqlServer</AssemblyName>
     <RootNamespace>IntegrationTestingLibraryForSqlServer</RootNamespace>
     <PackageReleaseNotes>See https://github.com/andywilsonuk/IntegrationTestingLibraryForSqlServer/releases</PackageReleaseNotes>
-    <Version>2.2.0</Version>
-	<AssemblyVersion>2.2.0</AssemblyVersion>
-	<FileVersion>2.2.0</FileVersion>
+    <Version>2.3.0</Version>
+	<AssemblyVersion>2.3.0</AssemblyVersion>
+	<FileVersion>2.3.0</FileVersion>
     <Product>Integration Testing Library for SQL Server</Product>
     <Authors>Andy Wilson and contributors</Authors>
     <Company>Andy Wilson</Company>
